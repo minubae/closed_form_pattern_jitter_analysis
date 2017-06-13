@@ -22,7 +22,7 @@ sqs_spike_time_x = np.array(x)
 Omega = []
 n = len(sqs_spike_time_x)
 for i in range(n):
-    for j in range(L):
+    for j in range(1, L+1):
         Omega.append(sqs_spike_time_x[i] - np.floor(L/2) + j)
 
 
