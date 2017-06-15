@@ -1,12 +1,17 @@
+# Title: Pattern Jitter Algorithm - Generatin artificial spike trains
+# Date: June/14/2017, Wednesday - Current
+# Author: Minwoo Bae (minubae.math@gmail.com)
+# Institute: Mathematics, City College of New York, CUNY
+
 import numpy as np
-import itertools as itt
+# import itertools as itt
 
 # Observed Spike Train
 # x = np.random.uniform(0,1,(6,6))
 # Generating a binary random spike train with size = n
 obs_x = np.random.randint(2, size=20)
 size = len(obs_x)
-L = 4
+L = 5
 
 # Loop iteration with L-increments
 #for i in range(0, size, L): #print(x[i])
