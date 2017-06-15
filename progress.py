@@ -26,6 +26,7 @@ for i in range(n):
         Omega.append(sqs_spike_time_x[i] - np.floor(L/2) + j)
 
 
+print('Hello World!')
 print(obs_x)
 print(sqs_spike_time_x)
 print(Omega)
