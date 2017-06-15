@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as itt
 
 # Observed Spike Train
 # x = np.random.uniform(0,1,(6,6))
@@ -16,17 +17,24 @@ for i in range(size):
     if obs_x[i] == 1:
         x.append(i+1)
 
-sqs_spike_time_x = np.array(x)
+# x_tilde: the observed spike train, nondecreasing sequence of spike times.
+x_tilde = np.array(x)
 
 # Jitter Window
 Omega = []
-n = len(sqs_spike_time_x)
+n = len(x_tilde)
 for i in range(n):
-    for j in range(1, L+1):
-        Omega.append(sqs_spike_time_x[i] - np.floor(L/2) + j)
+    Omega[i].append(x_tilde[i] - np.floor(L/2) + j)
 
+# for j in range(1, L+1):
+#     Omega.append(x_tilde[i] - np.floor(L/2) + j)
 
-print('Hello World!!')
-print(obs_x)
-print(sqs_spike_time_x)
-print(Omega)
+my_array = np.empty([3,3])
+for i,j in itt.product(range(3), range(3)):
+    my_array[i,j] = f(i,j)
+
+#print('Hello World!!')
+print("Observed_X: ", obs_x)
+print("x_tilde: ", x_tilde)
+print("My Array: ", my_array)
+#print(Omega)
