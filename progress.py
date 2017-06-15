@@ -21,20 +21,28 @@ for i in range(size):
 x_tilde = np.array(x)
 
 # Jitter Window
-Omega = []
+y = []
 n = len(x_tilde)
+# j = 1
+# for i in range(n):
+#     while j <= L:
+#         Omega.append(x_tilde[i] - np.floor(L/2) + j)
+#         j += 1
+    # for j in range(1, L+1):
+    #     Omega.append(x_tilde[i] - np.floor(L/2) + j)
+
+# my_array = np.empty([3,3])
+# for i,j in itt.product(range(3), range(3)):
+#     my_array[i,j] = f(i,j)
+
 for i in range(n):
-    Omega[i].append(x_tilde[i] - np.floor(L/2) + j)
+    for j in range(1, L+1):
+        y.append(x_tilde[i] - np.floor(L/2) + j)
 
-# for j in range(1, L+1):
-#     Omega.append(x_tilde[i] - np.floor(L/2) + j)
-
-my_array = np.empty([3,3])
-for i,j in itt.product(range(3), range(3)):
-    my_array[i,j] = f(i,j)
+Omega = np.array(y).reshape(n, L)
 
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
 print("x_tilde: ", x_tilde)
-print("My Array: ", my_array)
-#print(Omega)
+print("Omega: ", Omega)
+# print("My Array: ", my_array)
