@@ -55,11 +55,15 @@ Omega = np.array(y).reshape(n, L)
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
 R = 10
+gamma = []
+gamma.append(0)
+for i in range(1, n):
+    #print(x_tilde[i])
+    if x_tilde[i] - x_tilde[i-1] <= R:
+        #gamma.append(0)
+        gamma.append(x_tilde[i] - x_tilde[i-1])
 
-
-
-
-
+print('gamma:', gamma)
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
 print("x_tilde: ", x_tilde)
@@ -67,7 +71,7 @@ print("Omega: ")
 print(Omega)
 
 # Iterate over Omega matrix columnwise
-for i in Omega:
-    print(i)
-    for j in i:
-        print(j)
+#for i in Omega:
+    #print(i)
+    #for j in i:
+        #print(j)
