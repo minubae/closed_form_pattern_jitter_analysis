@@ -60,7 +60,6 @@ gamma.append(0)
 for i in range(1, n):
     #print(x_tilde[i])
     if x_tilde[i] - x_tilde[i-1] <= R:
-        #gamma.append(0)
         gamma.append(x_tilde[i] - x_tilde[i-1])
 
 print('gamma:', gamma)
