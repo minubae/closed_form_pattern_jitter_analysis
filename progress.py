@@ -55,7 +55,7 @@ Omega = np.array(y).reshape(n, L)
 # {R+1, R+2,...}  if x_tilde_{i} - x_tilde_{i-1} is greater than R.
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
-R = 1
+R = 3
 gamma = []
 gamma.append(0)
 for i in range(1, n):
@@ -65,14 +65,10 @@ for i in range(1, n):
         gamma.append(x_tilde[i] - x_tilde[i-1])
     else:
         x = np.arange(R,L,1)
-        gamma.append(x)
-        print('hello 02', gamma)
+        #gamma.append(x)
+        #print('hello 02', gamma)
+        print('hello 02')
         #break
-
-# numpy.arange(start, stop, step, dype=none)
-# Return evenly spaced values within a given interval
-
-
 
 print('gamma:', gamma)
 #print('Hello World!!')
@@ -87,6 +83,9 @@ print(Omega)
     #for j in i:
         #print(j)
 
+# numpy.arange(start, stop, step, dype=none)
+# Return evenly spaced values within a given interval
+
 # numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
 # Return evenly spaced numbers over a specified interval
 # Testing Matplotlib in Scipy with linspace
@@ -97,4 +96,4 @@ x2 = np.linspace(0, 10, N, endpoint=False)
 plt.plot(x1, y, 'o')
 plt.plot(x2, y + 0.5, 'o')
 plt.ylim([-0.5, 1])
-plt.show()
+#plt.show()
