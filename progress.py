@@ -31,7 +31,7 @@ x_tilde = np.array(x)
 # close to its corresponding original spike.
 # Omega_i: the ith Jitter Window
 # For each i = 1,...,n
-# X_i in Omega_i, where Omega_i = {x_tilde_i - ceil(L/2)+1,...,x_tilde_i - ceil(L/2)+L}
+# X_i in Omega_i where Omega_i = {x_tilde_i - ceil(L/2)+1,...,x_tilde_i - ceil(L/2)+L}
 # The parameter L controls the degree of smoothing: small L preserves rapid changes
 # in firing rate but introduces less variability into resamples.
 L = 5
@@ -46,6 +46,12 @@ Omega = np.array(y).reshape(n, L)
 # Preserving recent spike history effects: we require that the resampled and
 # the original recording have identical patterns of spiking and not spiking
 # in the R bins preceding each spike.
+# For each i = 2,...,n,
+# X_{i} - X_{i-1} in Gamma_i where
+# Gamma_i =
+# {x_tilde_{i} - x_tilde_{i-1}} if x_tilde_{i} - x_tilde_{i-1} is less than or equal to R,
+# or
+# {R+1, R+2,...}  if x_tilde_{i} - x_tilde_{i-1} is greater than R.
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
 R = 10
