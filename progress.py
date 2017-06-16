@@ -40,3 +40,9 @@ print("Observed_X: ", obs_x)
 print("x_tilde: ", x_tilde)
 print("Omega: ")
 print(Omega)
+
+# Iterate over Omega matrix columnwise
+for i in Omega:
+    print(i)
+    for j in i:
+        print(j)
