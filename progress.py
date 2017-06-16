@@ -4,6 +4,7 @@
 # Institute: Mathematics, City College of New York, CUNY
 
 import numpy as np
+import matplotlib.pyplot as plt
 # import itertools as itt
 
 # Observed Spike Train
@@ -71,8 +72,7 @@ for i in range(1, n):
 # numpy.arange(start, stop, step, dype=none)
 # Return evenly spaced values within a given interval
 
-# numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
-# Return evenly spaced numbers over a specified interval
+
 
 print('gamma:', gamma)
 #print('Hello World!!')
@@ -86,3 +86,15 @@ print(Omega)
     #print(i)
     #for j in i:
         #print(j)
+
+# numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
+# Return evenly spaced numbers over a specified interval
+# Testing Matplotlib in Scipy with linspace
+N = 8
+y = np.zeros(N)
+x1 = np.linspace(0, 10, N, endpoint=True)
+x2 = np.linspace(0, 10, N, endpoint=False)
+plt.plot(x1, y, 'o')
+plt.plot(x2, y + 0.5, 'o')
+plt.ylim([-0.5, 1])
+plt.show()
