@@ -1,4 +1,4 @@
-# Title: Pattern Jitter Algorithm - Generatin artificial spike trains
+# Title: Pattern Jitter Algorithm - Generating artificial spike trains
 # Date: June/14/2017, Wednesday - Current
 # Author: Minwoo Bae (minubae.math@gmail.com)
 # Institute: Mathematics, City College of New York, CUNY
@@ -12,12 +12,13 @@ import numpy as np
 obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
 size = len(obs_x)
-L = 5
 
 # Loop iteration with L-increments
 #for i in range(0, size, L): #print(x[i])
 
-# The Observed spike train, a non-decreasing sequence of spike times
+# Finding a sequence of spike times from Observed splike data
+# x_tilde = (x_tilde_1,..,x_tilde_n) denotes the Observed spike train,
+# a non-decreasing sequence of spike times
 x = []
 for i in range(size):
     if obs_x[i] == 1:
@@ -26,7 +27,14 @@ for i in range(size):
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
 x_tilde = np.array(x)
 
-# Jitter Window
+# Preserving smoothed firing rates: we require that each resampled spike remain
+# close to its corresponding original spike.
+# Omega_i: the ith Jitter Window
+# For each i = 1,...,n
+# X_i in Omega_i, where Omega_i = {x_tilde_i - ceil(L/2)+1,...,x_tilde_i - ceil(L/2)+L}
+# The parameter L controls the degree of smoothing: small L preserves rapid changes
+# in firing rate but introduces less variability into resamples.
+L = 5
 y = []
 n = len(x_tilde)
 for i in range(n):
@@ -34,6 +42,17 @@ for i in range(n):
         y.append(x_tilde[i] - np.ceil(L/2) + j)
 
 Omega = np.array(y).reshape(n, L)
+
+# Preserving recent spike history effects: we require that the resampled and
+# the original recording have identical patterns of spiking and not spiking
+# in the R bins preceding each spike.
+# The parameter R controls the amount of history that is preserved. Larger values of R
+# enforce more regularity in the firing patterns across the resampled spike trains.
+R = 10
+
+
+
+
 
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
