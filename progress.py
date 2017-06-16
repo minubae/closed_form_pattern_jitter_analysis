@@ -68,6 +68,12 @@ for i in range(1, n):
         print('hello 02', gamma)
         #break
 
+# numpy.arange(start, stop, step, dype=none)
+# Return evenly spaced values within a given interval
+
+# numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
+# Return evenly spaced numbers over a specified interval
+
 print('gamma:', gamma)
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
