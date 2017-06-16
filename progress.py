@@ -54,13 +54,19 @@ Omega = np.array(y).reshape(n, L)
 # {R+1, R+2,...}  if x_tilde_{i} - x_tilde_{i-1} is greater than R.
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
-R = 10
+R = 1
 gamma = []
 gamma.append(0)
 for i in range(1, n):
     #print(x_tilde[i])
     if x_tilde[i] - x_tilde[i-1] <= R:
+        print('hello 01')
         gamma.append(x_tilde[i] - x_tilde[i-1])
+    else:
+        x = np.arange(R,L,1)
+        gamma.append(x)
+        print('hello 02', gamma)
+        #break
 
 print('gamma:', gamma)
 #print('Hello World!!')
