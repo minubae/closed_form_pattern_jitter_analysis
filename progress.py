@@ -31,7 +31,7 @@ x_tilde = np.array(x)
 # Preserving smoothed firing rates: we require that each resampled spike remain
 # close to its corresponding original spike.
 # Omega_i: the ith Jitter Window
-# For each i = 1,...,n
+# (2.1) For each i = 1,...,n
 # X_i in Omega_i where Omega_i = {x_tilde_i - ceil(L/2)+1,...,x_tilde_i - ceil(L/2)+L}
 # The parameter L controls the degree of smoothing: small L preserves rapid changes
 # in firing rate but introduces less variability into resamples.
@@ -47,7 +47,7 @@ Omega = np.array(y).reshape(n, L)
 # Preserving recent spike history effects: we require that the resampled and
 # the original recording have identical patterns of spiking and not spiking
 # in the R bins preceding each spike.
-# For each i = 2,...,n,
+# (2.2) For each i = 2,...,n,
 # X_{i} - X_{i-1} in Gamma_i where
 # Gamma_i =
 # {x_tilde_{i} - x_tilde_{i-1}} if x_tilde_{i} - x_tilde_{i-1} is less than or equal to R,
@@ -64,6 +64,23 @@ for i in range(1, n):
     else:
         x = np.arange(R+1,R+1+L,1)
         Gamma.append(x)
+
+# To the extent that an observed spike train conforms to such a model, the resampling distribution
+# will preserve the essential history-dependent features of the model.
+# There are many distributions that preserve (2.1) and (2.2). Since our goal is to improve no additional
+# structure, we make no additional constraints: the allowable spike configurations are distributed
+# uniformly, meaning that
+# p(x) = 1/Z 1{x_1 in Omega_1} Product{from i =1 to n}1{x_i in Omega_i}1{x_i - x_{i-1} in Gamma_i},
+# where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
+# the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
+m = len(Omega)
+
+for i in range(m):
+    print(i)
+    if i == 0:
+        print(Omega[i])
+
+
 
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
