@@ -75,11 +75,17 @@ for i in range(1, n):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 m = len(Omega)
 
-for i in range(m):
-    print(i)
-    if i == 0:
-        print(Omega[i])
+# for i in range(m):
+#     print(i)
+#     if i == 0:
+#         print(Omega[i])
 
+def h_1(x_1):
+    for i in Omega[0]:
+        if i == x_1:
+            return 1
+            break
+    return 0
 
 
 #print('Hello World!!')
@@ -87,6 +93,10 @@ print("Observed_X: ", obs_x)
 print("x_tilde: ", x_tilde)
 print("Omega: ")
 print(Omega)
+# print(Omega[:1,])
+# print(Omega[0:1,])
+print("Omega_[0]: ", Omega[0])
+print("h_1: ", h_1(3))
 print('Gamma:')
 print(Gamma)
 
