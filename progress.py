@@ -75,9 +75,8 @@ for i in range(1, n):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 
 # Resampling Distribution p(x), where x = (x_1,...,x_n)
-n = len(Gamma)
 x = np.sort(np.random.randint(40, size=n))
-print(x)
+
 def p(x):
     return False
 
@@ -89,11 +88,26 @@ def h_1(x):
     return 0
 
 def h_i(x):
-    return False
+    n = len(x)
+    for i in range(1,n):
+        # print(x[i])
+        # print(Omega[i])
+        print(indicator(x[i], Omega[i]))
 
+def indicator(x_i, Omega_i):
+    # print(Omega_i)
+    for i in Omega_i:
+        # print(x_i, i)
+        if x_i == i:
+            # print('hello')
+            return 1
+    return 0
+
+print(h_i(x))
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
-print("x_tilde: ", x_tilde)
+print("spike_time_observed_x: ", x_tilde)
+print('spike_time_sampling_x: ', x)
 print("Omega: ")
 print(Omega)
 # print(Omega[:1,])
@@ -105,6 +119,9 @@ print(Gamma)
 
 # for i in Gamma:
 #     print('Gamma:', i)
+
+# indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
+# print(indicator(1,1))
 
 # Iterate over Omega matrix columnwise
 #for i in Omega:
