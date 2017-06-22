@@ -73,20 +73,23 @@ for i in range(1, n):
 # p(x) = 1/Z 1{x_1 in Omega_1} Product{from i =1 to n}1{x_i in Omega_i}1{x_i - x_{i-1} in Gamma_i},
 # where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
-m = len(Omega)
 
-# for i in range(m):
-#     print(i)
-#     if i == 0:
-#         print(Omega[i])
+# Resampling Distribution p(x), where x = (x_1,...,x_n)
+n = len(Gamma)
+x = np.sort(np.random.randint(40, size=n))
+print(x)
+def p(x):
+    return False
 
-def h_1(x_1):
+def h_1(x):
     for i in Omega[0]:
-        if i == x_1:
+        if i == x[0]:
             return 1
             break
     return 0
 
+def h_i(x):
+    return False
 
 #print('Hello World!!')
 print("Observed_X: ", obs_x)
@@ -96,7 +99,7 @@ print(Omega)
 # print(Omega[:1,])
 # print(Omega[0:1,])
 print("Omega_[0]: ", Omega[0])
-print("h_1: ", h_1(3))
+print("h_1: ", h_1(x))
 print('Gamma:')
 print(Gamma)
 
