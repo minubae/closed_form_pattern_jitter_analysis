@@ -85,23 +85,22 @@ def indicator_01(x_1):
         return 1
     return 0
 
-def indicator_02(x_i, Omega_i):
-    # print(Omega_i)
-    for i in Omega_i:
-        # print(x_i, i)
-        if x_i == i:
-            # print('hello')
-            return 1
+def indicator_02(i):
+    print('x[',i+1,']: ', x[i])
+    print('Omega[',i+1,']: ', Omega[i])
+    if np.in1d(x[i], Omega[i]) == True:
+        return 1
     return 0
 
-def indicator_03(x_1, x_2, Gamma_i):
+def indicator_03(i):
     # print(Omega_i)
-    for i in Omega_i:
-        # print(x_i, i)
-        if x_i == i:
-            # print('hello')
-            return 1
-    return 0
+    return 1
+    # for i in Omega_i:
+    #     # print(x_i, i)
+    #     if x_i == i:
+    #         # print('hello')
+    #         return 1
+    # return 0
 
 def p(x):
     return False
@@ -109,28 +108,27 @@ def p(x):
 def h_1(x_1):
     return indicator_01(x_1)
 
-def h_i(x_1, x_2):
+def h_i(i):
     # print('Input: ', x_1, x_2)
-    return x_1
-
-# for i in range(1,10):
-    # print(h_i(x[i-1], x[i]))
-
+    return indicator_02(i)*indicator_03(i)
 
 #print('Hello World!!')
 # print(Omega[:1,])
 # print(Omega[0:1,])
 print("Observed_X: ", obs_x)
 print("spike_time_observed_x: ", x_tilde)
-print('spike_time_sampling_x: ', x)
+print('spike_time_sampling_x: ', x, '\n')
 print("Omega: ")
 print(Omega)
-print("Omega_[0]: ", Omega[0])
+
 print('Gamma:')
-print(Gamma)
-print('x_1: ', x[0])
-print("h_1: ", h_1(x[0]))
-#print(h_i(x))
+print(Gamma, '\n')
+print('x[1]: ', x[0])
+print("Omega[1]: ", Omega[0])
+print("h_1: ", h_1(x[0]), '\n')
+
+for i in range(1,n):
+    print('Exist?: ', h_i(i), '\n')
 
 # for i in Gamma:
 #     print('Gamma:', i)
