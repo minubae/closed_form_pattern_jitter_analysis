@@ -77,8 +77,13 @@ for i in range(1, n):
 # Resampling Distribution p(x), where x = (x_1,...,x_n)
 x = np.sort(np.random.randint(40, size=n))
 
-def indicator_01():
-    
+def indicator_01(x_1):
+    # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
+    # Test whether each element of a 1-D array is also present in a second array.
+    # Return a boolean array the same length as ar1 that is True where an element of ar1 is in ar2 and False otherwise
+    if np.in1d(x_1, Omega[0]) == True:
+        return 1
+    return 0
 
 def indicator_02(x_i, Omega_i):
     # print(Omega_i)
@@ -89,40 +94,43 @@ def indicator_02(x_i, Omega_i):
             return 1
     return 0
 
+def indicator_03(x_1, x_2, Gamma_i):
+    # print(Omega_i)
+    for i in Omega_i:
+        # print(x_i, i)
+        if x_i == i:
+            # print('hello')
+            return 1
+    return 0
 
 def p(x):
     return False
 
-def h_1(x):
-    for i in Omega[0]:
-        if i == x[0]:
-            return 1
-            break
-    return 0
+def h_1(x_1):
+    return indicator_01(x_1)
 
 def h_i(x_1, x_2):
     # print('Input: ', x_1, x_2)
     return x_1
 
-for i in range(1,10):
-    print(h_i(x[i-1], x[i]))
+# for i in range(1,10):
+    # print(h_i(x[i-1], x[i]))
 
 
-
-
-# print(h_i(x))
 #print('Hello World!!')
+# print(Omega[:1,])
+# print(Omega[0:1,])
 print("Observed_X: ", obs_x)
 print("spike_time_observed_x: ", x_tilde)
 print('spike_time_sampling_x: ', x)
 print("Omega: ")
 print(Omega)
-# print(Omega[:1,])
-# print(Omega[0:1,])
 print("Omega_[0]: ", Omega[0])
-print("h_1: ", h_1(x))
 print('Gamma:')
 print(Gamma)
+print('x_1: ', x[0])
+print("h_1: ", h_1(x[0]))
+#print(h_i(x))
 
 # for i in Gamma:
 #     print('Gamma:', i)
