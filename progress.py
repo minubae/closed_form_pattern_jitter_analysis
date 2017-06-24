@@ -77,10 +77,6 @@ for i in range(1, n):
 # Resampling Distribution p(x), where x = (x_1,...,x_n)
 x = np.sort(np.random.randint(40, size=n))
 
-def isinteger(x):
-    print('Integer')
-    return np.equal(np.mod(x, 1), 0)
-
 # Indicator function 01 := 1{x[1] in Omega[1]}
 def indicator_01(x_1):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
@@ -92,95 +88,29 @@ def indicator_01(x_1):
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
 def indicator_02(i):
-    print('x[',i+1,']: ', x[i])
+
     print('Omega[',i+1,']: ', Omega[i])
+    print('x[',i+1,']: ', x[i])
     if np.in1d(x[i], Omega[i]) == True:
         return 1
     return 0
 
-def isarray(vector):
-    print('Array')
-    if isinteger(vector):
-        return False
-    else:
-        n = len(vector)
-        if n > 1:
-            return True
-
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(i):
-    # print('Gamma[',i+1,']: ', Gamma[i])
-    # return 1
 
-    if isarray(Gamma[i]):
-        print('hello, I am an array.', Gamma[i])
+    if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
+        print('Gamma[',i+1,']: ', Gamma[i])
+        print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
         return 1
 
-    if np.issubdtype(Gamma[i], int):
-        print('hello, I am integer.', Gamma[i])
-        return 1
-
-    # try:
-    #     if np.issubdtype(Gamma[i], int):
-    #         print('hello, I am integer.', Gamma[i])
-    #         return 1
-    # except:
-    #     print('sorry')
-    # else:
-    #     if isarray(Gamma[i]):
-    #         print('hello, I am an array.', Gamma[i])
-    #         return 1
-    # finally:
-    #     if isarray(Gamma[i]):
-    #         print('hello, I am an array.', Gamma[i])
-    #         return 1
-    # if np.issubdtype(Gamma[i], int):
-    #     print('hello, I am integer.', Gamma[i])
-    # else:
-    #     print('hello, I am an array.', Gamma[i])
-
-    # if isinteger(Gamma[i]):
-    #     print('hello, I am integer.', Gamma[i])
-    #     return 1
-    #
-    # elif isarray(Gamma[i]):
-    #     print('hello, I am an array.', Gamma[i])
-    # elif np.in1d(x[i]-x[i-1], Gamma[i]) == True:
-    #
-    #     print('hello, I am not integer.')
-    #     return 1
-    # n = 0
-    # print('Gamma[',i+1,']: ', Gamma[i])
-    # try:
-    #     if x[i]-x[i-1] == Gamma[i]:
-    #         print('hello 1: ', x[i]-x[i-1])
-    #         return 1
-    #     # else:
-    #     # np.in1d(x[i]-x[i-1], Omega[i]) == True:
-    #         # print('hello 2: ', x[i]-x[i-1])
-    # except:
-    #     print('sorry')
-    #     if np.in1d(x[i]-x[i-1], Omega[i]) == True:
-    #         print('hello 2: ', x[i]-x[i-1])
-    # else:
-    #     if np.in1d(x[i]-x[i-1], Omega[i]) == True:
-    #         print('hello 2: ', x[i]-x[i-1])
-    #         return 1
-
-    # if len(Gamma[i]):
-    #     n = len(Gamma[i])
-    # print('Gamma[',i+1,'] Length: ', n)
-    # for i in Omega_i:
-    #     # print(x_i, i)
-    #     if x_i == i:
-    #         # print('hello')
-    #         return 1
-    # return 0
+    print('Gamma[',i+1,']: ', Gamma[i])
+    print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
+    return 0
 
 
 # p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
-def p(Z, i):
-    return h_1(x[0])*h_i(i)
+def p(Z, i): # Z
+    return (1/Z)*h_1(x[0])*h_i(i)
 
 # h_1(x_1) := Indicator function 01
 def h_1(x_1):
@@ -189,6 +119,7 @@ def h_1(x_1):
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
 def h_i(i):
     # print('Input: ', x_1, x_2)
+    print('X: ', x)
     return indicator_02(i)*indicator_03(i)
 
 print("Observed_X: ", obs_x)
@@ -200,21 +131,31 @@ print(Omega)
 print('Gamma:')
 print(Gamma, '\n')
 
-print('x[1]: ', x[0])
+print('X: ', x)
 print("Omega[1]: ", Omega[0])
-print("h_1: ", h_1(x[0]), '\n')
+print('x[1]: ', x[0])
+print("Exist?: ", h_1(x[0]), '\n')
 
 for i in range(1,n):
-    print('Exist?: ', h_i(i), '\n')
+    print('Exist?: ', p(1, i), '\n')
 
 
 #print('Hello World!!')
 # print(Omega[:1,])
 # print(Omega[0:1,])
 
-
-# for i in Gamma:
-#     print('Gamma:', i)
+# def isinteger(x):
+#     print('Integer')
+#     return np.equal(np.mod(x, 1), 0)
+#
+# def isarray(vector):
+#     print('Array')
+#     if isinteger(vector):
+#         return False
+#     else:
+#         n = len(vector)
+#         if n > 1:
+#             return True
 
 # indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
 # print(indicator(1,1))
