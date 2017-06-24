@@ -96,14 +96,34 @@ def indicator_02(i):
 
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(i):
-    # print(Omega_i)
-    return 1
+    n = 0
+    print('Gamma[',i+1,']: ', Gamma[i])
+    try:
+        if x[i]-x[i-1] == Gamma[i]:
+            print('hello 1: ', x[i]-x[i-1])
+            return 1
+        # else:
+        # np.in1d(x[i]-x[i-1], Omega[i]) == True:
+            # print('hello 2: ', x[i]-x[i-1])
+    except:
+        print('sorry')
+        if np.in1d(x[i]-x[i-1], Omega[i]) == True:
+            print('hello 2: ', x[i]-x[i-1])
+    else:
+        if np.in1d(x[i]-x[i-1], Omega[i]) == True:
+            print('hello 2: ', x[i]-x[i-1])
+            return 1
+
+    # if len(Gamma[i]):
+    #     n = len(Gamma[i])
+    # print('Gamma[',i+1,'] Length: ', n)
     # for i in Omega_i:
     #     # print(x_i, i)
     #     if x_i == i:
     #         # print('hello')
     #         return 1
     # return 0
+    return 0
 
 # p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
 def p(Z, i):
@@ -165,4 +185,4 @@ x2 = np.linspace(0, 10, N, endpoint=False)
 plt.plot(x1, y, 'o')
 plt.plot(x2, y + 0.5, 'o')
 plt.ylim([-0.5, 1])
-#plt.show()
+# plt.show()
