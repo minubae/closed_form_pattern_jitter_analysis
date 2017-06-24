@@ -78,6 +78,7 @@ for i in range(1, n):
 x = np.sort(np.random.randint(40, size=n))
 
 def isinteger(x):
+    print('Integer')
     return np.equal(np.mod(x, 1), 0)
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
@@ -98,19 +99,45 @@ def indicator_02(i):
     return 0
 
 def isarray(vector):
-    print('isarray')
-    n = len(vector)
-    if n > 1:
-        return True
-    return False
+    print('Array')
+    if isinteger(vector):
+        return False
+    else:
+        n = len(vector)
+        if n > 1:
+            return True
 
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(i):
+    # print('Gamma[',i+1,']: ', Gamma[i])
+    # return 1
+
+    if isarray(Gamma[i]):
+        print('hello, I am an array.', Gamma[i])
+        return 1
 
     if np.issubdtype(Gamma[i], int):
         print('hello, I am integer.', Gamma[i])
-    else:
-        print('hello, I am an array.', Gamma[i])
+        return 1
+
+    # try:
+    #     if np.issubdtype(Gamma[i], int):
+    #         print('hello, I am integer.', Gamma[i])
+    #         return 1
+    # except:
+    #     print('sorry')
+    # else:
+    #     if isarray(Gamma[i]):
+    #         print('hello, I am an array.', Gamma[i])
+    #         return 1
+    # finally:
+    #     if isarray(Gamma[i]):
+    #         print('hello, I am an array.', Gamma[i])
+    #         return 1
+    # if np.issubdtype(Gamma[i], int):
+    #     print('hello, I am integer.', Gamma[i])
+    # else:
+    #     print('hello, I am an array.', Gamma[i])
 
     # if isinteger(Gamma[i]):
     #     print('hello, I am integer.', Gamma[i])
