@@ -77,6 +77,9 @@ for i in range(1, n):
 # Resampling Distribution p(x), where x = (x_1,...,x_n)
 x = np.sort(np.random.randint(40, size=n))
 
+def isinteger(x):
+    return np.equal(np.mod(x, 1), 0)
+
 # Indicator function 01 := 1{x[1] in Omega[1]}
 def indicator_01(x_1):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
@@ -94,25 +97,48 @@ def indicator_02(i):
         return 1
     return 0
 
+def isarray(vector):
+    print('isarray')
+    n = len(vector)
+    if n > 1:
+        return True
+    return False
+
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(i):
-    n = 0
-    print('Gamma[',i+1,']: ', Gamma[i])
-    try:
-        if x[i]-x[i-1] == Gamma[i]:
-            print('hello 1: ', x[i]-x[i-1])
-            return 1
-        # else:
-        # np.in1d(x[i]-x[i-1], Omega[i]) == True:
-            # print('hello 2: ', x[i]-x[i-1])
-    except:
-        print('sorry')
-        if np.in1d(x[i]-x[i-1], Omega[i]) == True:
-            print('hello 2: ', x[i]-x[i-1])
+
+    if np.issubdtype(Gamma[i], int):
+        print('hello, I am integer.', Gamma[i])
     else:
-        if np.in1d(x[i]-x[i-1], Omega[i]) == True:
-            print('hello 2: ', x[i]-x[i-1])
-            return 1
+        print('hello, I am an array.', Gamma[i])
+
+    # if isinteger(Gamma[i]):
+    #     print('hello, I am integer.', Gamma[i])
+    #     return 1
+    #
+    # elif isarray(Gamma[i]):
+    #     print('hello, I am an array.', Gamma[i])
+    # elif np.in1d(x[i]-x[i-1], Gamma[i]) == True:
+    #
+    #     print('hello, I am not integer.')
+    #     return 1
+    # n = 0
+    # print('Gamma[',i+1,']: ', Gamma[i])
+    # try:
+    #     if x[i]-x[i-1] == Gamma[i]:
+    #         print('hello 1: ', x[i]-x[i-1])
+    #         return 1
+    #     # else:
+    #     # np.in1d(x[i]-x[i-1], Omega[i]) == True:
+    #         # print('hello 2: ', x[i]-x[i-1])
+    # except:
+    #     print('sorry')
+    #     if np.in1d(x[i]-x[i-1], Omega[i]) == True:
+    #         print('hello 2: ', x[i]-x[i-1])
+    # else:
+    #     if np.in1d(x[i]-x[i-1], Omega[i]) == True:
+    #         print('hello 2: ', x[i]-x[i-1])
+    #         return 1
 
     # if len(Gamma[i]):
     #     n = len(Gamma[i])
@@ -123,7 +149,7 @@ def indicator_03(i):
     #         # print('hello')
     #         return 1
     # return 0
-    return 0
+
 
 # p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
 def p(Z, i):
