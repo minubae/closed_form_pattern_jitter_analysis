@@ -135,13 +135,13 @@ def h_i(i):
     return indicator_02(i)*indicator_03(i)
 
 print("Observed_X: ", obs_x)
-print("spike_time_observed_x: ", get_x_tilde)
+print("spike_time_observed_x: ", x_tilde)
 print('spike_time_sampling_x: ', x, '\n')
 
 print("Omega: ")
-print(getOmega)
+print(Omega)
 print('Gamma:')
-print(getGamma, '\n')
+print(Gamma, '\n')
 
 print('X: ', x)
 print("Omega[1]: ", Omega[0])
@@ -184,11 +184,21 @@ for i in range(1,n):
 # numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
 # Return evenly spaced numbers over a specified interval
 # Testing Matplotlib in Scipy with linspace
-N = 8
-y = np.zeros(N)
-x1 = np.linspace(0, 10, N, endpoint=True)
-x2 = np.linspace(0, 10, N, endpoint=False)
-plt.plot(x1, y, 'o')
-plt.plot(x2, y + 0.5, 'o')
-plt.ylim([-0.5, 1])
+# N = 8
+# y = np.zeros(N)
+# x1 = np.linspace(0, 10, N, endpoint=True)
+# x2 = np.linspace(0, 10, N, endpoint=False)
+# plt.plot(x1, y, 'o')
+# plt.plot(x2, y + 0.5, 'o')
+# plt.ylim([-0.5, 1])
 # plt.show()
+
+
+N = len(x_tilde)
+y = np.zeros(N)
+m = len(obs_x)
+plt.plot(x_tilde, y, 'o')
+plt.xlim([0, m])
+# plt.ylim([-1, 1])
+# plt.axis([0, m, -1, 1])
+plt.show()
