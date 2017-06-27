@@ -3,6 +3,15 @@
 # Date: June/14/2017, Wednesday - Current
 # Author: Minwoo Bae (minubae.math@gmail.com)
 # Institute: Mathematics, City College of New York, CUNY
+
+# Abstract:
+# Resampling methods are popular tools for exploring the statistical structure of neural spike trains.
+# In many applications, it is desirable to have resamples that preserve certain non-Poisson properties,
+# like refractory periods and bursting, and that are also robust to trial-to-trial variability.
+# Pattern jitter is a resampling technique that accomplishes this by preserving the recent spiking history
+# of all spikes and constraining resampled spikes to remain close to their original positions.
+# The resampled spike times are maximally random up to these constraints. Dynamic programming is used to
+# create an efficient resampling algorithm.
 ###########################################################################################################################
 
 import numpy as np
@@ -59,7 +68,7 @@ def getOmega(L, x_tilde):
 
 Omega = getOmega(L, x_tilde)
 
-# Resampling Distribution p(x), where x = (x_1,...,x_n)
+
 n = len(x_tilde)
 x = np.sort(np.random.randint(40, size=n))
 
@@ -129,6 +138,7 @@ def indicator_03(i):
     print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
     return 0
 
+# Resampling Distribution p(x), where x = (x_1,...,x_n)
 # p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
 def p(Z, i): # Z
     return (1/Z)*h_1(x[0])*h_i(i)
