@@ -12,21 +12,23 @@ import matplotlib.pyplot as plt
 # Generating a binary random spike train with size = n
 obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
-size = len(obs_x)
 
-# Loop iteration with L-increments
-#for i in range(0, size, L): #print(x[i])
 
 # Finding a sequence of spike times from Observed splike data
 # x_tilde = (x_tilde_1,..,x_tilde_n) denotes the Observed spike train,
 # a non-decreasing sequence of spike times
-x = []
-for i in range(size):
-    if obs_x[i] == 1:
-        x.append(i+1)
-
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
-x_tilde = np.array(x)
+def get_X_tilde(observed_spike_train):
+    size = len(obs_x)
+    x = []
+    # Loop iteration with L-increments
+    #for i in range(0, size, L): #print(x[i])
+    for i in range(size):
+        if obs_x[i] == 1:
+            x.append(i+1)
+    x_tilde = np.array(x)
+
+    return x_tilde
 
 # Preserving smoothed firing rates: we require that each resampled spike remain
 # close to its corresponding original spike.
