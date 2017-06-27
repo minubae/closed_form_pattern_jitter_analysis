@@ -152,6 +152,16 @@ for i in range(1,n):
     print('Exist?: ', p(1, i), '\n')
 
 
+N = len(x_tilde)
+# y = np.zeros(N)
+y = np.ones(N)
+m = len(obs_x)
+plt.plot(x_tilde, y, 'o')
+plt.xlim([0, m])
+# plt.ylim([-1, 1])
+# plt.axis([0, m, -1, 1])
+plt.show()
+
 #print('Hello World!!')
 # print(Omega[:1,])
 # print(Omega[0:1,])
@@ -192,13 +202,3 @@ for i in range(1,n):
 # plt.plot(x2, y + 0.5, 'o')
 # plt.ylim([-0.5, 1])
 # plt.show()
-
-
-N = len(x_tilde)
-y = np.zeros(N)
-m = len(obs_x)
-plt.plot(x_tilde, y, 'o')
-plt.xlim([0, m])
-# plt.ylim([-1, 1])
-# plt.axis([0, m, -1, 1])
-plt.show()
