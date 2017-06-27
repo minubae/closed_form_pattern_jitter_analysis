@@ -13,12 +13,11 @@ import matplotlib.pyplot as plt
 obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
 
-
 # Finding a sequence of spike times from Observed splike data
 # x_tilde = (x_tilde_1,..,x_tilde_n) denotes the Observed spike train,
 # a non-decreasing sequence of spike times
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
-def get_X_tilde(observed_spike_train):
+def get_x_tilde(observed_spike_train):
     size = len(obs_x)
     x = []
     # Loop iteration with L-increments
@@ -30,6 +29,7 @@ def get_X_tilde(observed_spike_train):
 
     return x_tilde
 
+x_tilde = get_x_tilde(obs_x)
 # Preserving smoothed firing rates: we require that each resampled spike remain
 # close to its corresponding original spike.
 # Omega_i: the ith Jitter Window
@@ -37,14 +37,24 @@ def get_X_tilde(observed_spike_train):
 # X_i in Omega_i where Omega_i = {x_tilde_i - ceil(L/2)+1,...,x_tilde_i - ceil(L/2)+L}
 # The parameter L controls the degree of smoothing: small L preserves rapid changes
 # in firing rate but introduces less variability into resamples.
+# L : the size of window
 L = 5
-y = []
-n = len(x_tilde)
-for i in range(n):
-    for j in range(1, L+1):
-        y.append(x_tilde[i] - np.ceil(L/2) + j)
+def getOmega(L, x_tilde):
+    y = []
+    n = len(x_tilde)
 
-Omega = np.array(y).reshape(n, L)
+    for i in range(n):
+        for j in range(1, L+1):
+            y.append(x_tilde[i] - np.ceil(L/2) + j)
+    Omega = np.array(y).reshape(n, L)
+
+    return Omega
+
+Omega = getOmega(L, x_tilde)
+
+# Resampling Distribution p(x), where x = (x_1,...,x_n)
+n = len(x_tilde)
+x = np.sort(np.random.randint(40, size=n))
 
 # Preserving recent spike history effects: we require that the resampled and
 # the original recording have identical patterns of spiking and not spiking
@@ -58,14 +68,19 @@ Omega = np.array(y).reshape(n, L)
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
 R = 2
-Gamma = []
-Gamma.append(0)
-for i in range(1, n):
-    if x_tilde[i] - x_tilde[i-1] <= R:
-        Gamma.append(x_tilde[i] - x_tilde[i-1])
-    else:
-        x = np.arange(R+1,R+1+L,1)
-        Gamma.append(x)
+def getGamma(R, x_tilde):
+    Gamma = []
+    Gamma.append(0)
+    for i in range(1, n):
+        if x_tilde[i] - x_tilde[i-1] <= R:
+            Gamma.append(x_tilde[i] - x_tilde[i-1])
+        else:
+            x = np.arange(R+1,R+1+L,1)
+            Gamma.append(x)
+    return Gamma
+
+Gamma = getGamma(R, x_tilde)
+
 
 # To the extent that an observed spike train conforms to such a model, the resampling distribution
 # will preserve the essential history-dependent features of the model.
@@ -75,9 +90,6 @@ for i in range(1, n):
 # p(x) = 1/Z 1{x_1 in Omega_1} Product{from i =1 to n}1{x_i in Omega_i}1{x_i - x_{i-1} in Gamma_i},
 # where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
-
-# Resampling Distribution p(x), where x = (x_1,...,x_n)
-x = np.sort(np.random.randint(40, size=n))
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
 def indicator_01(x_1):
@@ -90,7 +102,6 @@ def indicator_01(x_1):
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
 def indicator_02(i):
-
     print('Omega[',i+1,']: ', Omega[i])
     print('x[',i+1,']: ', x[i])
     if np.in1d(x[i], Omega[i]) == True:
@@ -99,7 +110,6 @@ def indicator_02(i):
 
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(i):
-
     if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
         print('Gamma[',i+1,']: ', Gamma[i])
         print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
@@ -125,13 +135,13 @@ def h_i(i):
     return indicator_02(i)*indicator_03(i)
 
 print("Observed_X: ", obs_x)
-print("spike_time_observed_x: ", x_tilde)
+print("spike_time_observed_x: ", get_x_tilde)
 print('spike_time_sampling_x: ', x, '\n')
 
 print("Omega: ")
-print(Omega)
+print(getOmega)
 print('Gamma:')
-print(Gamma, '\n')
+print(getGamma, '\n')
 
 print('X: ', x)
 print("Omega[1]: ", Omega[0])
