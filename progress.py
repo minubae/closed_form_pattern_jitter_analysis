@@ -1,22 +1,28 @@
+###########################################################################################################################
 # Title: Pattern Jitter Algorithm - Generating artificial spike trains
 # Date: June/14/2017, Wednesday - Current
 # Author: Minwoo Bae (minubae.math@gmail.com)
 # Institute: Mathematics, City College of New York, CUNY
+###########################################################################################################################
 
 import numpy as np
 import matplotlib.pyplot as plt
 # import itertools as itt
 
+###########################################################################################################################
 # Observed Spike Train
 # x = np.random.uniform(0,1,(6,6))
 # Generating a binary random spike train with size = n
 obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
+###########################################################################################################################
 
+###########################################################################################################################
 # Finding a sequence of spike times from Observed splike data
 # x_tilde = (x_tilde_1,..,x_tilde_n) denotes the Observed spike train,
 # a non-decreasing sequence of spike times
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
+###########################################################################################################################
 def get_x_tilde(observed_spike_train):
     size = len(obs_x)
     x = []
@@ -30,6 +36,8 @@ def get_x_tilde(observed_spike_train):
     return x_tilde
 
 x_tilde = get_x_tilde(obs_x)
+
+###########################################################################################################################
 # Preserving smoothed firing rates: we require that each resampled spike remain
 # close to its corresponding original spike.
 # Omega_i: the ith Jitter Window
@@ -38,6 +46,7 @@ x_tilde = get_x_tilde(obs_x)
 # The parameter L controls the degree of smoothing: small L preserves rapid changes
 # in firing rate but introduces less variability into resamples.
 # L : the size of window
+###########################################################################################################################
 L = 5
 def getOmega(L, x_tilde):
     y = []
@@ -52,10 +61,13 @@ def getOmega(L, x_tilde):
 
 Omega = getOmega(L, x_tilde)
 
+###########################################################################################################################
 # Resampling Distribution p(x), where x = (x_1,...,x_n)
+###########################################################################################################################
 n = len(x_tilde)
 x = np.sort(np.random.randint(40, size=n))
 
+###########################################################################################################################
 # Preserving recent spike history effects: we require that the resampled and
 # the original recording have identical patterns of spiking and not spiking
 # in the R bins preceding each spike.
@@ -67,6 +79,7 @@ x = np.sort(np.random.randint(40, size=n))
 # {R+1, R+2,...}  if x_tilde_{i} - x_tilde_{i-1} is greater than R.
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
+###########################################################################################################################
 R = 2
 def getGamma(R, x_tilde):
     Gamma = []
@@ -81,7 +94,7 @@ def getGamma(R, x_tilde):
 
 Gamma = getGamma(R, x_tilde)
 
-
+###########################################################################################################################
 # To the extent that an observed spike train conforms to such a model, the resampling distribution
 # will preserve the essential history-dependent features of the model.
 # There are many distributions that preserve (2.1) and (2.2). Since our goal is to improve no additional
@@ -90,8 +103,11 @@ Gamma = getGamma(R, x_tilde)
 # p(x) = 1/Z 1{x_1 in Omega_1} Product{from i =1 to n}1{x_i in Omega_i}1{x_i - x_{i-1} in Gamma_i},
 # where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
+###########################################################################################################################
 
+###########################################################################################################################
 # Indicator function 01 := 1{x[1] in Omega[1]}
+###########################################################################################################################
 def indicator_01(x_1):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
     # Test whether each element of a 1-D array is also present in a second array.
@@ -100,15 +116,18 @@ def indicator_01(x_1):
         return 1
     return 0
 
+###########################################################################################################################
 # Indicator function 02 := 1{x[i] in Omega[i]}
+###########################################################################################################################
 def indicator_02(i):
     print('Omega[',i+1,']: ', Omega[i])
     print('x[',i+1,']: ', x[i])
     if np.in1d(x[i], Omega[i]) == True:
         return 1
     return 0
-
+###########################################################################################################################
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
+###########################################################################################################################
 def indicator_03(i):
     if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
         print('Gamma[',i+1,']: ', Gamma[i])
@@ -119,16 +138,21 @@ def indicator_03(i):
     print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
     return 0
 
-
+###########################################################################################################################
 # p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
+###########################################################################################################################
 def p(Z, i): # Z
     return (1/Z)*h_1(x[0])*h_i(i)
 
+###########################################################################################################################
 # h_1(x_1) := Indicator function 01
+###########################################################################################################################
 def h_1(x_1):
     return indicator_01(x_1)
 
+###########################################################################################################################
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
+###########################################################################################################################
 def h_i(i):
     # print('Input: ', x_1, x_2)
     print('X: ', x)
@@ -151,10 +175,8 @@ print("Exist?: ", h_1(x[0]), '\n')
 for i in range(1,n):
     print('Exist?: ', p(1, i), '\n')
 
-
-N = len(x_tilde)
 # y = np.zeros(N)
-y = np.ones(N)
+y = np.ones(n)
 m = len(obs_x)
 plt.plot(x_tilde, y, 'o')
 plt.xlim([0, m])
