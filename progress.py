@@ -24,12 +24,12 @@ import matplotlib.pyplot as plt
 obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
 
-###########################################################################################################################
+""
 # Finding a sequence of spike times from Observed splike data
 # x_tilde = (x_tilde_1,..,x_tilde_n) denotes the Observed spike train,
 # a non-decreasing sequence of spike times
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
-###########################################################################################################################
+""
 def get_x_tilde(observed_spike_train):
     size = len(obs_x)
     x = []
@@ -44,7 +44,7 @@ def get_x_tilde(observed_spike_train):
 
 x_tilde = get_x_tilde(obs_x)
 
-###########################################################################################################################
+""
 # Preserving smoothed firing rates: we require that each resampled spike remain
 # close to its corresponding original spike.
 # Omega_i: the ith Jitter Window
@@ -53,7 +53,7 @@ x_tilde = get_x_tilde(obs_x)
 # The parameter L controls the degree of smoothing: small L preserves rapid changes
 # in firing rate but introduces less variability into resamples.
 # L : the size of window
-###########################################################################################################################
+""
 L = 5
 def getOmega(L, x_tilde):
     y = []
@@ -72,7 +72,7 @@ Omega = getOmega(L, x_tilde)
 n = len(x_tilde)
 x = np.sort(np.random.randint(40, size=n))
 
-###########################################################################################################################
+""
 # Preserving recent spike history effects: we require that the resampled and
 # the original recording have identical patterns of spiking and not spiking
 # in the R bins preceding each spike.
@@ -84,7 +84,7 @@ x = np.sort(np.random.randint(40, size=n))
 # {R+1, R+2,...}  if x_tilde_{i} - x_tilde_{i-1} is greater than R.
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
-###########################################################################################################################
+""
 R = 2
 def getGamma(R, x_tilde):
     Gamma = []
@@ -99,7 +99,7 @@ def getGamma(R, x_tilde):
 
 Gamma = getGamma(R, x_tilde)
 
-###########################################################################################################################
+""
 # To the extent that an observed spike train conforms to such a model, the resampling distribution
 # will preserve the essential history-dependent features of the model.
 # There are many distributions that preserve (2.1) and (2.2). Since our goal is to improve no additional
@@ -108,7 +108,7 @@ Gamma = getGamma(R, x_tilde)
 # p(x) = 1/Z 1{x_1 in Omega_1} Product{from i =1 to n}1{x_i in Omega_i}1{x_i - x_{i-1} in Gamma_i},
 # where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
-###########################################################################################################################
+""
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
 def indicator_01(x_1):
