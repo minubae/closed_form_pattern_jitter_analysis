@@ -156,26 +156,37 @@ def h_i(i):
 
 t = np.sort(np.random.randint(40, size=n+1))
 
+def p1(Z):
+    return 1/Z
 
-def sampling_test():
+# Resampled Spike Train
+X = []
+# Sampling from the Resampling Distribution
+# Acceptance-Rejection Algorithm to have the Sampling
+def rejection_sampling():
 
-    x_1 = randint(1,40)
-    print('x_1: ', x_1)
-    print('Omega[1]:', Omega[0])
+    counter = 1
+    # N is positive infinity
+    N = float('inf')
+    x_1 = randint(1,100)
 
-    while np.in1d(x_1, Omega[0]) == True:
+    while x_1 < N:
 
-        x_1 = randint(1,40)
+        x_1 = randint(1,100)
         print('x_1: ', x_1)
+        print('Omega[1]:', Omega[0], '\n')
 
-    return False
+        if h_1(x_1):
+            X.append(x_1)
+            return p1(counter)
+            break
+
+        counter = counter + 1
+        # print('Counter: ', counter)
 
 
-
-# x = randint(1, 40)
-# print('Random X: ', x)
-# print('True?: ', np.in1d(x, Omega[0]))
-print(sampling_test())
+print('Distribution: ', rejection_sampling())
+print('X: ', X)
 
 """
 print("Observed_X: ", obs_x)
