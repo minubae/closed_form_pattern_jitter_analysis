@@ -159,17 +159,18 @@ t = np.sort(np.random.randint(40, size=n+1))
 
 def sampling_test():
 
-    N = 1
-    x = randint(1, 40)
-    print('x[1]', x)
+    x_1 = randint(1,40)
+    print('x_1: ', x_1)
     print('Omega[1]:', Omega[0])
-    while x == 32:
 
-        # N += 1
-        x = randint(1, 40)
-        print("Hello", x)
+    while np.in1d(x_1, Omega[0]) == True:
+
+        x_1 = randint(1,40)
+        print('x_1: ', x_1)
 
     return False
+
+
 
 # x = randint(1, 40)
 # print('Random X: ', x)
