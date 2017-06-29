@@ -165,7 +165,7 @@ X = []
 # Acceptance-Rejection Algorithm to have the Sampling
 def rejection_sampling():
 
-    counter = 1
+    Z = 1
     # N is positive infinity
     N = float('inf')
     x_1 = randint(1,100)
@@ -175,13 +175,13 @@ def rejection_sampling():
         x_1 = randint(1,100)
         print('x_1: ', x_1)
         print('Omega[1]:', Omega[0], '\n')
-
+        print('h_1: ', h_1(x_1))
         if h_1(x_1):
             X.append(x_1)
-            return p1(counter)
+            return p1(Z)
             break
 
-        counter = counter + 1
+        Z = Z + 1
         # print('Counter: ', counter)
 
 
