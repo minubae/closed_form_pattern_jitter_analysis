@@ -14,6 +14,7 @@
 # create an efficient resampling algorithm.
 ###########################################################################################################################
 
+from random import *
 import numpy as np
 import matplotlib.pyplot as plt
 # import itertools as itt
@@ -153,6 +154,8 @@ def h_i(i):
     print('X: ', x)
     return indicator_02(i)*indicator_03(i)
 
+t = np.sort(np.random.randint(40, size=n+1))
+
 print("Observed_X: ", obs_x)
 print("spike_time_observed_x: ", x_tilde)
 print('spike_time_sampling_x: ', x, '\n')
@@ -167,7 +170,7 @@ print("Omega[1]: ", Omega[0])
 print('x[1]: ', x[0])
 print("Exist?: ", h_1(x[0]), '\n')
 
-for i in range(1,n):
+for i in range(1, n):
     print('Exist?: ', p(1, i), '\n')
 
 # y = np.zeros(N)
@@ -177,7 +180,7 @@ plt.plot(x_tilde, y, 'o')
 plt.xlim([0, m])
 # plt.ylim([-1, 1])
 # plt.axis([0, m, -1, 1])
-plt.show()
+# plt.show()
 
 #print('Hello World!!')
 # print(Omega[:1,])
