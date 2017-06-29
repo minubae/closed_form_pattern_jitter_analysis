@@ -156,6 +156,27 @@ def h_i(i):
 
 t = np.sort(np.random.randint(40, size=n+1))
 
+
+def sampling_test():
+
+    N = 1
+
+    print('x[1]',x)
+    print('Omega[1]:',Omega[0])
+    while np.in1d(x, Omega[0]):
+
+        # N += 1
+        # x = randint(1, 40)
+        print("Hello True", x)
+
+    return False
+
+x = randint(1, 40)
+print('Random X: ', x)
+print('True?: ', np.in1d(x, Omega[0]))
+# print(sampling_test())
+
+"""
 print("Observed_X: ", obs_x)
 print("spike_time_observed_x: ", x_tilde)
 print('spike_time_sampling_x: ', x, '\n')
@@ -172,6 +193,7 @@ print("Exist?: ", h_1(x[0]), '\n')
 
 for i in range(1, n):
     print('Exist?: ', p(1, i), '\n')
+"""
 
 # y = np.zeros(N)
 y = np.ones(n)
