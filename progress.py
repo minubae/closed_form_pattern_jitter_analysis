@@ -169,6 +169,8 @@ def rejection_sampling():
     # N is positive infinity
     N = float('inf')
     x_1 = randint(1,100)
+    x_2 = randint(1,100)
+    x_3 = randint(1,100)
 
     while x_1 < N:
 
