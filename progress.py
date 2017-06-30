@@ -169,8 +169,6 @@ def rejection_sampling():
     # N is positive infinity
     N = float('inf')
     x_1 = randint(1,100)
-    x_2 = randint(1,100)
-    x_3 = randint(1,100)
 
     while x_1 < N:
 
@@ -187,8 +185,18 @@ def rejection_sampling():
         # print('Counter: ', counter)
 
 
-print('Distribution: ', rejection_sampling())
-print('X: ', X)
+# print('Distribution: ', rejection_sampling())
+# print('X: ', X)
+
+# Recursion Test:
+def fibonacci(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    return fibonacci(n-2)+fibonacci(n-1)
+
+# print('Fibonacci: ', fibonacci(20))
 
 """
 print("Observed_X: ", obs_x)
