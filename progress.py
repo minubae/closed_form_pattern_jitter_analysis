@@ -77,8 +77,6 @@ def getOmega(L, x_tilde):
     return Omega
 
 #Omega = getOmega(L, x_tilde)
-
-
 #n = len(x_tilde)
 #x = np.sort(np.random.randint(40, size=n))
 
@@ -183,9 +181,9 @@ def sampling_distribution(size, L, R):
     # return p
 
 # print(sampling_distribution(10, 5, 10))
-r = list(range(1, 10))
-random.shuffle(r)
-for i in r:
+riter = list(range(1, 10))
+random.shuffle(riter)
+for i in riter:
     print('L: ', i)
     print(sampling_distribution(10, i, 3))
     print('\n')
