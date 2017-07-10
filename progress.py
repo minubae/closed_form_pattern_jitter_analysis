@@ -17,6 +17,7 @@
 from random import *
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 # import itertools as itt
 
 # Observed Spike Train
@@ -63,7 +64,7 @@ def get_x_tilde(observed_spike_train):
 # in firing rate but introduces less variability into resamples.
 # L : the size of window
 ""
-L = 5
+# L = 5
 def getOmega(L, x_tilde):
     y = []
     n = len(x_tilde)
@@ -94,10 +95,11 @@ def getOmega(L, x_tilde):
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
 ""
-R = 2
-def getGamma(R, x_tilde):
+# R = 2
+def getGamma(R, L, x_tilde):
     Gamma = []
     Gamma.append(0)
+    n = len(x_tilde)
     for i in range(1, n):
         if x_tilde[i] - x_tilde[i-1] <= R:
             Gamma.append(x_tilde[i] - x_tilde[i-1])
@@ -171,11 +173,22 @@ def sampling_distribution(size, L, R):
     p = 0
     obs_x = get_obs_x(size)
     x_tilde = get_x_tilde(obs_x)
-    print("Obs_X: ", obs_x)
-    print("X_tilde: ", x_tilde)
-    return p
+    Omega = getOmega(L, x_tilde)
+    Gamma = getGamma(R, L, x_tilde)
 
-print(sampling_distribution(10, 4, 10))
+    # print("Obs_X: ", obs_x)
+    print("X_tilde: ", x_tilde)
+    print("Omega: ", Omega)
+    print("Gamma: ", Gamma)
+    # return p
+
+# print(sampling_distribution(10, 5, 10))
+r = list(range(1, 10))
+random.shuffle(r)
+for i in r:
+    print('L: ', i)
+    print(sampling_distribution(10, i, 3))
+    print('\n')
 
 
 '''
