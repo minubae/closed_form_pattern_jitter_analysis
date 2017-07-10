@@ -185,8 +185,8 @@ def rejection_sampling():
         # print('Counter: ', counter)
 
 
-# print('Distribution: ', rejection_sampling())
-# print('X: ', X)
+print('Distribution: ', rejection_sampling())
+print('X: ', X)
 
 # Recursion Test:
 def fibonacci(n):
