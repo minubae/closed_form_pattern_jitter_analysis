@@ -167,15 +167,15 @@ def h_i(i):
 def p1(Z):
     return 1/Z
 
-def sampling_distribution(L, R):
+def sampling_distribution(size, L, R):
     p = 0
-    obs_x = get_obs_x(10)
+    obs_x = get_obs_x(size)
     x_tilde = get_x_tilde(obs_x)
     print("Obs_X: ", obs_x)
     print("X_tilde: ", x_tilde)
     return p
 
-print(sampling_distribution(4, 10))
+print(sampling_distribution(10, 4, 10))
 
 
 '''
