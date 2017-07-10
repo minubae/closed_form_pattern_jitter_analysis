@@ -2,3 +2,4 @@ Test.py
 Example.py
 __pycache__/
 matlab/
+.DS_Store
