@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 # Observed Spike Train
 # x = np.random.uniform(0,1,(6,6))
 # Generating a binary random spike train with size = n
-obs_x = np.random.randint(2, size=20)
+#obs_x = np.random.randint(2, size=20)
 #obs_x = np.array([0,0,1,0,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0])
 
 ""
@@ -31,7 +31,15 @@ obs_x = np.random.randint(2, size=20)
 # a non-decreasing sequence of spike times
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
 ""
+
+def get_obs_x(length):
+    obs_x = np.random.randint(2, size=length)
+    return obs_x
+
+
 def get_x_tilde(observed_spike_train):
+
+    obs_x = observed_spike_train
     size = len(obs_x)
     x = []
     # Loop iteration with L-increments
@@ -43,7 +51,7 @@ def get_x_tilde(observed_spike_train):
 
     return x_tilde
 
-x_tilde = get_x_tilde(obs_x)
+# x_tilde = get_x_tilde(obs_x)
 
 ""
 # Preserving smoothed firing rates: we require that each resampled spike remain
@@ -67,11 +75,11 @@ def getOmega(L, x_tilde):
 
     return Omega
 
-Omega = getOmega(L, x_tilde)
+#Omega = getOmega(L, x_tilde)
 
 
-n = len(x_tilde)
-x = np.sort(np.random.randint(40, size=n))
+#n = len(x_tilde)
+#x = np.sort(np.random.randint(40, size=n))
 
 ""
 # Preserving recent spike history effects: we require that the resampled and
@@ -98,7 +106,7 @@ def getGamma(R, x_tilde):
             Gamma.append(x)
     return Gamma
 
-Gamma = getGamma(R, x_tilde)
+#Gamma = getGamma(R, x_tilde)
 
 ""
 # To the extent that an observed spike train conforms to such a model, the resampling distribution
@@ -154,11 +162,23 @@ def h_i(i):
     print('X: ', x)
     return indicator_02(i)*indicator_03(i)
 
-t = np.sort(np.random.randint(40, size=n+1))
+#t = np.sort(np.random.randint(40, size=n+1))
 
 def p1(Z):
     return 1/Z
 
+def sampling_distribution(L, R):
+    p = 0
+    obs_x = get_obs_x(10)
+    x_tilde = get_x_tilde(obs_x)
+    print("Obs_X: ", obs_x)
+    print("X_tilde: ", x_tilde)
+    return p
+
+print(sampling_distribution(4, 10))
+
+
+'''
 # Resampled Spike Train
 X = []
 # Sampling from the Resampling Distribution
@@ -187,7 +207,7 @@ def rejection_sampling():
 
 print('Distribution: ', rejection_sampling())
 print('X: ', X)
-
+'''
 # Recursion Test:
 def fibonacci(n):
     if n == 0:
@@ -218,10 +238,12 @@ for i in range(1, n):
 """
 
 # y = np.zeros(N)
+'''
 y = np.ones(n)
 m = len(obs_x)
 plt.plot(x_tilde, y, 'o')
 plt.xlim([0, m])
+'''
 # plt.ylim([-1, 1])
 # plt.axis([0, m, -1, 1])
 # plt.show()
