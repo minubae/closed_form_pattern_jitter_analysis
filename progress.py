@@ -181,13 +181,15 @@ def sampling_distribution(size, L, R):
     # return p
 
 # print(sampling_distribution(10, 5, 10))
+
+'''
 riter = list(range(1, 10))
 random.shuffle(riter)
 for i in riter:
     print('L: ', i)
     print(sampling_distribution(10, i, 3))
     print('\n')
-
+'''
 
 '''
 # Resampled Spike Train
@@ -279,23 +281,30 @@ plt.xlim([0, m])
 # indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
 # print(indicator(1,1))
 
+'''
 # Iterate over Omega matrix columnwise
-#for i in Omega:
-    #print(i)
-    #for j in i:
-        #print(j)
+for i in Omega:
+    print(i)
+    for j in i:
+        print(j)
+'''
 
-# numpy.arange(start, stop, step, dype=none)
-# Return evenly spaced values within a given interval
+'''
+np.arange(start, stop, step, dype=none)
+#Return evenly spaced values within a given interval
 
-# numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
+np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
+'''
+
+'''
 # Return evenly spaced numbers over a specified interval
 # Testing Matplotlib in Scipy with linspace
-# N = 8
-# y = np.zeros(N)
-# x1 = np.linspace(0, 10, N, endpoint=True)
-# x2 = np.linspace(0, 10, N, endpoint=False)
-# plt.plot(x1, y, 'o')
-# plt.plot(x2, y + 0.5, 'o')
-# plt.ylim([-0.5, 1])
-# plt.show()
+N = 8
+y = np.zeros(N)
+x1 = np.linspace(0, 10, N, endpoint=True)
+x2 = np.linspace(0, 10, N, endpoint=False)
+plt.plot(x1, y, 'o')
+plt.plot(x2, y + 0.5, 'o')
+plt.ylim([-0.5, 1])
+plt.show()
+'''
