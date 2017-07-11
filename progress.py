@@ -221,6 +221,7 @@ def rejection_sampling():
 print('Distribution: ', rejection_sampling())
 print('X: ', X)
 '''
+
 # Recursion Test:
 def fibonacci(n):
     if n == 0:
@@ -250,36 +251,41 @@ for i in range(1, n):
     print('Exist?: ', p(1, i), '\n')
 """
 
-# y = np.zeros(N)
+
 '''
+# y = np.zeros(N)
 y = np.ones(n)
 m = len(obs_x)
 plt.plot(x_tilde, y, 'o')
 plt.xlim([0, m])
+
+plt.ylim([-1, 1])
+plt.axis([0, m, -1, 1])
+plt.show()
 '''
-# plt.ylim([-1, 1])
-# plt.axis([0, m, -1, 1])
-# plt.show()
 
-#print('Hello World!!')
-# print(Omega[:1,])
-# print(Omega[0:1,])
+'''
+print('Hello World!!')
+print(Omega[:1,])
+print(Omega[0:1,])
+'''
+'''
+def isinteger(x):
+    print('Integer')
+    return np.equal(np.mod(x, 1), 0)
 
-# def isinteger(x):
-#     print('Integer')
-#     return np.equal(np.mod(x, 1), 0)
-#
-# def isarray(vector):
-#     print('Array')
-#     if isinteger(vector):
-#         return False
-#     else:
-#         n = len(vector)
-#         if n > 1:
-#             return True
+def isarray(vector):
+    print('Array')
+    if isinteger(vector):
+        return False
+    else:
+        n = len(vector)
+        if n > 1:
+            return True
 
-# indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
-# print(indicator(1,1))
+indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
+print(indicator(1,1))
+'''
 
 '''
 # Iterate over Omega matrix columnwise
