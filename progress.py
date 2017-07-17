@@ -82,10 +82,12 @@ def get_x(spikeTrain):
     x = x.flatten()
     return x
 
-x_tilde = get_x_tilde(get_spike_train(100))
+# x_tilde = get_x_tilde(get_spike_train(100))
+x_tilde = [10,15]
 print('x_tilde: ', x_tilde)
 # print('len_x_tilde: ', len(x_tilde), '\n')
-x = get_x(get_spike_train(100))
+# x = get_x(get_spike_train(100))
+x = [8, 13]
 print('X: ', x, '\n')
 # print('len_X: ', len(x), '\n')
 
@@ -131,15 +133,17 @@ def getOmega(L, x_tilde):
 # R = 2
 def getGamma(R, L, x_tilde):
     Gamma = []
-    Gamma.append(0)
+    # Gamma.append(0)
     n = len(x_tilde)
-    for i in range(1, n):
+    for i in range(1, n): # range(1,n)
         if x_tilde[i] - x_tilde[i-1] <= R:
-            Gamma.append(x_tilde[i] - x_tilde[i-1])
+            # Gamma.append(x_tilde[i] - x_tilde[i-1])
+            return x_tilde[i] - x_tilde[i-1]
         else:
             x = np.arange(R+1,R+1+L,1)
-            Gamma.append(x)
-    return Gamma
+            # Gamma.append(x)
+            return np.array(x)
+    # return Gamma
 
 #Gamma = getGamma(R, x_tilde)
 
@@ -184,7 +188,7 @@ def indicator_03(x, i):
 
 # h_1(x_1):= 1{x[1] in Omega[1]}
 def h_1(x, i):
-    print('x: ', x)
+    # print('x: ', x)
     return indicator_01(x, i)
 
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
@@ -196,12 +200,66 @@ def h_i(x, i):
 '''
 Sampling from the Resampling Distribution
 '''
-Omega = getOmega(5, x_tilde)
-print('Omega: ')
-print(Omega)
-print(h_1(x, 1))
+L = 5
+R = 4
+Omega = getOmega(L, x_tilde)
+print('Omega:')
+print(Omega[0])
+# print(Omega[0][0])
+print('h_1 ? : ', h_1(x, 0))
 
-Gamma = getGamma()
+
+'''
+Case 01:
+x_tilde[i] - x_tilde[i-1] > R == 0 ;
+x_tilde[i] - x_tilde[i-1] > L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+'''
+Case 02:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] > L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+
+'''
+Case 03:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+x_tilde[i] - x_tilde[i-1] <= Gamma[i][0] // first element of Gamma[i]
+'''
+for i in range(len(Omega[0])):
+    if x[0] == Omega[0][i]:
+        # print('Hello: ', i)
+        beta1 = L - i
+        # print('beta_01: ', beta1)
+
+
+'''
+Case 04:
+x_tilde[i] - x_tilde[i-1] <= R ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+'''
+# x_2 = x_1 + (x_tilde[i] - x_tilde[i-1])
+
+'''
+Case 05:
+x_tilde[i] - x_tilde[i-1] <= R ;
+x_tilde[i] - x_tilde[i-1] > L ;
+'''
+beta = 1
+beta_prime = L
+
+
+Gamma = getGamma(R, L, x_tilde)
+print('Gamma:')
+print(Gamma)
 
 def beta_1(i, L, R, x_tilde, X):
     Omega = getOmega(5, x_tilde)
