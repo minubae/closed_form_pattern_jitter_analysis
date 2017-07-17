@@ -133,16 +133,16 @@ def getOmega(L, x_tilde):
 # R = 2
 def getGamma(R, L, x_tilde):
     Gamma = []
-    # Gamma.append(0)
+    Gamma.append(0)
     n = len(x_tilde)
     for i in range(1, n): # range(1,n)
         if x_tilde[i] - x_tilde[i-1] <= R:
-            # Gamma.append(x_tilde[i] - x_tilde[i-1])
-            return x_tilde[i] - x_tilde[i-1]
+            Gamma.append(x_tilde[i] - x_tilde[i-1])
+            return Gamma
         else:
             x = np.arange(R+1,R+1+L,1)
-            # Gamma.append(x)
-            return np.array(x)
+            Gamma.append(np.array(x))
+            return Gamma
     # return Gamma
 
 #Gamma = getGamma(R, x_tilde)
@@ -201,7 +201,7 @@ def h_i(x, i):
 Sampling from the Resampling Distribution
 '''
 L = 5
-R = 4
+R = 0
 Omega = getOmega(L, x_tilde)
 print('Omega:')
 print(Omega[0])
@@ -240,7 +240,6 @@ for i in range(len(Omega[0])):
         beta1 = L - i
         # print('beta_01: ', beta1)
 
-
 '''
 Case 04:
 x_tilde[i] - x_tilde[i-1] <= R ;
@@ -261,166 +260,42 @@ Gamma = getGamma(R, L, x_tilde)
 print('Gamma:')
 print(Gamma)
 
-def beta_1(i, L, R, x_tilde, X):
-    Omega = getOmega(5, x_tilde)
-    return 0
+def beta_01(x, i):
 
-'''
-Resampling Distribution p(x), where x = (x_1,...,x_n)
-p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
-t = np.sort(np.random.randint(40, size=n+1))
+    beta_01 = 0
+    difference = x_tilde[1] - x_tilde[0]
 
-def p(Z, i): # Z
-    return (1/Z)*h_1(x[0])*h_i(i)
+    print('L: ', L)
+    print('R: ', R)
 
-def p1(Z):
-    return 1/Z
+    # Case 01:
+    if R == 0 and difference > R and difference <= L and difference > Gamma[1][0]:
+        print('Hello, Case 01')
+        beta_01 = L
+        return beta_01
 
-def sampling_distribution(size, L, R):
-    p = 0
-    obs_x = get_obs_x(size)
-    x_tilde = get_x_tilde(obs_x)
-    Omega = getOmega(L, x_tilde)
-    Gamma = getGamma(R, L, x_tilde)
+    # Case 02:
+    if R == 0 and difference > R and difference > L and difference > Gamma[1][0]:
+        print('Hello, Case 02')
+        beta_01 = L
+        return beta_01
 
-    # print("Obs_X: ", obs_x)
-    print("X_tilde: ", x_tilde)
-    print("Omega: ", Omega)
-    print("Gamma: ", Gamma)
-    # return p
+    # Case 03:
+    if R != 0 and difference > R and difference > L and difference > Gamma[1][0]:
+        print('Hello, Case 03')
 
-print(sampling_distribution(10, 5, 10))
-'''
+    # Case 04:
+    if R != 0 and difference > R and difference <= L and difference <= Gamma[1][0]:
+        print('Hello, Case 04')
 
-'''
-riter = list(range(1, 10))
-random.shuffle(riter)
-for i in riter:
-    print('L: ', i)
-    print(sampling_distribution(10, i, 3))
-    print('\n')
-'''
+    # Case 05:
+    if R != 0 and difference <= R and difference <= L:
+        print('Hello, Case 05')
 
-'''
-# Resampled Spike Train
-X = []
-# Sampling from the Resampling Distribution
-# Acceptance-Rejection Algorithm to have the Sampling
-def rejection_sampling():
+    # Case 06:
+    if R != 0 and difference <= R and difference > L:
+        print('Hello, Case 06')
 
-    Z = 1
-    # N is positive infinity
-    N = float('inf')
-    x_1 = randint(1,100)
+    # return beta_01
 
-    while x_1 < N:
-
-        x_1 = randint(1,100)
-        print('x_1: ', x_1)
-        print('Omega[1]:', Omega[0], '\n')
-        print('h_1: ', h_1(x_1))
-        if h_1(x_1):
-            X.append(x_1)
-            return p1(Z)
-            break
-
-        Z = Z + 1
-        # print('Counter: ', counter)
-
-
-print('Distribution: ', rejection_sampling())
-print('X: ', X)
-'''
-
-# Recursion Test:
-def fibonacci(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    return fibonacci(n-2)+fibonacci(n-1)
-
-# print('Fibonacci: ', fibonacci(20))
-
-"""
-print("Observed_X: ", obs_x)
-print("spike_time_observed_x: ", x_tilde)
-print('spike_time_sampling_x: ', x, '\n')
-
-print("Omega: ")
-print(Omega)
-print('Gamma:')
-print(Gamma, '\n')
-
-print('X: ', x)
-print("Omega[1]: ", Omega[0])
-print('x[1]: ', x[0])
-print("Exist?: ", h_1(x[0]), '\n')
-
-for i in range(1, n):
-    print('Exist?: ', p(1, i), '\n')
-"""
-
-
-'''
-# y = np.zeros(N)
-y = np.ones(n)
-m = len(obs_x)
-plt.plot(x_tilde, y, 'o')
-plt.xlim([0, m])
-
-plt.ylim([-1, 1])
-plt.axis([0, m, -1, 1])
-plt.show()
-'''
-
-'''
-print('Hello World!!')
-print(Omega[:1,])
-print(Omega[0:1,])
-'''
-'''
-def isinteger(x):
-    print('Integer')
-    return np.equal(np.mod(x, 1), 0)
-
-def isarray(vector):
-    print('Array')
-    if isinteger(vector):
-        return False
-    else:
-        n = len(vector)
-        if n > 1:
-            return True
-
-indicator = lambda x_i, Omega_i: 1 if x_i == Omega_i else 0
-print(indicator(1,1))
-'''
-
-'''
-# Iterate over Omega matrix columnwise
-for i in Omega:
-    print(i)
-    for j in i:
-        print(j)
-'''
-
-'''
-np.arange(start, stop, step, dype=none)
-#Return evenly spaced values within a given interval
-
-np.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None)
-'''
-
-'''
-# Return evenly spaced numbers over a specified interval
-# Testing Matplotlib in Scipy with linspace
-N = 8
-y = np.zeros(N)
-x1 = np.linspace(0, 10, N, endpoint=True)
-x2 = np.linspace(0, 10, N, endpoint=False)
-plt.plot(x1, y, 'o')
-plt.plot(x2, y + 0.5, 'o')
-plt.ylim([-0.5, 1])
-plt.show()
-'''
+print('Beta_01: ', beta_01(x, 0))
