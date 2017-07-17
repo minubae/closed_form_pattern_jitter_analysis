@@ -82,9 +82,12 @@ def get_x(spikeTrain):
     x = x.flatten()
     return x
 
-
-# print('Obs_x:', get_spike_train(100))
-print('x_tilde: ', get_x_tilde(get_spike_train(100)))
+x_tilde = get_x_tilde(get_spike_train(100))
+print('x_tilde: ', x_tilde)
+# print('len_x_tilde: ', len(x_tilde), '\n')
+x = get_x(get_spike_train(100))
+print('X: ', x, '\n')
+# print('len_X: ', len(x), '\n')
 
 ""
 # Preserving smoothed firing rates: we require that each resampled spike remain
@@ -152,7 +155,7 @@ def getGamma(R, L, x_tilde):
 ""
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
-def indicator_01(i):
+def indicator_01(x, i):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
     # Test whether each element of a 1-D array is also present in a second array.
     # Return a boolean array the same length as ar1 that is True where an element of ar1 is in ar2 and False otherwise
@@ -161,7 +164,7 @@ def indicator_01(i):
     return 0
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
-def indicator_02(i):
+def indicator_02(x, i):
     print('Omega[',i+1,']: ', Omega[i])
     print('x[',i+1,']: ', x[i])
     if np.in1d(x[i], Omega[i]) == True:
@@ -169,7 +172,7 @@ def indicator_02(i):
     return 0
 
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
-def indicator_03(i):
+def indicator_03(x, i):
     if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
         print('Gamma[',i+1,']: ', Gamma[i])
         print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
@@ -180,24 +183,29 @@ def indicator_03(i):
     return 0
 
 # h_1(x_1):= 1{x[1] in Omega[1]}
-def h_1(x_1):
-    return indicator_01(x_1)
+def h_1(x, i):
+    print('x: ', x)
+    return indicator_01(x, i)
 
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
-def h_i(i):
+def h_i(x, i):
     # print('Input: ', x_1, x_2)
     print('X: ', x)
-    return indicator_02(i)*indicator_03(i)
+    return indicator_02(x, i)*indicator_03(x, i)
 
 '''
 Sampling from the Resampling Distribution
 '''
+Omega = getOmega(5, x_tilde)
+print('Omega: ')
+print(Omega)
+print(h_1(x, 1))
 
-def beta(i):
+Gamma = getGamma()
 
+def beta_1(i, L, R, x_tilde, X):
+    Omega = getOmega(5, x_tilde)
     return 0
-
-
 
 '''
 Resampling Distribution p(x), where x = (x_1,...,x_n)
