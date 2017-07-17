@@ -152,7 +152,7 @@ def indicator_03(i):
 def p(Z, i): # Z
     return (1/Z)*h_1(x[0])*h_i(i)
 
-# h_1(x_1) := Indicator function 01
+# h_1(x_1):= 1{x[1] in Omega[1]}
 def h_1(x_1):
     return indicator_01(x_1)
 
