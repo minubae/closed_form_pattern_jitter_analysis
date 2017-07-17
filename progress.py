@@ -33,13 +33,27 @@ import random
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
 ""
 
-def get_obs_x(length):
+def get_spike_train(length):
+    '''
     obs_x = np.random.randint(2, size=length)
-    return obs_x
+    '''
+    #length of train
+    T = length;
+    # initialize the Spike Train
+    spikeTrain = np.zeros(T)
+    fRate = 30.
+    binprob = (1./T)*fRate
+    # print('binprob:', binprob)
+    for k in range(0,int(T)):
+        coin = np.random.uniform()
+        # print('Coin:', coin)
+        if coin < binprob:
+            spikeTrain[k] = 1
 
+    return spikeTrain
 
-def get_x_tilde(observed_spike_train):
-
+def get_x_tilde(spikeTrain):
+    '''
     obs_x = observed_spike_train
     size = len(obs_x)
     x = []
@@ -49,10 +63,28 @@ def get_x_tilde(observed_spike_train):
         if obs_x[i] == 1:
             x.append(i+1)
     x_tilde = np.array(x)
+    '''
+    x_tilde = spikeTrain
+    x_tilde = np.where(spikeTrain==1)
+    # print("Spike Train: ", spikeTrain)
+    # print("Obs_x: ",x_tilde)
+    x_tilde = np.array(x_tilde)
+    x_tilde = x_tilde.flatten()
+    # len(x_tilde)
+    # print("Modified_Obs_x: ",x_tilde)
 
     return x_tilde
 
-# x_tilde = get_x_tilde(obs_x)
+def get_x(spikeTrain):
+    x = spikeTrain
+    x = np.where(spikeTrain==1)
+    x = np.array(x)
+    x = x.flatten()
+    return x
+
+
+# print('Obs_x:', get_spike_train(100))
+print('x_tilde: ', get_x_tilde(get_spike_train(100)))
 
 ""
 # Preserving smoothed firing rates: we require that each resampled spike remain
@@ -120,11 +152,11 @@ def getGamma(R, L, x_tilde):
 ""
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
-def indicator_01(x_1):
+def indicator_01(i):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
     # Test whether each element of a 1-D array is also present in a second array.
     # Return a boolean array the same length as ar1 that is True where an element of ar1 is in ar2 and False otherwise
-    if np.in1d(x_1, Omega[0]) == True:
+    if np.in1d(x[i], Omega[0]) == True:
         return 1
     return 0
 
@@ -147,11 +179,6 @@ def indicator_03(i):
     print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
     return 0
 
-# Resampling Distribution p(x), where x = (x_1,...,x_n)
-# p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
-def p(Z, i): # Z
-    return (1/Z)*h_1(x[0])*h_i(i)
-
 # h_1(x_1):= 1{x[1] in Omega[1]}
 def h_1(x_1):
     return indicator_01(x_1)
@@ -162,7 +189,23 @@ def h_i(i):
     print('X: ', x)
     return indicator_02(i)*indicator_03(i)
 
-#t = np.sort(np.random.randint(40, size=n+1))
+'''
+Sampling from the Resampling Distribution
+'''
+
+def beta(i):
+
+    return 0
+
+
+
+'''
+Resampling Distribution p(x), where x = (x_1,...,x_n)
+p(x) := (1/Z)*h_1(x_1)Product{from i=2 to n}*h_i(x[i-1], x[i])
+t = np.sort(np.random.randint(40, size=n+1))
+
+def p(Z, i): # Z
+    return (1/Z)*h_1(x[0])*h_i(i)
 
 def p1(Z):
     return 1/Z
@@ -180,7 +223,8 @@ def sampling_distribution(size, L, R):
     print("Gamma: ", Gamma)
     # return p
 
-# print(sampling_distribution(10, 5, 10))
+print(sampling_distribution(10, 5, 10))
+'''
 
 '''
 riter = list(range(1, 10))
