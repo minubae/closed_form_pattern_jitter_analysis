@@ -1,3 +1,135 @@
+'''
+Case 01:
+x_tilde[i] - x_tilde[i-1] > R == 0 ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+'''
+Case 02:
+x_tilde[i] - x_tilde[i-1] > R == 0 ;
+x_tilde[i] - x_tilde[i-1] > L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+'''
+Case 03:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] > L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+'''
+Case 04:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] > L ;
+x_tilde[i] - x_tilde[i-1] <= Gamma[i][0] // first element of Gamma[i]
+'''
+beta = L
+beta_prime = L*L
+
+'''
+Case 05:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+x_tilde[i] - x_tilde[i-1] > Gamma[i][0] // first element of Gamma[i]
+'''
+
+
+'''
+Case 06:
+x_tilde[i] - x_tilde[i-1] > R != 0 ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+x_tilde[i] - x_tilde[i-1] <= Gamma[i][0] // first element of Gamma[i]
+'''
+for i in range(len(Omega[0])):
+    if x[0] == Omega[0][i]:
+        # print('Hello: ', i)
+        beta1 = L - i
+        # print('beta_01: ', beta1)
+
+'''
+Case 07:
+x_tilde[i] - x_tilde[i-1] <= R ;
+x_tilde[i] - x_tilde[i-1] <= L ;
+'''
+# x_2 = x_1 + (x_tilde[i] - x_tilde[i-1])
+
+'''
+Case 08:
+x_tilde[i] - x_tilde[i-1] <= R ;
+x_tilde[i] - x_tilde[i-1] > L ;
+'''
+beta = 1
+beta_prime = L
+
+
+Gamma = getGamma(R, L, x_tilde)
+print('Gamma:')
+print(Gamma)
+
+def beta_01(x, i):
+
+    beta_01 = 0
+    difference = x_tilde[1] - x_tilde[0]
+
+    print('L: ', L)
+    print('R: ', R)
+
+    # Case 01:
+    if R == 0 and difference > R and difference <= L and difference > Gamma[1][0]:
+        print('Hello, Case 01')
+        beta_01 = L
+        return beta_01
+
+    # Case 02:
+    if R == 0 and difference > R and difference > L and difference > Gamma[1][0]:
+        print('Hello, Case 02')
+        beta_01 = L
+        return beta_01
+
+    # Case 03:
+    if R != 0 and difference > R and difference > L and difference > Gamma[1][0]:
+        print('Hello, Case 03')
+        beta_01 = L
+        return beta_01
+
+    # Case 04:
+    if R != 0 and difference > R and difference > L and difference <= Gamma[1][0]:
+        print('Hello, Case 04')
+        beta_01 = L
+        return beta_01
+
+    # Case 05:
+    if R != 0 and difference > R and difference <= L and difference > Gamma[1][0]:
+        print('Hello, Case 03')
+        beta_01 = L
+        return beta_01
+
+    # Case 06:
+    if R != 0 and difference > R and difference <= L and difference <= Gamma[1][0]:
+        print('Hello, Case 05')
+
+    # Case 07:
+    if R != 0 and difference <= R and difference <= L:
+        print('Hello, Case 06')
+
+    # Case 08:
+    if R != 0 and difference <= R and difference > L:
+        print('Hello, Case 07')
+
+    # return beta_01
+
+print('Beta_01: ', beta_01(x, 0))
+
+
+
 
 '''
 Resampling Distribution p(x), where x = (x_1,...,x_n)
