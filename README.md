@@ -1,1 +1,1 @@
-# Pattern Jitter
+# Pattern Jitter Algorithm

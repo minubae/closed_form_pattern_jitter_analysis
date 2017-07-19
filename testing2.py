@@ -19,4 +19,3 @@ def roll(distribution):
         result+=1
 
 print('X:', roll(tDist))
-print('Test')
