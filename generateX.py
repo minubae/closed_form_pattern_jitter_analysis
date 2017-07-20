@@ -3,8 +3,9 @@ import numpy as np
 # x = np.random.choice(np.arange(1, 7), p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
 # print('x: ', x)
 
-tDist = [0.2, 0.2, 0.15, 0.20, 0.25]
-def roll(dist):
+# initDist = [0.2, 0.2, 0.15, 0.20, 0.25]
+initDist = [5/15, 4/15, 3/15, 2/15, 1/15]
+def getX1(dist):
     randX = np.random.random() # in [0,1)
     # print('Transition Dist.:', dist)
     # print('Random X:', randX)
@@ -18,17 +19,17 @@ def roll(dist):
             # print('Sum:', sum)
             return result
         i += 1
-        result+=1
+        result += 1
 
-def testRoll(N, transDist):
+def testSampling(N, Dist):
     result=[]
     for i in range(N):
-        x=roll(transDist)
+        x=getX1(Dist)
         print('X_1[',i,']:', x)
         result.append(x)
     return result
 
-print(testRoll(10, tDist))
+# print(testSampling(10, initDist))
 
 
 tDistMat = np.matrix([[0.20, 0.20, 0.15, 0.20, 0.25],
@@ -38,7 +39,7 @@ tDistMat = np.matrix([[0.20, 0.20, 0.15, 0.20, 0.25],
                       [0.30, 0.20, 0.15, 0.20, 0.15]])
 # print('Transition Dist Matrix: ')
 # print(tDistMat)
-def getSurrogate(tDistMatrix):
+def getXi(tDistMatrix):
 
     sampleX = []
     n = len(tDistMatrix)
@@ -51,6 +52,8 @@ def getSurrogate(tDistMatrix):
         randX = np.random.random()
         m = len(rowDist)
         print('Rand_X:', randX)
+        print('Sum:', sum)
+        print('Result:', result)
         # print(rowDist)
         for j in range(m):
             print(j, rowDist[j])
@@ -65,4 +68,4 @@ def getSurrogate(tDistMatrix):
             result+=1
     return sampleX
 
-# print('X_1: ', getSurrogate(tDistMat))
+print('X_i: ', getXi(tDistMat))
