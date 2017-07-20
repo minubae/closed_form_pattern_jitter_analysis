@@ -25,15 +25,13 @@ T = np.matrix([[8, 15, 20, 31, 33, 35, 42, 48],
 # print(T)
 
 def getAmoutSynch(R, Tmat):
-    S = []
     s = 0
+    S = []
     for j, row in enumerate(T):
-
         # Check how many elements are equal in two arrays (R, T)
         s = np.sum(R == row)
-        # print(s)
         S.append(s)
-
+        # print(s)
     return S
 
 S = getAmoutSynch(R, T)
