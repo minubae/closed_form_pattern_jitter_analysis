@@ -86,11 +86,11 @@ L = 5
 R = 4
 # x_tilde = get_x_tilde(get_spike_train(100))
 x_tilde = [10,15,22]
-print('x_tilde: ', x_tilde)
+# print('x_tilde: ', x_tilde)
 # print('len_x_tilde: ', len(x_tilde), '\n')
 # x = get_x(get_spike_train(100))
 x = [8, 13, 21]
-print('X: ', x, '\n')
+# print('X: ', x, '\n')
 # print('len_X: ', len(x), '\n')
 
 ""
@@ -210,5 +210,5 @@ Sampling from the Resampling Distribution
 # print('Omega_02:')
 # print(Omega[1])
 # print(Omega[0][0])
-print('h_1 ? : ', h_1(x, 0),'\n')
-print('h_2 ? : ', h_i(x, 1))
+# print('h_1 ? : ', h_1(x, 0),'\n')
+# print('h_2 ? : ', h_i(x, 1))
