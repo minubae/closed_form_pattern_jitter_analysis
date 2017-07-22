@@ -1,35 +1,53 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from progress import *
 
 # x = np.random.choice(np.arange(1, 7), p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
 # print('x: ', x)
-
+x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
+L = 5
+R = 4
 # initDist: p(X_1)
 initDist = [5/15, 4/15, 3/15, 2/15, 1/15]
-def getX1(dist):
+
+def getX1(dist, L, R, x_tilde):
     randX = np.random.random() # in [0,1)
     # print('Transition Dist.:', dist)
     # print('Random X:', randX)
+    up = 0
     sum = 0
-    result = 1
-    i = 1
+    Omega = getOmega(L, x_tilde)
+    result = Omega[0][up]
+
     for k in dist:
         # print('P[',i,']:', k)
         sum += k
         if randX <= sum:
             # print('Sum:', sum)
             return result
-        i += 1
-        result += 1
+        up += 1
+        result = Omega[0][up]
 
+
+X1 = []
+for i in range(40):
+ x1 = getX1(initDist, L, R, x_tilde)
+ X1.append(x1)
+
+print(X1)
+plt.hist(X1, bins='auto')
+plt.show()
+'''
 def testSampling(N, Dist):
     result=[]
     for i in range(N):
-        x=getX1(Dist)
+        x = getX1(Dist, R)
         print('X_1[',i,']:', x)
         result.append(x)
     return result
 
-# print(testSampling(10, initDist))
+print(testSampling(10, initDist))
+'''
 
 tDistMatrices = np.array([
                          # p(X_2 | X_1)
@@ -78,8 +96,8 @@ tDistMatrices = np.array([
                          [5/19, 5/19, 4/19, 3/19, 2/19]
                         ])
 
-print('Transition Matrices: ')
-print(tDistMatrices)
+# print('Transition Matrices: ')
+# print(tDistMatrices)
 
 tDistMat = np.matrix([[0.20, 0.20, 0.15, 0.20, 0.25],
                       [0.15, 0.25, 0.10, 0.30, 0.20],
