@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from progress import *
@@ -6,8 +7,7 @@ from progress import *
 # print('x: ', x)
 x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
 L = 5; R = 4
-# initDist: p(X_1)
-initDist = [5/15, 4/15, 3/15, 2/15, 1/15]
+
 
 def getX1(dist, L, R, x_tilde):
     randX = np.random.random() # in [0,1)
@@ -27,20 +27,114 @@ def getX1(dist, L, R, x_tilde):
         up += 1
         result = Omega[0][up]
 
-x1 = getX1(initDist, L, R, x_tilde)
-spikeTrain = []
-spikeTrain.append(x1)
+def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
+    x1 = getX1(initDist, L, R, obsX)
+    Omega = getOmega(L, obsX)
+
+    x_i = x1
+    chain = 1
+    spikeTrain = []
+    spikeTrain.append(x1)
+
+    for i, row in enumerate(tDistMatrices):
+        up = 0
+        sum = 0
+        result = Omega[chain][up]
+
+        # print('i: ', i)
+        # print('chain: ', chain)
+        # print('x_i: ', x_i)
+        index = np.where(np.array(Omega[i]) == x_i)[0]
+        # print('x index: ', index)
+        # print('init_result: ', result)
+
+        tDistMat = row
+        p_i = np.squeeze(np.array(tDistMat[index]))
+        # print('p_i: ', p_i)
+
+        m = len(p_i)
+        Summation = np.sum(p_i)
+        randX = np.random.random()
+        # print('randX: ', randX)
+
+        if Summation != 0:
+            for j in range(m):
+                # print('hello: ', j, p_i[j])
+                sum += p_i[j]
+                # print('Sum:', sum)
+                if randX <= sum:
+                    # print('result: ', result)
+                    spikeTrain.append(result)
+                    x_i = result
+                    # print('ha_x_i: ', x_i)
+                    chain += 1
+                    break
+
+                result = Omega[chain][up]
+                up += 1
+        else:
+
+            p_i = tDistMat[0]
+            m = len(p_i)
+            randX = np.random.random()
+            # print('randX: ', randX)
+            for j in range(m):
+                # print('p: ', p_i[j])
+                sum += p_i[j]
+                # print('Sum:', sum)
+
+                if randX <= sum:
+                    # print('result: ', result)
+                    spikeTrain.append(result)
+                    break
+
+    return spikeTrain
+
+# print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
+
+def getXi(tDistMatrix):
+
+    sampleX = []
+    n = len(tDistMatrix)
+    print(tDistMatrix)
+    for i, row in enumerate(tDistMatrix):
+        print('tDistMat[',i,']:', row)
+        p_i = np.squeeze(np.array(row))
+        print('p_i: ', p_i)
+        sum = 0
+        result = 1
+        randX = np.random.random()
+        m = len(p_i)
+        print('Rand_X:', randX)
+        print('Sum:', sum)
+        print('Result:', result)
+        # print(rowDist)
+        for j in range(m):
+            print(j, p_i[j])
+            sum += p_i[j]
+
+            if randX <= sum:
+                print('Sum:', sum)
+                print('result: ', result, '\n')
+                sampleX.append(result)
+                break
+
+            result+=1
+    return sampleX
+
+# print('X_i: ', getXi(tDistMat))
+
+'''
 X1 = []
 for i in range(40):
     x1 = getX1(initDist, L, R, x_tilde)
     X1.append(x1)
 
-
-
-print(spikeTrain)
+# print(spikeTrain)
 # plt.hist(X1, bins='auto')
 # plt.show()
+'''
 
 '''
 def testSampling(N, Dist):
@@ -53,92 +147,73 @@ def testSampling(N, Dist):
 
 print(testSampling(10, initDist))
 '''
+'''
+spikeTrain = []
+x1 = getX1(initDist, L, R, x_tilde)
+spikeTrain.append(x1)
 
-tDistMatrices = np.array([
-                         # p(X_2 | X_1)
-                         [[5/22, 5/22, 5/22, 4/22, 3/22],
-                          [0, 5/17, 5/17, 4/17, 3/17],
-                          [0, 0, 5/12, 4/12, 3/12],
-                          [0, 0, 0, 4/7, 3/7],
-                          [0, 0, 0, 0, 1]],
 
-                         # p(X_3 | X_2)
-                         [[5/22, 5/22, 5/22, 4/22, 3/22],
-                          [5/22, 5/22, 5/22, 4/22, 3/22],
-                          [5/22, 5/22, 5/22, 4/22, 3/22],
-                          [0, 5/17, 5/17, 4/17, 3/17],
-                          [0, 0, 5/12, 4/12, 3/12]],
+Omega = getOmega(L, x_tilde)
 
-                         # p(X_4 | X_3)
-                         [[5/15, 4/15, 2/15, 2/15, 1/15],
-                          [5/15, 4/15, 2/15, 2/15, 1/15],
-                          [5/15, 4/15, 2/15, 2/15, 1/15],
-                          [0, 4/10, 3/10, 2/10, 1/10],
-                          [0, 0, 3/6, 2/6, 1/6]],
 
-                         # p(X_5 | X_4)
-                         [[5/19, 5/19, 4/19, 3/19, 2/19],
-                          [0, 5/14, 4/14, 3/14, 2/14],
-                          [0, 0, 4/9, 3/9, 2/9],
-                          [0, 0, 0, 3/5, 2/5],
-                          [0, 0, 0, 0, 1]],
+x_i = x1
+chain = 1
+sampleX = []
+sampleX.append(x1)
 
-                         # p(X_6 | X_5)
-                         [[5/15, 4/15, 2/15, 2/15, 1/15],
-                          [5/15, 4/15, 2/15, 2/15, 1/15],
-                          [0, 4/10, 3/10, 2/10, 1/10],
-                          [0, 0, 3/6, 2/6, 1/6],
-                          [0, 0, 0, 2/3, 1/3]],
+for i, row in enumerate(tDistMatrices):
+    up = 0
+    sum = 0
+    result = Omega[chain][up]
 
-                         # p(X_7 | X_6)
-                         [[5/19, 5/19, 4/19, 3/19, 2/19],
-                          [0, 5/14, 4/14, 3/14, 2/14],
-                          [0, 0, 4/9, 3/9, 2/9],
-                          [0, 0, 0, 3/5, 2/5],
-                          [0, 0, 0, 0, 1]],
+    # print('i: ', i)
 
-                         # p(X_8 | X_7)
-                         [5/19, 5/19, 4/19, 3/19, 2/19]
-                        ])
+    print('chain: ', chain)
+    print('x_i: ', x_i)
+    index = np.where(np.array(Omega[i]) == x_i)[0]
+    print('x index: ', index)
+    print('init_result: ', result)
 
-# print('Transition Matrices: ')
-# print(tDistMatrices)
+    tDistMat = row
+    p_i = np.squeeze(np.array(tDistMat[index]))
+    print('p_i: ', p_i)
 
-tDistMat = np.matrix([[0.20, 0.20, 0.15, 0.20, 0.25],
-                      [0.15, 0.25, 0.10, 0.30, 0.20],
-                      [0.25, 0.15, 0.20, 0.20, 0.20],
-                      [0.10, 0.30, 0.20, 0.10, 0.30],
-                      [0.30, 0.20, 0.15, 0.20, 0.15]])
+    m = len(p_i)
+    total = np.sum(p_i)
+    randX = np.random.random()
+    print('randX: ', randX)
 
-# print('Transition Dist Matrix: ')
-# print(tDistMat)
-def getXi(tDistMatrix):
-
-    sampleX = []
-    n = len(tDistMatrix)
-
-    for i, row in enumerate(tDistMat):
-        print('tDistMat[',i,']:', row)
-        rowDist = np.squeeze(np.array(row))
-        sum = 0
-        result = 1
-        randX = np.random.random()
-        m = len(rowDist)
-        print('Rand_X:', randX)
-        print('Sum:', sum)
-        print('Result:', result)
-        # print(rowDist)
+    if total != 0:
         for j in range(m):
-            print(j, rowDist[j])
-            sum += rowDist[j]
+            # print('hello: ', j, p_i[j])
+            sum += p_i[j]
+            print('Sum:', sum)
+            if randX <= sum:
+                print('result: ', result)
+                sampleX.append(result)
+                x_i = result
+                # print('ha_x_i: ', x_i)
+                chain += 1
+                break
+            up += 1
+            result = Omega[chain][up]
+    else:
+
+        p_i = tDistMat[0]
+        m = len(p_i)
+        randX = np.random.random()
+        print('randX: ', randX)
+        for j in range(m):
+            print('p: ', p_i[j])
+            sum += p_i[j]
+            print('Sum:', sum)
 
             if randX <= sum:
-                print('Sum:', sum)
-                print('result: ', result, '\n')
+                print('result: ', result)
                 sampleX.append(result)
                 break
 
-            result+=1
-    return sampleX
+    print('\n')
 
-# print('X_i: ', getXi(tDistMat))
+print('sampleX: ', sampleX)
+'''
