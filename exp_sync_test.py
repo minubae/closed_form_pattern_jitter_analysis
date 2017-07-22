@@ -4,29 +4,29 @@ from progress import *
 from generateX import *
 
 
-def getSpikeTrainMat(L, R, N):
+def getSpikeTrainMat(L, R, obsX, N):
     spikeTrainMat = []
     for i in range(N):
-        surrogate = getSpikeTrain(x_tilde, L, R, initDist, tDistMatrices)
+        surrogate = getSpikeTrain(obsX, L, R, initDist, tDistMatrices)
         spikeTrainMat.append(surrogate)
 
     Tmat = np.array(spikeTrainMat)
     return Tmat
 
-def getAmountSync(R, Tmat):
+def getAmountSync(obsX, Tmat):
     s = 0
     S = []
     for j, Tj in enumerate(Tmat):
         # Check how many elements are equal in two arrays (R, T)
         # print('Tj: ', Tj)
-        s = np.sum(x_tilde == np.array(Tj))
+        s = np.sum(obsX == np.array(Tj))
         S.append(s)
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(L, R, 1000)
+Tmat = getSpikeTrainMat(5, 4, x_tilde, 1000)
 print(Tmat)
-S = getAmountSync(R, Tmat)
+S = getAmountSync(x_tilde, Tmat)
 print('Amount_Synchrony: ', S)
-plt.hist(S, bins='auto')
-plt.show()
+# plt.hist(S, bins='auto')
+# plt.show()
