@@ -27,9 +27,9 @@ T = np.matrix([[8, 15, 20, 31, 34, 40, 43, 51],
 def getAmountSync(R, Tmat):
     s = 0
     S = []
-    for j, row in enumerate(T):
+    for j, Tj in enumerate(T):
         # Check how many elements are equal in two arrays (R, T)
-        s = np.sum(R == row)
+        s = np.sum(R == Tj)
         S.append(s)
         # print(s)
     return S
