@@ -5,8 +5,7 @@ from progress import *
 # x = np.random.choice(np.arange(1, 7), p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
 # print('x: ', x)
 x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
-L = 5
-R = 4
+L = 5; R = 4
 # initDist: p(X_1)
 initDist = [5/15, 4/15, 3/15, 2/15, 1/15]
 
@@ -28,15 +27,21 @@ def getX1(dist, L, R, x_tilde):
         up += 1
         result = Omega[0][up]
 
+x1 = getX1(initDist, L, R, x_tilde)
+spikeTrain = []
+spikeTrain.append(x1)
 
 X1 = []
 for i in range(40):
- x1 = getX1(initDist, L, R, x_tilde)
- X1.append(x1)
+    x1 = getX1(initDist, L, R, x_tilde)
+    X1.append(x1)
 
-print(X1)
-plt.hist(X1, bins='auto')
-plt.show()
+
+
+print(spikeTrain)
+# plt.hist(X1, bins='auto')
+# plt.show()
+
 '''
 def testSampling(N, Dist):
     result=[]
