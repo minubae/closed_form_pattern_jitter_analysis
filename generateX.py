@@ -93,6 +93,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
 # print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
 
+
 def getXi(tDistMatrix):
 
     sampleX = []
@@ -125,28 +126,7 @@ def getXi(tDistMatrix):
 
 # print('X_i: ', getXi(tDistMat))
 
-'''
-X1 = []
-for i in range(40):
-    x1 = getX1(initDist, L, R, x_tilde)
-    X1.append(x1)
 
-# print(spikeTrain)
-# plt.hist(X1, bins='auto')
-# plt.show()
-'''
-
-'''
-def testSampling(N, Dist):
-    result=[]
-    for i in range(N):
-        x = getX1(Dist, R)
-        print('X_1[',i,']:', x)
-        result.append(x)
-    return result
-
-print(testSampling(10, initDist))
-'''
 '''
 spikeTrain = []
 x1 = getX1(initDist, L, R, x_tilde)
