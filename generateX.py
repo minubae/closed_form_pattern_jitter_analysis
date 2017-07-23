@@ -27,68 +27,91 @@ def getX1(dist, L, R, x_tilde):
         up += 1
         result = Omega[0][up]
 
+def initializeX(initX, P):
+    m = len(P)
+    for k in range(m):
+        if P[k] == 0:
+            initX += 1
+    return initX
+
 def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
+
+    print('////**** Simulation is starting. ****////')
 
     x1 = getX1(initDist, L, R, obsX)
     Omega = getOmega(L, obsX)
 
-    x_i = x1
     chain = 1
+    givenX = x1
     spikeTrain = []
     spikeTrain.append(x1)
 
     for i, row in enumerate(tDistMatrices):
-        up = 0
-        sum = 0
-        result = Omega[chain][up]
 
-        # print('i: ', i)
-        # print('chain: ', chain)
-        # print('x_i: ', x_i)
-        index = np.where(np.array(Omega[i]) == x_i)[0]
-        # print('x index: ', index)
-        # print('init_result: ', result)
+        sum = 0
+        index = np.where(np.array(Omega[i]) == givenX)[0]
+
+        print('Chain: ', chain)
+        print('Given X: ', givenX)
+        print('Matrix row index: ', index)
 
         tDistMat = row
         p_i = np.squeeze(np.array(tDistMat[index]))
-        # print('p_i: ', p_i)
+        print('p_i: ', p_i)
 
         m = len(p_i)
         Summation = np.sum(p_i)
-        randX = np.random.random()
-        # print('randX: ', randX)
 
         if Summation != 0:
-            for j in range(m):
-                # print('hello: ', j, p_i[j])
-                sum += p_i[j]
-                # print('Sum:', sum)
-                if randX <= sum:
-                    # print('result: ', result)
-                    spikeTrain.append(result)
-                    x_i = result
-                    # print('ha_x_i: ', x_i)
-                    chain += 1
-                    break
 
-                result = Omega[chain][up]
-                up += 1
+            initX = initializeX(Omega[chain][0], p_i)
+            print('init_X: ', initX)
+
+            randX = np.random.random()
+            print('Roll a random X: ', randX)
+
+            for j in range(m):
+
+                if p_i[j] != 0:
+
+                    sum += p_i[j]
+                    print('Sum:', sum)
+
+                    if randX <= sum:
+                        print('Output X: ', initX)
+                        spikeTrain.append(initX)
+                        givenX = initX
+                        print('New Given X: ', initX, '\n')
+                        chain += 1
+                        break
+                    initX += 1
+
+                else:
+                    j += 1
+
         else:
 
             p_i = tDistMat[0]
             m = len(p_i)
+            initX = initializeX(Omega[chain][0], p_i)
             randX = np.random.random()
-            # print('randX: ', randX)
+            print('Sorry, find an another transition probability.')
+            print('p_i: ', p_i)
+            print('init_X: ', initX)
+            print('Roll a random X: ', randX)
+
             for j in range(m):
-                # print('p: ', p_i[j])
+
                 sum += p_i[j]
-                # print('Sum:', sum)
+                print('Sum:', sum)
 
                 if randX <= sum:
-                    # print('result: ', result)
-                    spikeTrain.append(result)
+                    print('Output X: ', initX)
+                    spikeTrain.append(initX)
                     break
+                initX += 1
 
+    print('////**** Simulation is done. ****////', '\n')
     return spikeTrain
 
 # print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
