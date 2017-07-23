@@ -7,6 +7,7 @@ from generateX import *
 def getSpikeTrainMat(L, R, obsX, N):
     spikeTrainMat = []
     for i in range(N):
+        print('[[[[[[[Spike Train Index: ', i,']]]]]]]')
         surrogate = getSpikeTrain(obsX, L, R, initDist, tDistMatrices)
         spikeTrainMat.append(surrogate)
 
@@ -24,9 +25,9 @@ def getAmountSync(obsX, Tmat):
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(5, 4, x_tilde, 1000)
+Tmat = getSpikeTrainMat(5, 4, x_tilde, 10000)
 print(Tmat)
 S = getAmountSync(x_tilde, Tmat)
 print('Amount_Synchrony: ', S)
-# plt.hist(S, bins='auto')
-# plt.show()
+plt.hist(S, bins='auto')
+plt.show()
