@@ -1,4 +1,3 @@
-import math
 import numpy as np
 import matplotlib.pyplot as plt
 from progress import *
@@ -49,6 +48,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
     for i, row in enumerate(tDistMatrices):
 
         sum = 0
+        randX = 0
         index = np.where(np.array(Omega[i]) == givenX)[0]
 
         print('Chain: ', chain)
@@ -59,7 +59,6 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
         p_i = np.squeeze(np.array(tDistMat[index]))
         print('p_i: ', p_i)
 
-        m = len(p_i)
         Summation = np.sum(p_i)
 
         if Summation != 0:
@@ -70,6 +69,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
             randX = np.random.random()
             print('Roll a random X: ', randX)
 
+            m = len(p_i)
             for j in range(m):
 
                 if p_i[j] != 0:
@@ -114,7 +114,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
     print('////**** Simulation is done. ****////', '\n')
     return spikeTrain
 
-# print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
+print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
 
 
 def getXi(tDistMatrix):
@@ -148,75 +148,3 @@ def getXi(tDistMatrix):
     return sampleX
 
 # print('X_i: ', getXi(tDistMat))
-
-
-'''
-spikeTrain = []
-x1 = getX1(initDist, L, R, x_tilde)
-spikeTrain.append(x1)
-
-
-Omega = getOmega(L, x_tilde)
-
-
-x_i = x1
-chain = 1
-sampleX = []
-sampleX.append(x1)
-
-for i, row in enumerate(tDistMatrices):
-    up = 0
-    sum = 0
-    result = Omega[chain][up]
-
-    # print('i: ', i)
-
-    print('chain: ', chain)
-    print('x_i: ', x_i)
-    index = np.where(np.array(Omega[i]) == x_i)[0]
-    print('x index: ', index)
-    print('init_result: ', result)
-
-    tDistMat = row
-    p_i = np.squeeze(np.array(tDistMat[index]))
-    print('p_i: ', p_i)
-
-    m = len(p_i)
-    total = np.sum(p_i)
-    randX = np.random.random()
-    print('randX: ', randX)
-
-    if total != 0:
-        for j in range(m):
-            # print('hello: ', j, p_i[j])
-            sum += p_i[j]
-            print('Sum:', sum)
-            if randX <= sum:
-                print('result: ', result)
-                sampleX.append(result)
-                x_i = result
-                # print('ha_x_i: ', x_i)
-                chain += 1
-                break
-            up += 1
-            result = Omega[chain][up]
-    else:
-
-        p_i = tDistMat[0]
-        m = len(p_i)
-        randX = np.random.random()
-        print('randX: ', randX)
-        for j in range(m):
-            print('p: ', p_i[j])
-            sum += p_i[j]
-            print('Sum:', sum)
-
-            if randX <= sum:
-                print('result: ', result)
-                sampleX.append(result)
-                break
-
-    print('\n')
-
-print('sampleX: ', sampleX)
-'''
