@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from progress import *
 from generateX import *
 
-
 def getSpikeTrainMat(L, R, obsX, N):
     spikeTrainMat = []
     for i in range(N):
