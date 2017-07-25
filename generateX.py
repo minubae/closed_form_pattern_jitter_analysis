@@ -4,9 +4,6 @@ from progress import *
 
 # x = np.random.choice(np.arange(1, 7), p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
 # print('x: ', x)
-x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
-L = 5; R = 4
-
 
 def getX1(dist, L, R, x_tilde):
     randX = np.random.random() # in [0,1)
@@ -107,14 +104,18 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
                 if randX <= sum:
                     print('Output X: ', initX)
-                    spikeTrain.append(initX)
+                    print('Omega: ', Omega[chain])
+                    if np.in1d(initX, Omega[chain]) == True:
+                        spikeTrain.append(initX)
+                    else:
+                        spikeTrain.append(0)
                     break
                 initX += 1
 
     print('////**** Simulation is done. ****////', '\n')
     return spikeTrain
 
-print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
+# print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
 
 
 def getXi(tDistMatrix):
