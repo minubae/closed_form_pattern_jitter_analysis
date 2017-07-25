@@ -24,7 +24,7 @@ def getAmountSync(obsX, Tmat):
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(5, 4, x_tilde, 10000)
+Tmat = getSpikeTrainMat(5, 4, x_tilde, 1000)
 print(Tmat)
 S = getAmountSync(x_tilde, Tmat)
 print('Amount_Synchrony: ', S)
