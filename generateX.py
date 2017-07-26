@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from progress import *
+from Data import *
 
 # x = np.random.choice(np.arange(1, 7), p=[0.1, 0.05, 0.05, 0.2, 0.4, 0.2])
 # print('x: ', x)
@@ -30,6 +31,10 @@ def initializeX(initX, P):
             initX += 1
     return initX
 
+
+# x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
+# L = 5
+# R = 4
 def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
     print('////**** Simulation is starting. ****////')
@@ -115,7 +120,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
     print('////**** Simulation is done. ****////', '\n')
     return spikeTrain
 
-# print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
+print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
 
 
 def getXi(tDistMatrix):
