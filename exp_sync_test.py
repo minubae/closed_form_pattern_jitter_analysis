@@ -2,6 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from progress import *
 from generateX import *
+from Data import *
+
+# x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
+# L = 5
+# R = 4
 
 def getSpikeTrainMat(L, R, obsX, N):
     spikeTrainMat = []
