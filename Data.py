@@ -1,6 +1,6 @@
 import numpy as np
 from PatternJitter import *
-from Surrogate import *
+# from surrogate import *
 
 Ref = [8, 13, 19, 28, 34, 42, 44, 49]
 x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
@@ -77,4 +77,6 @@ tDistMatrices = np.stack((p2,p3,p4,p5,p6,p7,p8))
 
 print('Given T: ')
 givenT = getOmega(5, x_tilde)
-print(givenT)
+
+for j, row in enumerate(givenT):
+    print(j, givenT)
