@@ -76,6 +76,8 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
                 if p_i[j] != 0:
 
+                    # print('Check Sum: ', sum)
+
                     sum += p_i[j]
                     print('Sum:', sum)
 
@@ -86,11 +88,13 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
                         print('New Given X: ', initX, '\n')
                         chain += 1
                         break
+
+
+                    print('Check InitX 02: ', initX)
                     initX += 1
 
                 else:
                     j += 1
-
         else:
 
             p_i = tDistMat[0]
@@ -120,7 +124,7 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
     print('////**** Simulation is done. ****////', '\n')
     return spikeTrain
 
-print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
+# print(getSpikeTrain(x_tilde, 5, 4, initDist, tDistMatrices))
 
 
 def getXi(tDistMatrix):
