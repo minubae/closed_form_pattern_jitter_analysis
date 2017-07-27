@@ -16,7 +16,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from random import *
-from Surrogate import *
 # import itertools as itt
 
 # Observed Spike Train
@@ -121,6 +120,8 @@ def getOmega(L, x_tilde):
 #Omega = getOmega(L, x_tilde)
 #n = len(x_tilde)
 #x = np.sort(np.random.randint(40, size=n))
+# x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
+# print(getOmega(5, x_tilde))
 
 ""
 # Preserving recent spike history effects: we require that the resampled and
