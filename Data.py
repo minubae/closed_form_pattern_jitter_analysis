@@ -1,7 +1,6 @@
 import numpy as np
 from PatternJitter import *
 
-Ref = [8, 18, 23, 28, 34, 42, 44, 49]
 x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
 # x_tilde = [10, 15, 22, 29, 34, 40, 45, 51, 55]
 # L = 5; R = 4
