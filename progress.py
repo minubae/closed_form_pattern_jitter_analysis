@@ -1,8 +1,8 @@
 ###########################################################################################################################
 # Title: Pattern Jitter Algorithm - Generating artificial spike trains
-# Date: June/14/2017, Wednesday - Current
+# Date: June/14/2017, Wednesday - August/25/2017, Friday
 # Author: Minwoo Bae (minubae.math@gmail.com)
-# Institute: Mathematics, City College of New York, CUNY
+# Institute: Applied Mathematics, City College of New York, CUNY
 
 # Abstract:
 # Resampling methods are popular tools for exploring the statistical structure of neural spike trains.
