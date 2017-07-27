@@ -13,11 +13,10 @@
 # The resampled spike times are maximally random up to these constraints. Dynamic programming is used to
 # create an efficient resampling algorithm.
 ###########################################################################################################################
-
-from random import *
 import numpy as np
 import matplotlib.pyplot as plt
-import random
+from random import *
+from Surrogate import *
 # import itertools as itt
 
 # Observed Spike Train
@@ -33,7 +32,7 @@ import random
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
 ""
 
-def get_spike_train(length):
+def getSpikeData(length):
     '''
     obs_x = np.random.randint(2, size=length)
     '''
@@ -75,7 +74,7 @@ def get_x_tilde(spikeTrain):
 
     return x_tilde
 
-def get_x(spikeTrain):
+def getX(spikeTrain):
     x = spikeTrain
     x = np.where(spikeTrain==1)
     x = np.array(x)

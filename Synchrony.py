@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from progress import *
-from generateX import *
+from PatternJitter import *
+from Surrogate import *
 from Data import *
 
 # x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]

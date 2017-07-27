@@ -1,5 +1,8 @@
 import numpy as np
+from PatternJitter import *
+from Surrogate import *
 
+Ref = [8, 13, 19, 28, 34, 42, 44, 49]
 x_tilde = [10, 15, 22, 29, 34, 40, 45, 51]
 # x_tilde = [10, 15, 22, 29, 34, 40, 45, 51, 55]
 # L = 5; R = 4
@@ -72,8 +75,6 @@ p9 = np.array([[0, 1, 0, 0, 0],
 tDistMatrices = np.stack((p2,p3,p4,p5,p6,p7,p8))
 
 
-tDistMat = np.matrix([[0.20, 0.20, 0.15, 0.20, 0.25],
-                      [0.15, 0.25, 0.10, 0.30, 0.20],
-                      [0.25, 0.15, 0.20, 0.20, 0.20],
-                      [0.10, 0.30, 0.20, 0.10, 0.30],
-                      [0.30, 0.20, 0.15, 0.20, 0.15]])
+print('Given T: ')
+givenT = getOmega(5, x_tilde)
+print(givenT)
