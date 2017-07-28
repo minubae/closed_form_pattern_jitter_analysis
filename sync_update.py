@@ -2,7 +2,7 @@ import numpy as np
 from PatternJitter import *
 from Data import *
 
-Ref = [10, 15, 22, 28, 34, 42, 44, 49]
+Ref = [10, 15, 22, 29, 34, 40, 45, 51]
 
 # Finding: P(S_j | T_j)
 def getSyncState(L, Reference, Target):
@@ -160,27 +160,61 @@ def getZdistMatrix(S, L, tDistMat):
     ZeroPadding = getZeroPadding(L)
     len_zDistBasis = len(zDistBasis)
 
-    new = []
-    add = []
     zDist = []
+
 
     if AmoutSync != len_zDistBasis:
 
-        new = np.concatenate((ZeroPadding, zDistBasis[S-2]), axis=1)
+        add = []
+        new = []
+        get = []
+        print('Hello There.')
+        get = zDistBasis[S-(S-1)]
+        # print(zDistBasis)
 
-        for i in range(S-1):
+        get0 = []
+        get1 = []
+        get0 = zDistBasis[0]
+        get1 = zDistBasis[1]
+        newBasis0 = []
+        newBasis1 = []
 
-            add.append(np.concatenate((zDistBasis[i], ZeroPadding), axis=1))
+        for i in range(S-len_zDistBasis):
+            # print(i)
+            newBasis0 = np.concatenate((get0, ZeroPadding), axis=1)
+            newBasis1 = np.concatenate((get1, ZeroPadding), axis=1)
 
-        add.append(new)
+            new = np.concatenate((ZeroPadding, get), axis=1)
 
-        zDist = np.array(add)
-        return zDist
+            get = new
+            get0 = newBasis0
+            get1 = newBasis1
+            # add.append(new)
+            # add.append(np.concatenate((zDistBasis[i], ZeroPadding), axis=1))
+
+        print(newBasis0)
+        # print('add:')
+        # add = np.array(add)
+        # print(add)
+        # add.append(np.array(new))
+        # zDistBasis = np.array(add)
+        # print('New Z Dist Basis: ')
+        # print(zDistBasis)
+
+
+            # for i in range(S-1):
+            #
+            #     add.append(np.concatenate((zDistBasis[i], ZeroPadding), axis=1))
+            #
+            # add.append(new)
+            #
+            # zDist = np.array(add)
+            # zDistBasis = zDist
 
     else:
 
         zDist = zDistBasis
-        return zDist
 
-print('New:')
-print(getZdistMatrix(3, 5, tDistMatrices))
+    return False
+
+# print(getZdistMatrix(4, 5, tDistMatrices))
