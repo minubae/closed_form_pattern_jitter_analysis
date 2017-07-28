@@ -153,51 +153,34 @@ def getZdistBasis(tMatrix, where, Length):
 
 # print(getZdistBasis(tDistMatrices, 5))
 
+def getZdistMatrix(S, L, tDistMat):
 
-S = 3
-zDistBasis = getZdistBasis(tDistMatrices, S-2, 5)
-ZeroPadding = getZeroPadding(5)
+    AmoutSync = S
+    zDistBasis = getZdistBasis(tDistMat, S-2, L)
+    ZeroPadding = getZeroPadding(L)
+    len_zDistBasis = len(zDistBasis)
 
-'''
-for j, basis in enumerate(zDistBasis):
-    # print('Basis: ',j)
-    # print(basis, '\n')
+    new = []
+    add = []
+    zDist = []
 
-    if j == 0:
-        basis = np.concatenate((basis, ZeroPadding), axis=1)
-        print(basis)
-    if j == 1:
-        basis = np.concatenate((basis, ZeroPadding), axis=1)
-        print(basis)
+    if AmoutSync != len_zDistBasis:
 
-    print('Hello.')
-'''
-len_zDist = len(zDistBasis)
-print('Length: ', len(zDistBasis))
-# print(zDistBasis)
+        new = np.concatenate((ZeroPadding, zDistBasis[S-2]), axis=1)
 
-new = []
-zDist = zDistBasis
-if S == len_zDist:
+        for i in range(S-1):
 
-    print(zDistBasis)
+            add.append(np.concatenate((zDistBasis[i], ZeroPadding), axis=1))
 
-else:
+        add.append(new)
 
-    # print(zDistBasis[S-2])
-    new = np.concatenate((ZeroPadding, zDistBasis[S-2]), axis=1)
-    zDistBasis.append(new)
-    print('New:')
-    print(zDistBasis)
+        zDist = np.array(add)
+        return zDist
 
+    else:
 
-    # zDist.append(new)
-    # print('New: ')
-    # print(np.array(zDist))
+        zDist = zDistBasis
+        return zDist
 
-    # for i in range(S-1):
-    #     new = np.concatenate((zDist[i], ZeroPadding), axis=1)
-        # print(new)
-        # if i == S-(S-i):
-        #     print(i)
-        # zDistBasis[i]
+print('New:')
+print(getZdistMatrix(3, 5, tDistMatrices))
