@@ -2,7 +2,7 @@ import numpy as np
 from PatternJitter import *
 from Data import *
 
-Ref = [9, 15, 22, 28, 34, 42, 44, 49]
+Ref = [10, 15, 22, 28, 34, 42, 44, 49]
 
 # Finding: P(S_j | T_j)
 def getSyncState(L, Reference, Target):
@@ -48,14 +48,13 @@ def getSyncState(L, Reference, Target):
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
 
-
 syncStateMat = getSyncState(5, Ref, x_tilde)
-
 print('Sync State Matrix: ')
 print(syncStateMat, '\n')
-
 # print('Init Dist (p(t1)):')
 # print(initDist)
+# print('Transition Matrix: ')
+# print(tDistMatrices, '\n')
 
 def getInitSyncDist(InitDist, SyncState):
 
@@ -65,6 +64,7 @@ def getInitSyncDist(InitDist, SyncState):
 
     initDist = InitDist
     syncStateMat = SyncState
+    nonSyncState = 0
 
     for j, prob in enumerate(initDist):
         syncState = syncStateMat[0][j]
@@ -74,8 +74,8 @@ def getInitSyncDist(InitDist, SyncState):
             p1_non_sync.append(prob*0)
             p1_sync.append(prob*syncState)
         else:
-            p1_non_sync.append(prob)
-            p1_sync.append(0)
+            p1_non_sync.append(prob*1)
+            p1_sync.append(prob*nonSyncState)
 
     P_S1.append(p1_non_sync)
     P_S1.append(p1_sync)
@@ -84,104 +84,120 @@ def getInitSyncDist(InitDist, SyncState):
     return P_S1
 
 p_s1 = getInitSyncDist(initDist, syncStateMat)
-
-# print('Transition Matrix: ')
-# print(tDistMatrices, '\n')
-
 print('P(S1): ')
 print(p_s1, '\n')
-
 # print(syncStateMat, '\n')
-# print(tDistMatrices[0])
+
+def getZeroPadding(Length):
+
+    L = 0
+    Zero = []
+    L = Length
+    # Create numpy.zeros(shape, dtype, order)
+    zero_k = np.zeros(L, dtype=np.int)
+
+    for i in range(L):
+        Zero.append(zero_k)
+
+    Zero = np.array(Zero)
+    return Zero
+
+# print(getZeroPadding(5))
 
 
-NonSync = []
-Sync = []
-Zero = []
+# P(Z_2 | Z_1) <= Basis for Trnasition Matrices for Z = (Amount_S, Tj)
+def getZdistBasis(tMatrix, where, Length):
 
-which = 1
-m = which+1
-for i, Pi in enumerate(tDistMatrices[which]):
-    # print(syncStateMat[m])
-    # print(Pi)
+    Sync = []
+    NonSync = []
+    ZeroPadding = []
 
-    nonSync_k = []
-    sync_k = []
-    zero_k = []
-    for k, prob in enumerate(Pi):
-        # print(syncStateMat[m][k])
+    zDistBasis = []
+    zDistBasis0 = []
+    zDistBasis1 = []
 
-        if syncStateMat[m][k] == 0:
-            # print('No Sync')
-            # print(prob)
-            nonSync_k.append(prob)
-            sync_k.append(0)
-        else:
-            # print('Sync')
-            # print(prob)
-            nonSync_k.append(0)
-            sync_k.append(prob)
-        zero_k.append(0)
-    # print('nonSync_k: ', nonSync_k, '\n')
-    NonSync.append(nonSync_k)
-    Sync.append(sync_k)
-    Zero.append(zero_k)
+    which = where
+    m = which+1
+    L = Length
+    for i, Pi in enumerate(tMatrix[which]):
 
-NonSync = np.array(NonSync)
-Sync = np.array(Sync)
-Zero = np.array(Zero)
-print('Non Sync: ')
-print(NonSync)
+        nonSync_k = []
+        sync_k = []
 
-print('Sync: ')
-print(Sync)
+        for k, prob in enumerate(Pi):
 
-print('Zero: ')
-print(Zero, '\n')
+            if syncStateMat[m][k] == 0:
 
-zDist = []
-Basis = np.concatenate((NonSync, Sync), axis=1)
-zDistBasis0 = np.concatenate((Basis, Zero), axis=1)
-zDistBasis1 = np.concatenate((Zero, Basis), axis=1)
+                nonSync_k.append(prob)
+                sync_k.append(0)
+
+            else:
+
+                nonSync_k.append(0)
+                sync_k.append(prob)
+
+        NonSync.append(nonSync_k)
+        Sync.append(sync_k)
+
+    ZeroPadding = getZeroPadding(L)
+
+    Basis = np.concatenate((np.array(NonSync), np.array(Sync)), axis=1)
+    zDistBasis0 = np.concatenate((Basis, ZeroPadding), axis=1)
+    zDistBasis1 = np.concatenate((ZeroPadding, Basis), axis=1)
+
+    zDistBasis.append(zDistBasis0)
+    zDistBasis.append(zDistBasis1)
+    zDistBasis = np.array(zDistBasis)
+
+    return zDistBasis
+
+# print(getZdistBasis(tDistMatrices, 5))
+
+
+S = 3
+zDistBasis = getZdistBasis(tDistMatrices, S-2, 5)
+ZeroPadding = getZeroPadding(5)
 
 '''
-zDist.append(zDist0)
-zDist.append(zDist1)
-zDist = np.array(zDist)
-'''
-# print('Transition Matrix for Zj: ')
-# print(zDist)
-
-# s = 2
-zDist.append(zDistBasis0)
-zDist.append(zDistBasis1)
-zDist = np.array(zDist)
-
-zDistNew = []
-for j, row in enumerate(zDist):
-    print(row, '\n')
+for j, basis in enumerate(zDistBasis):
+    # print('Basis: ',j)
+    # print(basis, '\n')
 
     if j == 0:
-        new = row
-        new = np.concatenate((zDistBasis0, Zero), axis=1)
-        print('New00: ')
-        print(new)
-        zDistNew.append(new)
+        basis = np.concatenate((basis, ZeroPadding), axis=1)
+        print(basis)
+    if j == 1:
+        basis = np.concatenate((basis, ZeroPadding), axis=1)
+        print(basis)
 
-    else:
+    print('Hello.')
+'''
+len_zDist = len(zDistBasis)
+print('Length: ', len(zDistBasis))
+# print(zDistBasis)
 
-        new = row
-        new = np.concatenate((zDistBasis1, Zero), axis=1)
+new = []
+zDist = zDistBasis
+if S == len_zDist:
 
-        print('New01: ')
-        print(new)
-        # zDistBasis1 = new
-        zDistNew.append(new)
+    print(zDistBasis)
 
-        add = np.concatenate((Zero, zDistBasis1), axis=1)
-        zDistNew.append(add)
+else:
+
+    # print(zDistBasis[S-2])
+    new = np.concatenate((ZeroPadding, zDistBasis[S-2]), axis=1)
+    zDistBasis.append(new)
+    print('New:')
+    print(zDistBasis)
 
 
-print('zDistNew: ')
-zDist = np.array(zDistNew)
-print(zDist)
+    # zDist.append(new)
+    # print('New: ')
+    # print(np.array(zDist))
+
+    # for i in range(S-1):
+    #     new = np.concatenate((zDist[i], ZeroPadding), axis=1)
+        # print(new)
+        # if i == S-(S-i):
+        #     print(i)
+        # zDistBasis[i]
