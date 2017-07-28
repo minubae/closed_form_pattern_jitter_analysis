@@ -18,9 +18,13 @@ def getSpikeTrainMat(L, R, obsX, N):
     Tmat = np.array(spikeTrainMat)
     return Tmat
 
-def getAmountSync(Ref, Tmat):
+def getAmountSync(Reference, Target):
     s = 0
     S = []
+    Ref = []
+    Tmat = []
+    Ref = Reference
+    Tmat = Target
     for j, Tj in enumerate(Tmat):
         # Check how many elements are equal in two arrays (R, T)
         # print('Tj: ', Tj)
