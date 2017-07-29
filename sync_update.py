@@ -101,9 +101,7 @@ def getZeroPadding(Length):
 
     Zero = np.array(Zero)
     return Zero
-
 # print(getZeroPadding(5))
-
 
 # P(Z_2 | Z_1) <= Basis for Trnasition Matrices for Z = (Amount_S, Tj)
 def getZdistBasis(tMatrix, where, Length):
@@ -150,7 +148,6 @@ def getZdistBasis(tMatrix, where, Length):
     zDistBasis = np.array(zDistBasis)
 
     return zDistBasis
-
 # print(getZdistBasis(tDistMatrices, 5))
 
 def getZdistMatrix(S, L, tDistMat):
@@ -216,5 +213,4 @@ def getZdistMatrix(S, L, tDistMat):
         zDist = zDistBasis
 
     return False
-
 # print(getZdistMatrix(4, 5, tDistMatrices))
