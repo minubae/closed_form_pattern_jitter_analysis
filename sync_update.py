@@ -48,7 +48,8 @@ def getSyncState(L, Reference, Target):
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
 
-syncStateMat = getSyncState(5, Ref, x_tilde)
+Target = x_tilde
+syncStateMat = getSyncState(5, Ref, Target)
 print('Sync State Matrix: ')
 print(syncStateMat, '\n')
 # print('Init Dist (p(t1)):')
@@ -83,10 +84,69 @@ def getInitSyncDist(InitDist, SyncState):
     P_S1 = np.array(P_S1)
     return P_S1
 
-p_s1 = getInitSyncDist(initDist, syncStateMat)
+P_S1 = getInitSyncDist(initDist, syncStateMat)
 print('P(S1): ')
-print(p_s1, '\n')
-# print(syncStateMat, '\n')
+print(P_S1, '\n')
+
+
+givenT = getOmega(5, Target)
+N = len(syncStateMat)
+M = len(tDistMatrices)
+where = 1
+
+P_S0 = []
+P_S1 = []
+resutl = 0
+P_S = getInitSyncDist(initDist, syncStateMat)
+
+for k in range(where):
+
+    print(syncStateMat[k+1])
+    # print(tDistMatrices[k])
+    n = len(tDistMatrices[k])
+
+    P_S0 = []
+    P_S1 = []
+    print('Check P_S: ')
+    print(P_S)
+
+    for j in range(n):
+        print(tDistMatrices[k][j])
+
+        for i, prob_i in enumerate(tDistMatrices[k][j]):
+
+            if syncStateMat[k+1][i] == 1:
+                # print('Sync: ', prob_i)
+                # print(syncStateMat[k+1][i])
+                result = prob_i*P_S[1][i]
+                # print('Result: ', result)
+
+                P_S0.append(0)
+                P_S1.append(result)
+
+
+            else:
+                # print('Non Sync: ', prob_i)
+                # print(syncStateMat[k+1][i])
+                result = prob_i*P_S[0][i]
+                # print('Result: ', result)
+
+                P_S0.append(result)
+                P_S1.append(0)
+
+        print('New P_S0', P_S0)
+        print('New P_S1',P_S1)
+        print('\n')
+
+        break
+
+    P_S = []
+    P_S.append(P_S0)
+    P_S.append(P_S1)
+    P_S = np.array(P_S)
+
+
+
 
 def getZeroPadding(Length):
 
