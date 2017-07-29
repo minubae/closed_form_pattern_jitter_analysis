@@ -92,61 +92,109 @@ print(P_S1, '\n')
 givenT = getOmega(5, Target)
 N = len(syncStateMat)
 M = len(tDistMatrices)
-where = 1
-
-P_S0 = []
-P_S1 = []
+where = 2
 resutl = 0
-P_S = getInitSyncDist(initDist, syncStateMat)
 
+P_S = []
+P_S0 = []
+P_S0_All = []
+
+P_S1 = []
+P_S1_All = []
+P_S_Pre = []
+P_S_Init = getInitSyncDist(initDist, syncStateMat)
+P_S = getInitSyncDist(initDist, syncStateMat)
+P_S_All = []
 for k in range(where):
 
     print(syncStateMat[k+1])
-    # print(tDistMatrices[k])
+    print(tDistMatrices[k])
     n = len(tDistMatrices[k])
 
-    P_S0 = []
-    P_S1 = []
-    print('Check P_S: ')
-    print(P_S)
+    sDim = P_S.ndim
+
+    P_S0_All = []
+    P_S1_All = []
+
+    # print('P_S_Pre: ')
+    # print(P_S_Pre)
+    #
+    # print('New P_S: ')
+    # print(P_S)
 
     for j in range(n):
-        print(tDistMatrices[k][j])
-
+        # print('Row: ', tDistMatrices[k][j])
+        P_S0 = []
+        P_S1 = []
         for i, prob_i in enumerate(tDistMatrices[k][j]):
 
-            if syncStateMat[k+1][i] == 1:
-                # print('Sync: ', prob_i)
-                # print(syncStateMat[k+1][i])
-                result = prob_i*P_S[1][i]
-                # print('Result: ', result)
+            if syncStateMat[k+1][i] == 0:
 
-                P_S0.append(0)
-                P_S1.append(result)
 
+                if sDim == 2:
+                    # print('Non Sync: ', prob_i)
+                    # print(syncStateMat[k+1][i])
+                    result = prob_i*P_S[0][j]
+                    # print('Result: ', result)
+                    P_S0.append(result)
+                    P_S1.append(0)
+                    # print('Hello Yo')
+
+                else:
+
+                    # print('Hello 0')
+                    # print('Pre: ', P_S_Pre[0][j])
+                    # print(P_S[0][j][i])
+                    result = prob_i*P_S[0][j][i] #P_S_Pre[0][j]
+                    # print('result: ', result)
+                    P_S0.append(result)
+                    P_S1.append(0)
 
             else:
-                # print('Non Sync: ', prob_i)
-                # print(syncStateMat[k+1][i])
-                result = prob_i*P_S[0][i]
-                # print('Result: ', result)
 
-                P_S0.append(result)
-                P_S1.append(0)
+                if sDim == 2:
+                    # print('Sync: ', prob_i)
+                    # print(syncStateMat[k+1][i])
+                    result = prob_i*P_S[1][j]
+                    # print('Result: ', result)
+                    P_S0.append(0)
+                    P_S1.append(result)
 
-        print('New P_S0', P_S0)
-        print('New P_S1',P_S1)
-        print('\n')
+                else:
 
-        break
+                    # print('Hello 1')
+                    # print('Pre: ', P_S_Pre[1][j][i])
+                    # print(P_S[1][j][i])
+                    result = prob_i*P_S[1][j][i] #*P_S_Pre[1][j][i]
+                    # print('result: ', result)
+                    P_S0.append(0)
+                    P_S1.append(result)
+
+        P_S0_All.append(P_S0)
+        P_S1_All.append(P_S1)
 
     P_S = []
-    P_S.append(P_S0)
-    P_S.append(P_S1)
+    P_S.append(P_S0_All)
+    P_S.append(P_S1_All)
     P_S = np.array(P_S)
+    P_S_All.append(P_S)
 
+    print('\n')
 
+    # print('New P_S: ')
+    # print(P_S, '\n')
+    # print('\n')
+    # break
 
+print('New P_S: ')
+print(np.array(P_S_All), '\n')
+# print('New P_S0_All: ')
+# print(np.array(P_S0_All))
+# print('New P_S1_All: ')
+# print(np.array(P_S1_All))
+
+# print('P_S_All: ')
+# print(P_S_All)
 
 def getZeroPadding(Length):
 
