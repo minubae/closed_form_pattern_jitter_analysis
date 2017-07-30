@@ -3,6 +3,7 @@ from PatternJitter import *
 from Data import *
 
 Ref = [10, 15, 22, 29, 34, 40, 45, 51]
+Ref02 = [10, 14, 17]
 
 # Finding: P(S_j | T_j)
 def getSyncState(L, Reference, Target):
@@ -48,8 +49,8 @@ def getSyncState(L, Reference, Target):
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
 
-Target = x_tilde
-syncStateMat = getSyncState(5, Ref, Target)
+Target = x_tilde_02
+syncStateMat = getSyncState(3, Ref02, Target)
 # print('Sync State Matrix: ')
 # print(syncStateMat, '\n')
 
@@ -155,7 +156,6 @@ for k in range(where):
 
                 temp1.append(0)
 
-
                 # 1-> 2
                 result = prob_i*P_S[1][j]
 
@@ -167,16 +167,14 @@ for k in range(where):
                 P_S1.append(result)
                 temp0.append(result1)
 
-
+        ps0temp.append(temp0)
+        ps1temp.append(temp1)
 
         P_S0_All.append(P_S0)
         # print('0 -> 1', temp0)
         P_S0_All.append(temp0)
+
         P_S1_All.append(P_S1)
-
-        ps0temp.append(temp0)
-        ps1temp.append(temp1)
-
         P_S1_All.append(temp1)
 
     # print('P_S: ')
