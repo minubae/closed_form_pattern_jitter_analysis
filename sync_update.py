@@ -1,9 +1,11 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from PatternJitter import *
 from Data import *
 
 Ref = [10, 15, 22, 29, 34, 40, 45, 51]
 Ref02 = [10, 14, 17]
+# x_tilde_02 = [10, 14, 17]
 
 # Finding: P(S_j | T_j)
 def getSyncState(L, Reference, Target):
@@ -107,12 +109,12 @@ def getNewP_S(P_S):
     new = np.array(new)
     return new
 
-initP_S = getInitSyncDist(initDist_02, syncStateMat)
+P_Smat = getInitSyncDist(initDist_02, syncStateMat)
 print('Init P_S: ')
-print(initP_S)
+print(P_Smat, '\n')
 
-print('Transition Matrices: ')
-print(tDistMatrices_02)
+# print('Transition Matrices: ')
+# print(tDistMatrices_02)
 
 def getP_S1(SyncState, SyncDist):
     P_S1 = []
@@ -120,30 +122,41 @@ def getP_S1(SyncState, SyncDist):
         a = SyncState[0][i]
         b = np.array(row).T
         result = np.dot(a, b)
-        # print(result)
         P_S1.append(result)
 
     p_S1 = np.array(P_S1)
     return P_S1
 
-print('P(S1): ')
-print(getP_S1(syncStateMat, initP_S))
+# print('P(S1): ')
+P_S1 = getP_S1(syncStateMat, P_Smat)
+# print(P_S1)
 
+def getZdist(which):
+    a = []
+    result = []
+    for k, row in enumerate(syncStateMat[which-1]):
+        a = np.dot(row, tDistMatrices_02[which-2])
+        result.append(a)
 
+    result = np.array(result)
+    return result
 
+zDistMat = getZdist(2)
+print('Z Dist Mat:')
+print(zDistMat, '\n')
 
+for k, preZdist in enumerate(P_Smat):
+    # print(k, preZdist)
 
+    for j, zDist in enumerate(zDistMat):
+        # print(j, zDist)
 
+        print(k,j)
+        print(np.dot(preZdist, zDist))
 
+        print('multiply')
+        print(np.multiply(preZdist, zDist))
 
-
-
-
-
-where = 2
-
-for k in range(where):
-
-    n = len(tDistMatrices_02[k])
-    # print(n)
-    # for j in range(n):
+        # if k+j
+    # for j, prob_j in enumerate(row):
+    #     print(j, prob_j)
