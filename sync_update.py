@@ -127,9 +127,9 @@ def getP_S1(SyncState, SyncDist):
     p_S1 = np.array(P_S1)
     return P_S1
 
-# print('P(S1): ')
+
 P_S1 = getP_S1(syncStateMat, P_Smat)
-# print(P_S1)
+
 
 def getZdist(which):
     a = []
@@ -141,22 +141,66 @@ def getZdist(which):
     result = np.array(result)
     return result
 
-zDistMat = getZdist(2)
-print('Z Dist Mat:')
-print(zDistMat, '\n')
 
-for k, preZdist in enumerate(P_Smat):
-    # print(k, preZdist)
+def getSyncDist(which):
 
-    for j, zDist in enumerate(zDistMat):
-        # print(j, zDist)
+    S = which
+    P_S = []
+    zDistMat = []
+    temp01 = []
+    temp02 = []
+    P_Stest = []
+    P_Smat = []
+    P_Smat = getInitSyncDist(initDist_02, syncStateMat)
 
-        print(k,j)
-        print(np.dot(preZdist, zDist))
+    for i in range(S-1):
 
-        print('multiply')
-        print(np.multiply(preZdist, zDist))
+        zDistMat = getZdist(i)
+        print('Z Dist Mat:')
+        print(zDistMat, '\n')
 
-        # if k+j
-    # for j, prob_j in enumerate(row):
-    #     print(j, prob_j)
+        print('P_Smat:')
+        print(P_Smat, '\n')
+
+        for k, preZdist in enumerate(P_Smat):
+            # print(k, preZdist)
+
+
+            for j, zDist in enumerate(zDistMat):
+
+                result = np.dot(preZdist, zDist)
+                matMult = np.multiply(preZdist, zDist)
+                Sum = k+j
+
+                if  Sum % S != 0:
+                    # print('(k+j) mod S: ', k+j)
+
+                    temp01.append(result)
+                    temp02.append(matMult)
+
+                    if len(temp01) == 2:
+                        P_S.append(np.sum(temp01))
+                        temp01 = []
+
+                    if len(temp02) == 2:
+
+                        P_Stest.append(np.sum(temp02, axis=0))
+                        temp02 = []
+
+                else:
+
+                    P_S.append(result)
+                    P_Stest.append(matMult)
+
+        P_Smat = []
+        P_Smat = np.array(P_Stest)
+        # print('Yo')
+        # print(P_Smat)
+
+    return P_S
+
+
+
+P_S = getSyncDist(3)
+print('P(S1):', P_S1)
+print('P_S:', P_S)
