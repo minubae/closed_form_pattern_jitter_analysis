@@ -76,7 +76,7 @@ tDistMatrices = np.stack((p2,p3,p4,p5,p6,p7,p8))
 x_tilde_02 = [10, 14, 17]
 
 # initDist: p(X_1)
-initDist02 = [1/3, 1/3, 1/3]
+initDist_02 = [1/3, 1/3, 1/3]
 
 # p(X_2 | X_1)
 p2_02 = np.array([[1/3, 1/3, 1/3],
@@ -88,4 +88,4 @@ p3_02 = np.array([[1/3, 1/3, 1/3],
                   [1/3, 1/3, 1/3],
                   [0, 1/2, 1/2]])
 
-tDistMatrices = np.stack((p2_02, p3_02))
+tDistMatrices_02 = np.stack((p2_02, p3_02))
