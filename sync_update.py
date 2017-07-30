@@ -14,6 +14,7 @@ def getSyncState(L, Reference, Target):
     index = 0
     upState = []
     upStateIndex = []
+
     syncStateMat = []
     for j, Tj in enumerate(givenT):
         # print('All possible T[',j,']: ', Tj)
@@ -31,28 +32,41 @@ def getSyncState(L, Reference, Target):
             upState.append(0)
 
         n = len(Tj)
+
+        stateMat = []
         syncState = []
+        nonSyncState = []
         checkSync = upState[j]
+
+        # print('checkSync:', checkSync)
         # print('\n')
         for i in range(n):
             if Tj[i] == checkSync:
                 # print('Check[', j,']: ', checkSync)
                 # print('Tj[',i,']: ', Tj[i], 'is SYNCRONY.')
                 syncState.append(1)
+                nonSyncState.append(0)
             else:
                 # print('Check[', j,']: ', checkSync)
                 # print('Tj:', Tj[i], 'is not Synch.')
                 syncState.append(0)
+                nonSyncState.append(1)
 
-        syncStateMat.append(syncState)
+        # print('yo 00:', nonSyncState)
+        # print('yo 01:', syncState)
+
+        stateMat.append(nonSyncState)
+        stateMat.append(syncState)
+        # print('Wow: ', stateMat)
+        syncStateMat.append(np.array(stateMat))
     # print(upState)
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
 
 Target = x_tilde_02
 syncStateMat = getSyncState(3, Ref02, Target)
-# print('Sync State Matrix: ')
-# print(syncStateMat, '\n')
+print('Sync State Matrix: ')
+print(syncStateMat, '\n')
 
 def getInitSyncDist(InitDist, SyncState):
 
@@ -65,18 +79,22 @@ def getInitSyncDist(InitDist, SyncState):
     nonSyncState = 0
 
     for j, prob in enumerate(initDist):
-        syncState = syncStateMat[0][j]
+        syncState = syncStateMat[0][1][j]
         # print('Probability: ', j, prob)
         # print('Sync State: ', syncState)
-        if syncState == 1:
-            p1_non_sync.append(prob*0)
-            p1_sync.append(prob*syncState)
-        else:
+        if syncState == 0:
+
             p1_non_sync.append(prob*1)
             p1_sync.append(prob*nonSyncState)
 
+        else:
+
+            p1_non_sync.append(prob*0)
+            p1_sync.append(prob*syncState)
+
     P_S1.append(p1_non_sync)
     P_S1.append(p1_sync)
+
 
     P_S1 = np.array(P_S1)
     return P_S1
@@ -89,134 +107,43 @@ def getNewP_S(P_S):
     new = np.array(new)
     return new
 
-where = 1
-result0 = 0
-result1 = 0
+initP_S = getInitSyncDist(initDist_02, syncStateMat)
+print('Init P_S: ')
+print(initP_S)
 
-P_S = []
-P_S0 = []
-P_S0_All = []
+print('Transition Matrices: ')
+print(tDistMatrices_02)
 
-P_S1 = []
-P_S1_All = []
+def getP_S1(SyncState, SyncDist):
+    P_S1 = []
+    for i, row in enumerate(SyncDist):
+        a = SyncState[0][i]
+        b = np.array(row).T
+        result = np.dot(a, b)
+        # print(result)
+        P_S1.append(result)
 
-P_S = getInitSyncDist(initDist, syncStateMat)
-P_S_All = []
-# P_S_All.append(P_S)
-sumP_S = []
-sumP_S_All = []
-# sumP_S.append(np.sum(P_S[0]))
-# sumP_S.append(np.sum(P_S[1]))
-# sumP_S_All.append(np.array(sumP_S))
-print('P_S1: ')
-print(P_S, '\n')
-ps1temp = []
-ps0temp = []
+    p_S1 = np.array(P_S1)
+    return P_S1
+
+print('P(S1): ')
+print(getP_S1(syncStateMat, initP_S))
+
+
+
+
+
+
+
+
+
+
+
+
+where = 2
+
 for k in range(where):
 
-    # print(syncStateMat[k+1])
-    print(tDistMatrices[k], '\n')
-    n = len(tDistMatrices[k])
-
-    P_S0_All = []
-    P_S1_All = []
-
-    for j in range(n):
-        # print('Row: ', tDistMatrices[k][j])
-        P_S0 = []
-        P_S1 = []
-        temp0 = []
-        temp1 = []
-
-        for i, prob_i in enumerate(tDistMatrices[k][j]):
-
-            if syncStateMat[k+1][i] == 0:
-
-                # print('Non Sync: ', prob_i)
-                # print(syncStateMat[k+1][i])
-
-                # 0 -> 0
-                result = prob_i*P_S[0][j]
-
-                # 1 -> 1
-                result1 = prob_i*P_S[1][j]
-                # print('0: Result: ', result1)
-
-                P_S0.append(result)
-                P_S1.append(0)
-
-
-                temp0.append(0)
-                temp1.append(result1)
-
-            else:
-
-                # print('Sync: ', prob_i)
-                # print(syncStateMat[k+1][i])
-
-                temp1.append(0)
-
-                # 1-> 2
-                result = prob_i*P_S[1][j]
-
-                # 0 -> 1
-                result1 = prob_i*P_S[0][j]
-                # print('1: Result: ', result1)
-
-                P_S0.append(0)
-                P_S1.append(result)
-                temp0.append(result1)
-
-        ps0temp.append(temp0)
-        ps1temp.append(temp1)
-
-        P_S0_All.append(P_S0)
-        # print('0 -> 1', temp0)
-        P_S0_All.append(temp0)
-
-        P_S1_All.append(P_S1)
-        P_S1_All.append(temp1)
-
-    # print('P_S: ')
-    # print(np.array(P_S0_All))
-    # print(np.array(P_S1_All))
-
-
-    nP_S0 = []
-    nP_S1 = []
-    sumP_S = []
-    nP_S0 = getNewP_S(P_S0_All)
-    nP_S1 = getNewP_S(P_S1_All)
-
-    # print(nP_S0)
-    # print(nP_S1)
-    sumP_S0 = np.sum(nP_S0)
-    sumP_S1 = np.sum(nP_S1)
-    # print('Sum0: ', sumP_S0)
-    # print('Sum1: ', sumP_S1)
-
-    P_S = []
-    P_S.append(nP_S0)
-    P_S.append(nP_S1)
-    P_S = np.array(P_S)
-    P_S_All.append(P_S)
-
-    sumP_S.append(sumP_S0)
-    sumP_S.append(sumP_S1)
-    sumP_S_All.append(sumP_S)
-
-    print('\n')
-
-print('0 -> 1')
-print(np.array(ps0temp))
-
-print('1 -> 1')
-print(np.array(ps1temp))
-
-'''
-print('P_S Matrix: ')
-print(np.array(P_S_All))
-print('Sum P_S: ')
-print(np.array(sumP_S_All))
-print('\n')
-'''
+    n = len(tDistMatrices_02[k])
+    # print(n)
+    # for j in range(n):
