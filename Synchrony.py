@@ -33,7 +33,7 @@ def getAmountSync(Reference, Target):
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(5, 4, x_tilde, 100)
+Tmat = getSpikeTrainMat(5, 4, x_tilde, 1000)
 print('Spike Trains: ')
 print(Tmat)
 print('Reference Train: ')
