@@ -8,11 +8,13 @@ from Data import *
 # L = 5
 # R = 4
 Ref = [8, 13, 19, 28, 34, 42, 44, 49]
+Ref02 = [10, 14, 17]
+
 def getSpikeTrainMat(L, R, obsX, N):
     spikeTrainMat = []
     for i in range(N):
         print('[[[[[[[Spike Train Index: ', i,']]]]]]]')
-        surrogate = getSpikeTrain(obsX, L, R, initDist, tDistMatrices)
+        surrogate = getSpikeTrain(obsX, L, R, initDist_02, tDistMatrices_02)
         spikeTrainMat.append(surrogate)
 
     Tmat = np.array(spikeTrainMat)
@@ -33,13 +35,13 @@ def getAmountSync(Reference, Target):
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(5, 4, x_tilde, 1000)
+Tmat = getSpikeTrainMat(3, 2, x_tilde_02, 10000)
 print('Spike Trains: ')
 print(Tmat)
 print('Reference Train: ')
 print(Ref)
 
-S = getAmountSync(Ref, Tmat)
+S = getAmountSync(Ref02, Tmat)
 print('Amount_Synchrony: ', S)
 plt.hist(S, bins='auto')
 plt.show()
