@@ -145,7 +145,7 @@ def getZdist(which):
 def getSyncDist(which):
 
     S = which
-    P_S = []
+    # P_S = []
     zDistMat = []
     temp01 = []
     temp02 = []
@@ -156,29 +156,33 @@ def getSyncDist(which):
     for i in range(S-1):
 
         zDistMat = getZdist(i)
-        print('Z Dist Mat:')
+
+        print('Z Dist Mat:', i)
         print(zDistMat, '\n')
 
-        print('P_Smat:')
+        print('P_Smat:', i)
         print(P_Smat, '\n')
 
-        for k, preZdist in enumerate(P_Smat):
-            # print(k, preZdist)
+        P_S = []
 
-
-            for j, zDist in enumerate(zDistMat):
-
+        for j, preZdist in enumerate(P_Smat):
+            # print('Yo1: ', j, preZdist)
+            for k, zDist in enumerate(zDistMat):
+                # print('Yo2: ', k, zDist)
                 result = np.dot(preZdist, zDist)
                 matMult = np.multiply(preZdist, zDist)
-                Sum = k+j
+                Sum = j+k
 
-                if  Sum % S != 0:
+                if  Sum % (2+i) != 0:
                     # print('(k+j) mod S: ', k+j)
-
                     temp01.append(result)
                     temp02.append(matMult)
+                    # print('Yo 1, result: ', result)
 
                     if len(temp01) == 2:
+
+                        # print('Yo 1 Up, result: ', temp01)
+                        # print(np.sum(temp01))
                         P_S.append(np.sum(temp01))
                         temp01 = []
 
@@ -188,17 +192,20 @@ def getSyncDist(which):
                         temp02 = []
 
                 else:
-
+                    # print('Yo 2, result: ', result)
                     P_S.append(result)
                     P_Stest.append(matMult)
 
-        P_Smat = []
-        P_Smat = np.array(P_Stest)
-        # print('Yo')
-        # print(P_Smat)
+            # print('\n')
+
+        P_Stest = np.array(P_Stest)
+        P_Smat = P_Stest
+        P_Stest = []
+
+        # print('New P_Smat: ')
+        # print(P_Smat, '\n')
 
     return P_S
-
 
 
 P_S = getSyncDist(3)
