@@ -12,7 +12,7 @@ def getX1(dist, L, R, x_tilde):
     # print('Random X:', randX)
     up = 0
     sum = 0
-    Omega = getOmega(L, x_tilde)
+    Omega = getOmega(3, x_tilde_02)
     result = Omega[0][up]
 
     for k in dist:
@@ -39,15 +39,15 @@ def getSpikeTrain(obsX, L, R, initialDist, transMatrices):
 
     print('////**** Simulation is starting. ****////')
 
-    x1 = getX1(initDist, L, R, obsX)
-    Omega = getOmega(L, obsX)
+    x1 = getX1(initDist_02, 3, R, x_tilde_02)
+    Omega = getOmega(3, x_tilde_02)
 
     chain = 1
     givenX = x1
     spikeTrain = []
     spikeTrain.append(x1)
 
-    for i, row in enumerate(tDistMatrices):
+    for i, row in enumerate(tDistMatrices_02):
 
         sum = 0
         randX = 0
