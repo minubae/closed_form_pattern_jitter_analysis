@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from scipy import stats
+
 from PatternJitter import *
 from Data import *
 
@@ -101,20 +104,10 @@ def getInitSyncDist(InitDist, SyncState):
     P_S1 = np.array(P_S1)
     return P_S1
 
-def getNewP_S(P_S):
-    PS_T = np.array(P_S).T
-    new = []
-    for row in PS_T:
-        new.append(np.sum(row))
-    new = np.array(new)
-    return new
 
 P_Smat = getInitSyncDist(initDist_02, syncStateMat)
 print('Init P_S: ')
 print(P_Smat, '\n')
-
-# print('Transition Matrices: ')
-# print(tDistMatrices_02)
 
 def getP_S1(SyncState, SyncDist):
     P_S1 = []
@@ -127,9 +120,7 @@ def getP_S1(SyncState, SyncDist):
     p_S1 = np.array(P_S1)
     return P_S1
 
-
 P_S1 = getP_S1(syncStateMat, P_Smat)
-
 
 def getZdist(which):
     a = []
@@ -145,11 +136,10 @@ def getZdist(which):
 def getSyncDist(which):
 
     S = which
-    # P_S = []
     zDistMat = []
     temp01 = []
     temp02 = []
-    P_Stest = []
+    P_Stemp = []
     P_Smat = []
     P_Smat = getInitSyncDist(initDist_02, syncStateMat)
 
@@ -188,22 +178,16 @@ def getSyncDist(which):
 
                     if len(temp02) == 2:
 
-                        P_Stest.append(np.sum(temp02, axis=0))
+                        P_Stemp.append(np.sum(temp02, axis=0))
                         temp02 = []
 
                 else:
                     # print('Yo 2, result: ', result)
                     P_S.append(result)
-                    P_Stest.append(matMult)
+                    P_Stemp.append(matMult)
 
-            # print('\n')
-
-        P_Stest = np.array(P_Stest)
-        P_Smat = P_Stest
-        P_Stest = []
-
-        # print('New P_Smat: ')
-        # print(P_Smat, '\n')
+        P_Smat = np.array(P_Stemp)
+        P_Stemp = []
 
     return P_S
 
@@ -211,3 +195,7 @@ def getSyncDist(which):
 P_S = getSyncDist(3)
 print('P(S1):', P_S1)
 print('P_S:', P_S)
+
+# plt.plot(P_S, 'ro')
+# plt.axis([0, 3, 0, 1])
+# plt.show()
