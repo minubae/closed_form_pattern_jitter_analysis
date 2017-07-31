@@ -7,7 +7,8 @@ from PatternJitter import *
 from Data import *
 
 Ref = [10, 15, 22, 29, 34, 40, 45, 51]
-Ref02 = [10, 14, 17, 20]
+Ref_02 = [10, 14, 17]
+Ref_03 = [10, 14, 17, 20]
 # x_tilde_02 = [10, 14, 17]
 
 # Finding: P(S_j | T_j)
@@ -68,10 +69,6 @@ def getSyncState(L, Reference, Target):
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
 
-Target = x_tilde_02
-syncStateMat = getSyncState(3, Ref02, Target)
-print('Sync State Matrix: ')
-print(syncStateMat, '\n')
 
 def getInitSyncDist(InitDist, SyncState):
 
@@ -105,14 +102,20 @@ def getInitSyncDist(InitDist, SyncState):
     return P_S1
 
 
-P_Smat = getInitSyncDist(initDist_02, syncStateMat)
-print('Init P_S: ')
-print(P_Smat, '\n')
-
 def getP_S1(SyncState, SyncDist):
+
+    a = 0
+    result = 0
+
+    b = []
     P_S1 = []
-    for i, row in enumerate(SyncDist):
-        a = SyncState[0][i]
+    syncS = []
+    syncD = []
+    syncS = SyncState
+    syncD = SyncDist
+
+    for i, row in enumerate(syncD):
+        a = syncS[0][i]
         b = np.array(row).T
         result = np.dot(a, b)
         P_S1.append(result)
@@ -120,46 +123,57 @@ def getP_S1(SyncState, SyncDist):
     p_S1 = np.array(P_S1)
     return P_S1
 
-P_S1 = getP_S1(syncStateMat, P_Smat)
 
-def getZdist(which):
+
+def getZdist(tDistMatrix, which):
+
     a = []
     result = []
-    for k, row in enumerate(syncStateMat[which-1]):
-        a = np.dot(row, tDistMatrices_02[which-2])
+    tDistMat = []
+    index = 0
+
+    index = which
+    tDistMat = tDistMatrix
+    # print('which', which)
+    for k, row in enumerate(syncStateMat[index+1]):
+        # print('yo: ', row)
+        a = np.dot(tDistMat[index], np.array(row).T)
         result.append(a)
 
     result = np.array(result)
     return result
 
 
-def getSyncDist(which):
+def getSyncDist(which, P_Smat, tDistMatrices):
 
-    S = which
-    zDistMat = []
+    S = 0
     temp01 = []
     temp02 = []
+    tDistM = []
     P_Stemp = []
-    P_Smat = []
-    P_Smat = getInitSyncDist(initDist_02, syncStateMat)
+    zDistMat = []
+
+    S = which
+    P_Sm = P_Smat
+    tDistM = tDistMatrices
 
     for i in range(S-1):
 
-        zDistMat = getZdist(i)
+        zDistMat = getZdist(tDistM, i)
 
         print('Z Dist Mat:', i)
         print(zDistMat, '\n')
 
         print('P_Smat:', i)
-        print(P_Smat, '\n')
+        print(P_Sm, '\n')
 
         P_S = []
 
-        for j, preZdist in enumerate(P_Smat):
+        for j, preZdist in enumerate(P_Sm):
             # print('Yo1: ', j, preZdist)
             for k, zDist in enumerate(zDistMat):
                 # print('Yo2: ', k, zDist)
-                result = np.dot(preZdist, zDist)
+                result = np.dot(zDist, np.array(preZdist).T)
                 matMult = np.multiply(preZdist, zDist)
                 Sum = j+k
 
@@ -186,15 +200,27 @@ def getSyncDist(which):
                     P_S.append(result)
                     P_Stemp.append(matMult)
 
-        P_Smat = np.array(P_Stemp)
+        P_Sm = np.array(P_Stemp)
         P_Stemp = []
 
     return P_S
 
+Reference = Ref_03
+Target = x_tilde_03
+syncStateMat = getSyncState(3, Reference, Target)
+print('Sync State Matrix: ')
+print(syncStateMat, '\n')
 
-P_S = getSyncDist(3)
+
+P_Smat = getInitSyncDist(initDist_03, syncStateMat)
+P_S1 = getP_S1(syncStateMat, P_Smat)
+print('Init P_S: ')
+print(P_Smat, '\n')
+
+Sum = 2
+P_S = getSyncDist(Sum, P_Smat, tDistMatrices_03)
 print('P(S1):', P_S1)
-print('P_S:', P_S)
+print('P(S',Sum,'): ', P_S)
 
 # plt.plot(P_S, 'ro')
 # plt.axis([0, 3, 0, 1])
