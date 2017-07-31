@@ -7,7 +7,7 @@ from PatternJitter import *
 from Data import *
 
 Ref = [10, 15, 22, 29, 34, 40, 45, 51]
-Ref02 = [10, 14, 17]
+Ref02 = [10, 14, 17, 20]
 # x_tilde_02 = [10, 14, 17]
 
 # Finding: P(S_j | T_j)
