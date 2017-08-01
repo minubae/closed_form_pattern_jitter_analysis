@@ -224,11 +224,11 @@ P_S1 = getP_S1(syncStateMat, P_Smat)
 print('Init P_S: ')
 print(P_Smat, '\n')
 
-Sum = 4
-P_S = getSyncDist(Sum, P_Smat, tDistMatrices_03)
+S_TrainN = len(Target)
+P_S = getSyncDist(S_TrainN, P_Smat, tDistMatrices_03)
 print('P(S1):', P_S1)
-print('P(S',Sum,'): ', P_S)
+print('P(S',S_TrainN,'): ', P_S)
 
-# plt.plot(P_S, 'ro')
-# plt.axis([0, 3, 0, 1])
-# plt.show()
+plt.plot(P_S, 'ro')
+plt.axis([0, S_TrainN, 0, 1])
+plt.show()
