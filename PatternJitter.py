@@ -31,26 +31,33 @@ from random import *
 # x_tilde: the observed spike train, nondecreasing sequence of spike times.
 ""
 
-def getSpikeData(length):
-    '''
-    obs_x = np.random.randint(2, size=length)
-    '''
+def getSpikeData(length, fireRate):
+    
+    T = 0
+    coin = 0
+    fRate = 0
+    binprob = 0
+    spikeData = []
+
     #length of train
     T = length;
     # initialize the Spike Train
-    spikeTrain = np.zeros(T)
-    fRate = 30.
+    spikeData = np.zeros(T)
+    fRate = fireRate
     binprob = (1./T)*fRate
     # print('binprob:', binprob)
     for k in range(0,int(T)):
         coin = np.random.uniform()
         # print('Coin:', coin)
-        if coin < binprob:
-            spikeTrain[k] = 1
+        if coin <= binprob:
+            spikeData[k] = 1
 
-    return spikeTrain
+    return spikeData
 
-def get_x_tilde(spikeTrain):
+
+
+
+def getSpikeTrain(spikeData):
     '''
     obs_x = observed_spike_train
     size = len(obs_x)
@@ -62,12 +69,15 @@ def get_x_tilde(spikeTrain):
             x.append(i+1)
     x_tilde = np.array(x)
     '''
-    x_tilde = spikeTrain
-    x_tilde = np.where(spikeTrain==1)
-    # print("Spike Train: ", spikeTrain)
-    # print("Obs_x: ",x_tilde)
+    x_tilde = []
+    x_tilde = spikeData
+    x_tilde = np.where(spikeData==1)
+
     x_tilde = np.array(x_tilde)
     x_tilde = x_tilde.flatten()
+
+    # print("Spike Data: ", spikeData)
+    # print("Obs_x: ",x_tilde)
     # len(x_tilde)
     # print("Modified_Obs_x: ",x_tilde)
 
@@ -80,12 +90,6 @@ def getX(spikeTrain):
     x = x.flatten()
     return x
 
-'''
-L = 5
-R = 4
-x = [8, 13, 21]
-x_tilde = [10,15,22]
-'''
 
 # x_tilde = get_x_tilde(get_spike_train(100))
 # print('x_tilde: ', x_tilde)
@@ -105,7 +109,7 @@ x_tilde = [10,15,22]
 # in firing rate but introduces less variability into resamples.
 # L : the size of window
 ""
-# L = 5
+
 def getOmega(L, x_tilde):
     y = []
     n = len(x_tilde)
@@ -136,7 +140,7 @@ def getOmega(L, x_tilde):
 # The parameter R controls the amount of history that is preserved. Larger values of R
 # enforce more regularity in the firing patterns across the resampled spike trains.
 ""
-# R = 2
+
 def getGamma(R, L, x_tilde):
     Gamma = []
     Gamma.append(0)
