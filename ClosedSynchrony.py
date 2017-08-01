@@ -151,20 +151,20 @@ def getZdist(tDistMatrix, which):
     return result
 
 
-def getSyncDist(which, P_Smat, tDistMatrices):
+def getSyncDist(Size, P_Smat, tDistMatrices):
 
-    S = 0
+    size = 0
     temp01 = []
     temp02 = []
     tDistM = []
     P_Stemp = []
     zDistMat = []
 
-    S = which
+    size = Size
     P_Sm = P_Smat
     tDistM = tDistMatrices
 
-    for i in range(S-1):
+    for i in range(size-1):
 
         zDistMat = getZdist(tDistM, i)
 
