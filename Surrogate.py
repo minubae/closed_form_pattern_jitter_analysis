@@ -51,8 +51,9 @@ def initializeX(initX, Prob):
 
     return init_x
 
+# getSpikeTrain(ObsTar, length, hisLen, initD, tDistMat)
 
-def getSpikeTrain(obsX, L, R, initDist, tDistMatrices):
+def getSurrogate(obsX, L, R, initDist, tDistMatrices):
 
     print('////**** Simulation is starting. ****////')
 
