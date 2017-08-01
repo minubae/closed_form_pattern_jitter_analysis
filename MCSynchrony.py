@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PatternJitter import *
+from TransitMatrix import *
 from Surrogate import *
 from Data import *
 
@@ -11,7 +12,7 @@ Ref = [8, 13, 19, 28, 34, 42, 44, 49]
 Ref_02 = [10, 14, 17]
 Ref_03 = [10, 14, 17, 20]
 
-def getSpikeTrainMat(L, R, obsX,initDist, tDistMatrices, N):
+def getSpikeTrainMat(L, R, obsX, initDist, tDistMatrices, N):
 
     n = 0
     length = 0
@@ -31,8 +32,9 @@ def getSpikeTrainMat(L, R, obsX,initDist, tDistMatrices, N):
     ObsTar = obsX
 
     for i in range(N):
+
         print('[[[[[[[Spike Train Index: ', i,']]]]]]]')
-        surrogate = getSpikeTrain(ObsTar, length, hisLen, initD, tDistMat)
+        surrogate = getSurrogate(ObsTar, length, hisLen, initD, tDistMat)
         spikeTrainMat.append(surrogate)
 
     Tmat = np.array(spikeTrainMat)
@@ -53,9 +55,35 @@ def getAmountSync(Reference, Target):
         # print('# Sync: ', s)
     return S
 
-Tmat = getSpikeTrainMat(3, 2, x_tilde_03, initDist_03, tDistMatrices_03, 1000)
+L = 3
+R = 2
+fRate = 6
+Size = 20
+spikeData = getSpikeData(Size, fRate)
+spikeTrain = getSpikeTrain(spikeData)
+
+
+print('Spike Data: ')
+print(spikeData)
+print('Spike Train: ')
+print(spikeTrain)
+
+n = len(spikeTrain)
+N = n
+initDist = getInitDist(L)
+tDistMatrices = getTransitionMatrices(L, N)
+
+print('Initial Distribution: ')
+print(initDist)
+print('Transition Matrices: ')
+print(tDistMatrices)
+
+
+'''
+Tmat = getSpikeTrainMat(L, R, spikeTrain, initDist, tDistMatrices, 1000)
 print('Spike Trains: ')
 print(Tmat)
+
 print('Reference Train: ')
 print(Ref_03)
 
@@ -64,4 +92,5 @@ S = getAmountSync(Ref_03, Tmat)
 print('Amount_Synchrony: ', S)
 plt.hist(S, bins='auto')
 # plt.axis([0, S_TrainN])
-plt.show()
+# plt.show()
+'''
