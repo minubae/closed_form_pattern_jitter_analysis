@@ -107,3 +107,13 @@ p4_03 = np.array([[1, 0, 0],
 tDistMatrices_02 = np.stack((p2_02, p3_02))
 
 tDistMatrices_03 = np.stack((p2_03, p3_03, p4_03))
+
+
+'''
+a = [1,0,1]
+a = np.array(a)
+b = np.matmul(p2_03, a.T) # matmul
+c = np.multiply(a, initDist_03)
+print(b)
+print(np.multiply(a, b))
+'''
