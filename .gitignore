@@ -1,9 +1,5 @@
-Example.py
-main.py
-sampling.py
 testing.py
-tran_prob.py
-
+SurrogateCopy.py
 
 __pycache__/
 matlab/
@@ -12,4 +8,3 @@ distribution_of_synchrony.pdf
 cong_work/
 faster_jitter_method/
 simulations/
-code_test.rtf
