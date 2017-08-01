@@ -211,6 +211,8 @@ def getSyncDist(Size, P_Smat, tDistMatrices):
         P_Sm = np.array(P_Stemp)
         P_Stemp = []
 
+
+
     return P_S
 
 Reference = Ref_03
@@ -224,11 +226,12 @@ P_S1 = getP_S1(syncStateMat, P_Smat)
 print('Init P_S: ')
 print(P_Smat, '\n')
 
-S_TrainN = len(Target)
-P_S = getSyncDist(S_TrainN, P_Smat, tDistMatrices_03)
+n = len(Target)
+P_S = getSyncDist(n, P_Smat, tDistMatrices_03)
 print('P(S1):', P_S1)
-print('P(S',S_TrainN,'): ', P_S)
+print('P(S',n,'): ', P_S)
+print('Area of Sync Dist (S',n,'): ', np.sum(P_S))
 
 plt.plot(P_S, 'ro')
-plt.axis([0, S_TrainN, 0, 1])
-plt.show()
+plt.axis([0, n, 0, 1])
+# plt.show()
