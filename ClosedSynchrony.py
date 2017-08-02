@@ -4,6 +4,7 @@ import pandas as pd
 
 from scipy import stats
 from PatternJitter import *
+from TransitMatrix import *
 from Data import *
 
 Ref = [10, 15, 22, 29, 34, 40, 45, 51]
@@ -132,17 +133,19 @@ def getP_S1(SyncState, SyncDist):
     return P_S1
 
 
-def getZdist(tDistMatrix, which):
+def getZdist(tDistMatrix, syncStateMat, which):
 
     a = []
     index = 0
     result = []
     tDistMat = []
+    syncStateM = []
 
     index = which
     tDistMat = tDistMatrix
+    syncStateM = syncStateMat
     # print('which', which)
-    for k, row in enumerate(syncStateMat[index+1]):
+    for k, row in enumerate(syncStateM[index+1]):
         # print('yo: ', row)
         a = np.dot(tDistMat[index], np.array(row).T)
         result.append(a)
@@ -151,7 +154,7 @@ def getZdist(tDistMatrix, which):
     return result
 
 
-def getSyncDist(Size, P_Smat, tDistMatrices):
+def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
 
     size = 0
     temp01 = []
@@ -159,14 +162,16 @@ def getSyncDist(Size, P_Smat, tDistMatrices):
     tDistM = []
     P_Stemp = []
     zDistMat = []
+    syncStateM = []
 
     size = Size
     P_Sm = P_Smat
     tDistM = tDistMatrices
+    syncStateM = syncStateMat
 
     for i in range(size-1):
 
-        zDistMat = getZdist(tDistM, i)
+        zDistMat = getZdist(tDistM, syncStateM, i)
 
         print('Z Dist Mat:', i)
         print(zDistMat, '\n')
@@ -211,27 +216,53 @@ def getSyncDist(Size, P_Smat, tDistMatrices):
         P_Sm = np.array(P_Stemp)
         P_Stemp = []
 
-
-
     return P_S
 
-Reference = Ref_03
-Target = x_tilde_03
-syncStateMat = getSyncState(3, Reference, Target)
+'''
+L = 3
+fRate = 40
+Size = 100
+spikeData = getSpikeData(Size, fRate)
+spikeTrain = getSpikeTrain(spikeData)
+
+N = len(spikeTrain)
+ref = getReference(Size, N)
+
+initDist = getInitDist(L)
+tDistMatrices = getTransitionMatrices(L, N)
+
+print('Initial Distribution: ')
+print(initDist)
+print('Transition Matrices: ')
+print(tDistMatrices)
+
+################################################
+# Compute the Closed Synchrony Distribution
+################################################
+
+syncStateMat = getSyncState(L, ref, spikeTrain)
 print('Sync State Matrix: ')
 print(syncStateMat, '\n')
 
-P_Smat = getInitSyncDist(initDist_03, syncStateMat)
+P_Smat = getInitSyncDist(initDist, syncStateMat)
 P_S1 = getP_S1(syncStateMat, P_Smat)
 print('Init P_S: ')
 print(P_Smat, '\n')
 
-n = len(Target)
-P_S = getSyncDist(n, P_Smat, tDistMatrices_03)
+
+P_S = getSyncDist(N, P_Smat, tDistMatrices)
 print('P(S1):', P_S1)
-print('P(S',n,'): ', P_S)
-print('Area of Sync Dist (S',n,'): ', np.sum(P_S))
+print('P(S',N,'): ', P_S)
+print('Area of Sync Dist (S',N,'): ', np.sum(P_S))
+
+print('Reference: ')
+print(ref)
+
+print('Target: ')
+print(spikeTrain)
+
 
 plt.plot(P_S, 'ro')
-plt.axis([0, n, 0, 1])
-# plt.show()
+plt.axis([0, N, 0, 1])
+plt.show()
+'''
