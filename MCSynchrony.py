@@ -53,24 +53,25 @@ def getAmountSync(Reference, Target):
         # Check how many elements are equal in two arrays (R, T)
         # print('Tj: ', Tj)
         s = np.sum(ref == np.array(Tj))
+        # print('Coincidence: ', s)
         S.append(s)
         # print('# Sync: ', s)
     return S
 
 L = 5
 R = 2
-fRate = 40
-Size = 100
+fRate = 20#40
+Size = 40#100
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
-print('Spike Data: ')
-print(spikeData)
+# print('Spike Data: ')
+# print(spikeData)
 
 N = len(spikeTrain)
 initDist = getInitDist(L)
 tDistMatrices = getTransitionMatrices(L, N)
-ref = getReference(Size, N)
+ref = getReference(Size, L, N)
 
 print('Initial Distribution: ')
 print(initDist)
@@ -94,11 +95,15 @@ print(spikeTrain)
 
 S = getAmountSync(ref, Tmat)
 print('Amount_Synchrony: ', S)
-plt.hist(S, bins='auto')
+All = np.sum(S)
+plt.hist(S, 60, range=[0, N], normed=False, facecolor='gray', align='mid') #, bins='auto'
+#hist(hmag, 30, range=[6.5, 12.5], facecolor='gray', align='mid')
 plt.show()
 
+
+# '''
 ################################################
-# Compute the Closed Synchrony Distribution
+# Compute the Analytic Synchrony Distribution
 ################################################
 
 syncStateMat = getSyncState(L, ref, spikeTrain)
@@ -123,6 +128,10 @@ print('Target: ')
 print(spikeTrain)
 
 
-plt.plot(P_S, 'ro')
-# plt.axis([0, N, 0, 1])
+for i, prob in enumerate(P_S):
+    plt.scatter(i, prob)
+
+plt.xlim(0, N)
+plt.ylim(0, 1)
 plt.show()
+# '''
