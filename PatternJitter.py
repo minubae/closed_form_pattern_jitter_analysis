@@ -32,7 +32,7 @@ from random import *
 ""
 
 def getSpikeData(length, fireRate):
-    
+
     T = 0
     coin = 0
     fRate = 0
@@ -53,8 +53,6 @@ def getSpikeData(length, fireRate):
             spikeData[k] = 1
 
     return spikeData
-
-
 
 
 def getSpikeTrain(spikeData):
@@ -90,6 +88,17 @@ def getX(spikeTrain):
     x = x.flatten()
     return x
 
+def getReference(Size, N):
+
+    n = 0
+    s = 0
+    ref = []
+
+    n = N
+    s = Size
+    ref = np.sort(np.random.randint(s, size=n))
+
+    return ref
 
 # x_tilde = get_x_tilde(get_spike_train(100))
 # print('x_tilde: ', x_tilde)
