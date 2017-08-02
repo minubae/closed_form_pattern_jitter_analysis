@@ -39,6 +39,7 @@ def getTransitionMatrices(L, N):
     return tDistMatrices
 
 
+'''
 L = 3
 fRate = 40
 Size = 100
@@ -51,7 +52,7 @@ print('Spike Train: ')
 print(spikeTrain)
 
 N = len(spikeTrain)
-ref = getReference(Size, N)
+ref = getReference(Size, L, N)
 
 print('Reference: ')
 print(ref)
@@ -64,7 +65,7 @@ print('Initial Distribution: ')
 print(initDist)
 print('Transition Matrices: ')
 print(tDistMatrices)
-
+'''
 
 
 '''
