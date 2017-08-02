@@ -185,7 +185,11 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
             # print('Yo1: ', j, preZdist)
             for k, zDist in enumerate(zDistMat):
                 # print('Yo2: ', k, zDist)
+
+                # fftResult = np.fft.rfft2(np.dot(zDist, np.array(preZdist).T))
+                # print('result fft: ', fftResult)
                 result = np.dot(zDist, np.array(preZdist).T)
+                # print('result: ', result)
                 matMult = np.multiply(preZdist, zDist)
                 Sum = j+k
 
@@ -218,15 +222,16 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
 
     return P_S
 
+
 '''
 L = 3
-fRate = 40
-Size = 100
+fRate = 6
+Size = 20
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
 N = len(spikeTrain)
-ref = getReference(Size, N)
+ref = getReference(Size, L, N)
 
 initDist = getInitDist(L)
 tDistMatrices = getTransitionMatrices(L, N)
@@ -250,10 +255,15 @@ print('Init P_S: ')
 print(P_Smat, '\n')
 
 
-P_S = getSyncDist(N, P_Smat, tDistMatrices)
+fftP_S = np.fft.rfft(getSyncDist(N, P_Smat, syncStateMat, tDistMatrices))
+P_S = getSyncDist(N, P_Smat, syncStateMat, tDistMatrices)
 print('P(S1):', P_S1)
 print('P(S',N,'): ', P_S)
 print('Area of Sync Dist (S',N,'): ', np.sum(P_S))
+
+print('fftP(S',N,'): ')
+print(fftP_S)
+print('Area of Sync Dist (S',N,'): ', np.sum(fftP_S))
 
 print('Reference: ')
 print(ref)
@@ -262,7 +272,20 @@ print('Target: ')
 print(spikeTrain)
 
 
-plt.plot(P_S, 'ro')
+for i, prob in enumerate(P_S):
+    plt.scatter(i, prob)
+
+# plt.xlim(0, N)
+# plt.ylim(0, 1)
+plt.axis([0, N, 0, 1])
+plt.show()
+
+
+for i, prob in enumerate(fftP_S):
+    plt.scatter(i, prob)
+
+# plt.xlim(0, N)
+# plt.ylim(0, 1)
 plt.axis([0, N, 0, 1])
 plt.show()
 '''
