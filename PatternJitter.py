@@ -88,16 +88,34 @@ def getX(spikeTrain):
     x = x.flatten()
     return x
 
-def getReference(Size, N):
+def getReference(Size, L, N):
 
     n = 0
     s = 0
+    length = 0
+    randInt = 0
+
     ref = []
+    length = L
 
+    s = Size+np.ceil(length/2)
     n = N
-    s = Size
-    ref = np.sort(np.random.randint(s, size=n))
 
+    for i in range(N):
+
+        randIntTemp = np.random.randint(0, s) #np.sort(np.random.randint(0, s, size=n))
+        # print('Yo: ', randIntTemp, N)
+        if randInt < randIntTemp:
+            ref.append(randIntTemp)
+            randInt = randIntTemp
+            randIntTemp = 0
+        else:
+            ref.append(randIntTemp)
+            randInt = randIntTemp
+            randIntTemp = 0
+
+
+    ref = np.sort(ref)
     return ref
 
 # x_tilde = get_x_tilde(get_spike_train(100))
