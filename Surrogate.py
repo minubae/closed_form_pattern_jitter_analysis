@@ -23,7 +23,7 @@ def getX1(Dist, L, R, ObsX):
     dist = Dist
     obsTar = ObsX
 
-    Omega = getOmega(3, obsTar)
+    Omega = getOmega(length, obsTar)
     result = Omega[0][up]
     randX = np.random.random()
 
