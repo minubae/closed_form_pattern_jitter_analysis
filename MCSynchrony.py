@@ -132,6 +132,6 @@ for i, prob in enumerate(P_S):
     plt.scatter(i, prob)
 
 plt.xlim(0, N)
-plt.ylim(0, 1)
+plt.ylim(0, 0.4)
 plt.show()
 # '''
