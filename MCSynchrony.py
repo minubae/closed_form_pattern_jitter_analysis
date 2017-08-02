@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
+from ClosedSynchrony import *
 from PatternJitter import *
 from TransitMatrix import *
 from Surrogate import *
@@ -55,23 +57,20 @@ def getAmountSync(Reference, Target):
         # print('# Sync: ', s)
     return S
 
-L = 3
+L = 5
 R = 2
-fRate = 6
-Size = 20
+fRate = 40
+Size = 100
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
-
 print('Spike Data: ')
 print(spikeData)
-print('Spike Train: ')
-print(spikeTrain)
 
-n = len(spikeTrain)
-N = n
+N = len(spikeTrain)
 initDist = getInitDist(L)
 tDistMatrices = getTransitionMatrices(L, N)
+ref = getReference(Size, N)
 
 print('Initial Distribution: ')
 print(initDist)
@@ -79,18 +78,51 @@ print('Transition Matrices: ')
 print(tDistMatrices)
 
 
-'''
+################################################################
+# Compute the Synchrony Distribution by Monte Carlo resamples
+################################################################
 Tmat = getSpikeTrainMat(L, R, spikeTrain, initDist, tDistMatrices, 1000)
 print('Spike Trains: ')
 print(Tmat)
 
-print('Reference Train: ')
-print(Ref_03)
 
-S_TrainN = len(x_tilde_03)
-S = getAmountSync(Ref_03, Tmat)
+print('Reference: ')
+print(ref)
+print('Target: ')
+print(spikeTrain)
+
+
+S = getAmountSync(ref, Tmat)
 print('Amount_Synchrony: ', S)
 plt.hist(S, bins='auto')
-# plt.axis([0, S_TrainN])
-# plt.show()
-'''
+plt.show()
+
+################################################
+# Compute the Closed Synchrony Distribution
+################################################
+
+syncStateMat = getSyncState(L, ref, spikeTrain)
+print('Sync State Matrix: ')
+print(syncStateMat, '\n')
+
+P_Smat = getInitSyncDist(initDist, syncStateMat)
+P_S1 = getP_S1(syncStateMat, P_Smat)
+print('Init P_S: ')
+print(P_Smat, '\n')
+
+
+P_S = getSyncDist(N, P_Smat, syncStateMat, tDistMatrices)
+print('P(S1):', P_S1)
+print('P(S',N,'): ', P_S)
+print('Area of Sync Dist (S',N,'): ', np.sum(P_S))
+
+print('Reference: ')
+print(ref)
+
+print('Target: ')
+print(spikeTrain)
+
+
+plt.plot(P_S, 'ro')
+# plt.axis([0, N, 0, 1])
+plt.show()
