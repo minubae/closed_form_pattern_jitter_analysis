@@ -39,22 +39,24 @@ def getTransitionMatrices(L, N):
     return tDistMatrices
 
 
-'''
-fRate = 6
-Size = 20
+L = 3
+fRate = 40
+Size = 100
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
-
-print('Spike Data: ')
-print(spikeData)
+# print('Spike Data: ')
+# print(spikeData)
 print('Spike Train: ')
 print(spikeTrain)
 
-n = len(spikeTrain)
+N = len(spikeTrain)
+ref = getReference(Size, N)
 
-L = 3
-N = n
+print('Reference: ')
+print(ref)
+
+
 initDist = getInitDist(L)
 tDistMatrices = getTransitionMatrices(L, N)
 
@@ -62,7 +64,7 @@ print('Initial Distribution: ')
 print(initDist)
 print('Transition Matrices: ')
 print(tDistMatrices)
-'''
+
 
 
 '''
