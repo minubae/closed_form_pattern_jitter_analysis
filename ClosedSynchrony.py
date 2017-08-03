@@ -188,7 +188,7 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
 
                 # fftResult = np.fft.rfft2(np.dot(zDist, np.array(preZdist).T))
                 # print('result fft: ', fftResult)
-                result = np.fft.rfft2(np.dot(zDist, np.array(preZdist).T)) #np.dot(zDist, np.array(preZdist).T)
+                result = np.dot(zDist, np.array(preZdist).T)
                 # print('result: ', result)
                 matMult = np.multiply(preZdist, zDist)
                 Sum = j+k
@@ -261,9 +261,11 @@ print('P(S1):', P_S1)
 print('P(S',N,'): ', P_S)
 print('Area of Sync Dist (S',N,'): ', np.sum(P_S))
 
+'''
 print('fftP(S',N,'): ')
 print(fftP_S)
 print('Area of Sync Dist (S',N,'): ', np.sum(fftP_S))
+'''
 
 print('Reference: ')
 print(ref)
@@ -280,7 +282,7 @@ for i, prob in enumerate(P_S):
 plt.axis([0, N, 0, 1])
 plt.show()
 
-
+'''
 for i, prob in enumerate(fftP_S):
     plt.scatter(i, prob)
 
@@ -288,4 +290,4 @@ for i, prob in enumerate(fftP_S):
 # plt.ylim(0, 1)
 plt.axis([0, N, 0, 1])
 plt.show()
-# '''
+'''
