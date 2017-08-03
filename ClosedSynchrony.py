@@ -182,9 +182,9 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
         P_S = []
 
         for j, preZdist in enumerate(P_Sm):
-            # print('Yo1: ', j, preZdist)
+            print('Yo1 preZdist: ', j, preZdist)
             for k, zDist in enumerate(zDistMat):
-                # print('Yo2: ', k, zDist)
+                print('Yo2 zDist: ', k, zDist)
 
                 # fftResult = np.fft.rfft2(np.dot(zDist, np.array(preZdist).T))
                 # print('result fft: ', fftResult)
@@ -224,9 +224,9 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
 
 
 # '''
-L = 3
-fRate = 6
-Size = 20
+L = 5
+fRate = 20
+Size = 40
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
@@ -279,7 +279,7 @@ for i, prob in enumerate(P_S):
 
 # plt.xlim(0, N)
 # plt.ylim(0, 1)
-plt.axis([0, N, 0, 1])
+plt.axis([0, N, 0, 0.4])
 plt.show()
 
 '''
