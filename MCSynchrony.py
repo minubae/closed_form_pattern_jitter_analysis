@@ -82,7 +82,7 @@ print(tDistMatrices)
 ################################################################
 # Compute the Synchrony Distribution by Monte Carlo resamples
 ################################################################
-Tmat = getSpikeTrainMat(L, R, spikeTrain, initDist, tDistMatrices, 100)
+Tmat = getSpikeTrainMat(L, R, spikeTrain, initDist, tDistMatrices, 1000)
 print('Spike Trains: ')
 print(Tmat)
 
