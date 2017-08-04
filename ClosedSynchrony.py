@@ -169,6 +169,8 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
     tDistM = tDistMatrices
     syncStateM = syncStateMat
 
+    fft = []
+
     for i in range(size-1):
 
         zDistMat = getZdist(tDistM, syncStateM, i)
@@ -182,9 +184,24 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
         P_S = []
 
         for j, preZdist in enumerate(P_Sm):
-            print('Yo1 preZdist: ', j, preZdist)
+
+            # print('Yo1 preZdist: ', j, preZdist)
+            '''
+            a1 = preZdist
+            a2 = preZdist
+
+            convolution = np.convolve(a1, a2)
+            fft = np.fft.rfft(convolution)
+
+            fft = np.append(fft, 0)
+            mul = np.multiply(fft, fft)
+            inverseFFT = np.fft.irfft(mul)
+            print('FFT Convolution: ', inverseFFT)
+            print('length: ', len(inverseFFT))
+            '''
+            
             for k, zDist in enumerate(zDistMat):
-                print('Yo2 zDist: ', k, zDist)
+                # print('Yo2 zDist: ', k, zDist)
 
                 # fftResult = np.fft.rfft2(np.dot(zDist, np.array(preZdist).T))
                 # print('result fft: ', fftResult)
