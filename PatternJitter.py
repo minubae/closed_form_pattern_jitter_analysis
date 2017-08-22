@@ -54,8 +54,8 @@ def getSpikeData(length, fireRate):
 
     return spikeData
 
-spikeData = getSpikeData(10, 4)
-print('Spike Data: ', spikeData)
+# spikeData = getSpikeData(10, 4)
+# print('Spike Data: ', spikeData)
 
 def getSpikeTrain(spikeData):
     '''
@@ -83,8 +83,9 @@ def getSpikeTrain(spikeData):
 
     return x_tilde
 
-x_tilde = getSpikeTrain(spikeData)
-print('Observed Spike Train: ', x_tilde)
+x_tilde = [10,13,18]
+# x_tilde = getSpikeTrain(spikeData)
+# print('Observed Spike Train: ', x_tilde)
 
 def getX(spikeTrain):
     x = spikeTrain
@@ -174,18 +175,19 @@ def getOmega(L, x_tilde):
 ""
 
 def getGamma(R, L, x_tilde):
+
     Gamma = []
     Gamma.append(0)
     n = len(x_tilde)
-    for i in range(1, n): # range(1,n)
+
+    for i in range(1, n):
         if x_tilde[i] - x_tilde[i-1] <= R:
             Gamma.append(x_tilde[i] - x_tilde[i-1])
-            return Gamma
         else:
             x = np.arange(R+1,R+1+L,1)
             Gamma.append(np.array(x))
-            return Gamma
-    # return Gamma
+
+    return Gamma
 
 #Gamma = getGamma(R, x_tilde)
 
@@ -199,18 +201,22 @@ def getGamma(R, L, x_tilde):
 # where 1{A} is the indicator function of the set A and Z is a normalization constant that depends on
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
-
-# Omega = getOmega(L, x_tilde)
-# Gamma = getGamma(R, L, x_tilde)
+L = 3
+R = 4
+Omega = getOmega(L, x_tilde)
+Gamma = getGamma(R, L, x_tilde)
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
-def indicator_01(x, i):
+def indicator_01(x):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
     # Test whether each element of a 1-D array is also present in a second array.
     # Return a boolean array the same length as ar1 that is True where an element of ar1 is in ar2 and False otherwise
-    if np.in1d(x[i], Omega[0]) == True:
+
+    if np.in1d(x[0], Omega[0]) == True:
+    # if np.in1d(x[i], Omega[0]) == True:
         return 1
-    return 0
+    else:
+        return 0
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
 def indicator_02(x, i):
@@ -232,9 +238,9 @@ def indicator_03(x, i):
     return 0
 
 # h_1(x_1):= 1{x[1] in Omega[1]}
-def h_1(x, i):
+def h_1(x):
     # print('x: ', x)
-    return indicator_01(x, i)
+    return indicator_01(x)
 
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
 def h_i(x, i):
@@ -252,4 +258,14 @@ Sampling from the Resampling Distribution
 # print(Omega[0][0])
 # print('h_1 ? : ', h_1(x, 0),'\n')
 # print('h_2 ? : ', h_i(x, 1))
-print('Test')
+
+print('x_tilde: ', x_tilde)
+print('Omega:')
+print(Omega)
+
+print('Gamma:')
+print(Gamma, '\n')
+
+x = [9, 12, 19]
+print('x: ', x)
+print('h_1 : ', h_1(x),'\n')
