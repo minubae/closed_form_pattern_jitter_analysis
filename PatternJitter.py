@@ -215,8 +215,8 @@ def indicator_01(x):
     if np.in1d(x[0], Omega[0]) == True:
     # if np.in1d(x[i], Omega[0]) == True:
         return 1
-    else:
-        return 0
+
+    return 0
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
 def indicator_02(x, i):
@@ -229,12 +229,12 @@ def indicator_02(x, i):
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
 def indicator_03(x, i):
     if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
-        print('Gamma[',i+1,']: ', Gamma[i])
-        print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
+        # print('Gamma[',i+1,']: ', Gamma[i])
+        # print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
         return 1
 
-    print('Gamma[',i+1,']: ', Gamma[i])
-    print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
+    # print('Gamma[',i+1,']: ', Gamma[i])
+    # print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
     return 0
 
 # h_1(x_1):= 1{x[1] in Omega[1]}
@@ -267,5 +267,11 @@ print('Gamma:')
 print(Gamma, '\n')
 
 x = [9, 12, 19]
+n = len(x)
 print('x: ', x)
+print('lenth: ', n)
 print('h_1 : ', h_1(x),'\n')
+
+
+for j in range(1,n):
+    print('h[',j,']: ', h_i(x, j))
