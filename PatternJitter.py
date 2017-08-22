@@ -54,6 +54,8 @@ def getSpikeData(length, fireRate):
 
     return spikeData
 
+spikeData = getSpikeData(10, 4)
+print('Spike Data: ', spikeData)
 
 def getSpikeTrain(spikeData):
     '''
@@ -80,6 +82,9 @@ def getSpikeTrain(spikeData):
     # print("Modified_Obs_x: ",x_tilde)
 
     return x_tilde
+
+x_tilde = getSpikeTrain(spikeData)
+print('Observed Spike Train: ', x_tilde)
 
 def getX(spikeTrain):
     x = spikeTrain
