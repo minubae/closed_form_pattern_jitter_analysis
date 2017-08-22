@@ -276,5 +276,13 @@ print('h_1 : ', h_1(x),'\n')
 m = L
 print('length of Omega: ', m)
 
-for i in range(1,n):
-    print('h[',i,']: ', h_i(x, i))
+for i in range(m):
+    print('m: ', i)
+
+    for j in range(1,n):
+        print('n: ', j)
+        print('h[',j,']: ', h_i(x, j))
+
+    print('\n')
+
+    # print('h[',i,']: ', h_i(x, i))
