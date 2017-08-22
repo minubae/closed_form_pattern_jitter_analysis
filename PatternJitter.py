@@ -252,3 +252,4 @@ Sampling from the Resampling Distribution
 # print(Omega[0][0])
 # print('h_1 ? : ', h_1(x, 0),'\n')
 # print('h_2 ? : ', h_i(x, 1))
+print('Test')
