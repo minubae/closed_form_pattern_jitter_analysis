@@ -279,6 +279,7 @@ n = len(x)
 m = L
 print('length of Omega: ', m, '\n')
 
+count = 0
 for i in range(m):
 
     print('m: ', i)
@@ -293,7 +294,13 @@ for i in range(m):
         print('n: ', j)
         print('Gamma: ', Gamma[j])
         x_temp = x1_prime+Gamma[j]
-        print('x[',j+1,']: ', x1_prime+Gamma[j])
+        print('x[',j+1,']: ', x_temp)
+        x1_prime = x_temp
+
+        count += 1
+        print('Omega[',j+1,']: ', Omega[j])
+        if count == n:
+            print('Hey, Yo.')
         print('\n')
         # print('h[',j,']: ', h_i(x, j))
 
