@@ -266,6 +266,9 @@ print(Omega)
 print('Gamma:')
 print(Gamma, '\n')
 
+# L = 3
+# R = 4
+# x_tilde = [10, 13, 18]
 x = [9, 12, 19]
 n = len(x)
 print('x: ', x)
