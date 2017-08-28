@@ -280,16 +280,22 @@ m = L
 print('length of Omega: ', m, '\n')
 
 for i in range(m):
+
     print('m: ', i)
     x1_prime = Omega[0][i]
     print('x1_prime:', x1_prime)
     print('h_1(x1_prime): ', h_1(x1_prime))
+    print('\n')
 
     for j in range(1,n):
 
 
         print('n: ', j)
-        print('h[',j,']: ', h_i(x, j))
+        print('Gamma: ', Gamma[j])
+        x_temp = x1_prime+Gamma[j]
+        print('x[',j+1,']: ', x1_prime+Gamma[j])
+        print('\n')
+        # print('h[',j,']: ', h_i(x, j))
 
     print('\n')
 
