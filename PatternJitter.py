@@ -279,7 +279,8 @@ n = len(x)
 m = L
 print('length of Omega: ', m, '\n')
 
-count = 0
+# count = 0
+output_num = []
 for i in range(m):
 
     print('m: ', i)
@@ -287,23 +288,31 @@ for i in range(m):
     print('x1_prime:', x1_prime)
     print('h_1(x1_prime): ', h_1(x1_prime))
     print('\n')
-
+    count = 1
+    output = []
     for j in range(1,n):
+        count += 1
+        x_temp = x1_prime+Gamma[j]
 
 
         print('n: ', j)
         print('Gamma: ', Gamma[j])
-        x_temp = x1_prime+Gamma[j]
-        print('x[',j+1,']: ', x_temp)
+        print('x[',j+1,'] temp: ', x_temp)
+        print('Omega[',j+1,']: ', Omega[j])
+
+        if count == n:
+            output = np.intersect1d(x_temp, Omega[j])
+            print('Hey, Yo! How many outputs are : ', output)
+            output_num.append(len(output))
+
         x1_prime = x_temp
 
-        count += 1
-        print('Omega[',j+1,']: ', Omega[j])
-        if count == n:
-            print('Hey, Yo.')
         print('\n')
         # print('h[',j,']: ', h_i(x, j))
 
     print('\n')
 
     # print('h[',i,']: ', h_i(x, i))
+
+beta_prime = np.sum(output_num)
+print('Amount of Possible Outputs: ', beta_prime)
