@@ -207,12 +207,12 @@ Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
 # Indicator function 01 := 1{x[1] in Omega[1]}
-def indicator_01(x):
+def indicator_01(x_1):
     # numpy.in1d(ar1, ar2, assume_unique=False, invert=False)
     # Test whether each element of a 1-D array is also present in a second array.
     # Return a boolean array the same length as ar1 that is True where an element of ar1 is in ar2 and False otherwise
-
-    if np.in1d(x[0], Omega[0]) == True:
+    # x = x_1
+    if np.in1d(x_1, Omega[0]) == True:
     # if np.in1d(x[i], Omega[0]) == True:
         return 1
 
@@ -271,18 +271,23 @@ print(Gamma, '\n')
 # x_tilde = [10, 13, 18]
 x = [9, 12, 19]
 n = len(x)
-print('x: ', x)
-print('lenth: ', n)
-print('h_1 : ', h_1(x),'\n')
+# print('x: ', x)
+# print('lenth: ', n)
+# print('h_1 : ', h_1(x),'\n')
 
 
 m = L
-print('length of Omega: ', m)
+print('length of Omega: ', m, '\n')
 
 for i in range(m):
     print('m: ', i)
+    x1_prime = Omega[0][i]
+    print('x1_prime:', x1_prime)
+    print('h_1(x1_prime): ', h_1(x1_prime))
 
     for j in range(1,n):
+
+
         print('n: ', j)
         print('h[',j,']: ', h_i(x, j))
 
