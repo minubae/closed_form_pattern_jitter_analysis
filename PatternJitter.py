@@ -266,53 +266,93 @@ print(Omega)
 print('Gamma:')
 print(Gamma, '\n')
 
+def Beta1(inputX):
+
+    x1 = 0
+    h1 = 0
+    count = 0
+
+    beta = []
+    count = 1
+    x1 = inputX
+    h1 = h_1(x1)
+    print('h1: ', h1)
+
+    if h1 != 0:
+        for i in range(1, n):
+
+            count += 1
+            x_temp = x1+Gamma[i]
+
+            print('n: ', i)
+            print('Gamma: ', Gamma[i])
+            print('x[',i+1,'] temp: ', x_temp)
+            print('Omega[',i+1,']: ', Omega[i])
+
+            if count == n:
+                output = np.intersect1d(x_temp, Omega[i])
+                beta.append(len(output))
+
+            x1 = x_temp
+
+        sumBeta = np.sum(beta)
+        return sumBeta
+
+    else:
+
+        return 0
+
+# print('Beta1: ', Beta1(9))
+# print('\n')
+
+
 # L = 3
 # R = 4
 # x_tilde = [10, 13, 18]
-x = [9, 12, 19]
-n = len(x)
-# print('x: ', x)
-# print('lenth: ', n)
-# print('h_1 : ', h_1(x),'\n')
+X = [9, 12, 19]
+
+def Beta1P(X, L):
+    m = 0
+    n = 0
+    x1_p = 0
+    allOutput = []
+
+    m = L
+    n = len(X)
+
+    for i in range(m):
+
+        x1_p = Omega[0][i]
+
+        print('m: ', i)
+        print('x1_prime:', x1_p)
+
+        count = 1
+        output = []
+
+        for j in range(1,n):
+            count += 1
+            x_temp = x1_p+Gamma[j]
+
+            print('n: ', j)
+            print('Gamma: ', Gamma[j])
+            print('x[',j+1,'] temp: ', x_temp)
+            print('Omega[',j+1,']: ', Omega[j])
+
+            if count == n:
+                output = np.intersect1d(x_temp, Omega[j])
+                print('Hey, Yo! How many outputs are : ', output)
+                allOutput.append(len(output))
+
+            x1_p = x_temp
+
+            print('\n')
+            # print('h[',j,']: ', h_i(x, j))
+
+    sumBetaP = np.sum(allOutput)
+    return sumBetaP
+
+# print('Beta1_Prime: ', Beta1P(X, L))
 
 
-m = L
-print('length of Omega: ', m, '\n')
-
-# count = 0
-output_num = []
-for i in range(m):
-
-    print('m: ', i)
-    x1_prime = Omega[0][i]
-    print('x1_prime:', x1_prime)
-    print('h_1(x1_prime): ', h_1(x1_prime))
-    print('\n')
-    count = 1
-    output = []
-    for j in range(1,n):
-        count += 1
-        x_temp = x1_prime+Gamma[j]
-
-
-        print('n: ', j)
-        print('Gamma: ', Gamma[j])
-        print('x[',j+1,'] temp: ', x_temp)
-        print('Omega[',j+1,']: ', Omega[j])
-
-        if count == n:
-            output = np.intersect1d(x_temp, Omega[j])
-            print('Hey, Yo! How many outputs are : ', output)
-            output_num.append(len(output))
-
-        x1_prime = x_temp
-
-        print('\n')
-        # print('h[',j,']: ', h_i(x, j))
-
-    print('\n')
-
-    # print('h[',i,']: ', h_i(x, i))
-
-beta_prime = np.sum(output_num)
-print('Amount of Possible Outputs: ', beta_prime)
+print('Omega: ', Omega[0])
