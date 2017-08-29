@@ -321,26 +321,34 @@ def Beta_i(Xi_1, Xi, index, N):
 
         for j in range(i, n-1):
 
-            # print('xi dim: ', xi.ndim)
-            if xi.ndim >= 1:
+            if Gamma[j+1].ndim and xi.ndim >= 1:
+                
                 print('array')
 
                 for x in xi:
                     x_temp = x+Gamma[j+1]
 
-                    print('temp:', x_temp)
+                    output = np.intersect1d(x_temp, Omega[j+1])
+                    beta.append(len(output))
+
+                    print('temp1:', x_temp)
+                    print('#beta1: ', beta)
 
                 xi = xi+(R+1)
 
+                sumBeta = np.sum(beta)
+
                 print('new: ', xi)
+                print('Sum Beta: ', sumBeta)
 
             else:
 
                 print('no array')
-                x_temp = xi+Gamma[j+1]
-
+                x_temp = xi + Gamma[j+1]
                 xi = x_temp
-                # print(xi)
+
+                print('temp2:', x_temp)
+                print('======')
 
         return 1
 
