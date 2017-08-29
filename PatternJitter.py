@@ -289,97 +289,68 @@ print('Gamma:')
 print(Gamma, '\n')
 # print('Omega Length: ', len(Omega))
 
-m = L
-n = len(Omega)
-index = 0
 
-def Beta_i(Xi_1, Xi, index, N):
+def Betai(Xi_1, Xi, index, ObsX):
 
-    i = 0
-    xi_1 = 0
-    xi = 0
-    hi = 0
-    n = 0
-    x_temp = 0
-    count = 1
-    sumBeta = 0
-    beta = []
+    betai = 0
 
-    n = N
-    xi_1 = Xi_1
     xi = Xi
     i = index
-    hi = h_i(xi_1, xi, i)
+    xi_1 = Xi_1
+    x_tilde = ObsX
+    n = len(x_tilde)
 
-    R = 4
+    hi = hi = h_i(xi_1, xi, i)
+    gap = x_tilde[i] - x_tilde[i-1]
+
+    counter = i+1
+
+    print('h_i: ', hi)
+    print('x_tilde: ', x_tilde)
+    print('x_tilde[i-1]: ', x_tilde[i-1])
+    print('x_tilde[i]: ', x_tilde[i])
+    print('x_tilde[i] - x_tilde[i-1]: ', gap)
 
     if hi != 0:
 
-        print('hey yo: ', hi)
-        print('index: ', i)
-        print('N: ', n)
+        betai = 1
+        for j in range(i+1, n):
 
-        for j in range(i, n-1):
+            counter += 1
 
-            if Gamma[j+1].ndim and xi.ndim >= 1:
-                
-                print('array')
+            print('yo: ', j)
+            print('xi: ', xi)
 
-                for x in xi:
-                    x_temp = x+Gamma[j+1]
+            if np.array(Gamma[j]).ndim >= 1:
 
-                    output = np.intersect1d(x_temp, Omega[j+1])
-                    beta.append(len(output))
+                x_temp = xi+Gamma[j]
 
-                    print('temp1:', x_temp)
-                    print('#beta1: ', beta)
+                if counter == n:
 
-                xi = xi+(R+1)
-
-                sumBeta = np.sum(beta)
-
-                print('new: ', xi)
-                print('Sum Beta: ', sumBeta)
+                    print('done1')
 
             else:
 
-                print('no array')
-                x_temp = xi + Gamma[j+1]
-                xi = x_temp
+                x_temp = xi+Gamma[j]
 
-                print('temp2:', x_temp)
-                print('======')
+                if counter == n:
 
-        return 1
+                    print('done2')
+
+            print('x_temp: ', x_temp)
+
+
+        return betai
 
     else:
 
-        return 0
+        betai = 0
+        return betai
 
 
-def Beta_i_prime(Xi_1, Xi):
-
-    return False
+print(Betai(9, 12, 1, x_tilde))
 
 
-for i in range(1,n):
-
-    print(Omega[i-1])
-    print(Omega[i])
-
-    for j in range(m):
-        for k in range(m):
-
-            xi_1 = Omega[i-1][j]
-            xi = Omega[i][k]
-
-            print('x(i-1): ', xi_1)
-            print('x(i): ', xi)
-            print(Beta_i(xi_1, xi, i, n))
-
-            print('\n')
-
-    print('\n')
 
 
 def Beta1(inputX, X_tilde):
