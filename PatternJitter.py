@@ -83,7 +83,7 @@ def getSpikeTrain(spikeData):
 
     return x_tilde
 
-x_tilde = [10,13,18]
+x_tilde = [10,13,18,23]
 # x_tilde = getSpikeTrain(spikeData)
 # print('Observed Spike Train: ', x_tilde)
 
@@ -219,16 +219,30 @@ def indicator_01(x_1):
     return 0
 
 # Indicator function 02 := 1{x[i] in Omega[i]}
-def indicator_02(x, i):
-    # print('Omega[',i+1,']: ', Omega[i])
-    # print('x[',i+1,']: ', x[i])
-    if np.in1d(x[i], Omega[i]) == True:
+def indicator_02(Xi, index):
+
+    i = 0
+    xi = 0
+
+    xi = Xi
+    i = index
+
+    if np.in1d(xi, Omega[i]) == True:
         return 1
     return 0
 
 # Indicator function 03 := 1{x[i] - (x[i]-1) in Gamma[i]}
-def indicator_03(x, i):
-    if np.in1d(x[i]-x[i-1], Gamma[i]) == True:
+def indicator_03(Xi_1, Xi, index):
+
+    i = 0
+    xi = 0
+    xi_1 = 0
+
+    xi = Xi
+    xi_1 = Xi_1
+    i = index
+
+    if np.in1d(xi - xi_1, Gamma[i]) == True:
         # print('Gamma[',i+1,']: ', Gamma[i])
         # print('x[',i+1,'] - x[',i,']: ', x[i]-x[i-1])
         return 1
@@ -243,10 +257,18 @@ def h_1(x):
     return indicator_01(x)
 
 # h_i(x[i-1], x_i) := 1{x[i] in Omega[i]}*1{x[i]-x[i-1] in Gamma[i]}
-def h_i(x, i):
-    # print('Input: ', x_1, x_2)
-    # print('X: ', x)
-    return indicator_02(x, i)*indicator_03(x, i)
+def h_i(Xi_1, Xi, index):
+
+    i = 0
+    xi = 0
+    xi_1 = []
+
+    xi = Xi
+    xi_1 = Xi_1
+
+    i = index
+
+    return indicator_02(xi, i)*indicator_03(xi_1, xi, i)
 
 '''
 Sampling from the Resampling Distribution
@@ -265,6 +287,41 @@ print(Omega)
 
 print('Gamma:')
 print(Gamma, '\n')
+# print('Omega Length: ', len(Omega))
+
+m = L
+n = len(Omega)
+index = 0
+
+def Beta_i(Xi_1, Xi):
+
+    return False
+
+
+def Beta_i_prime(Xi_1, Xi):
+
+    return False
+
+
+for i in range(1,n):
+
+    print(Omega[i-1])
+
+    for j in range(m):
+        for k in range(m):
+
+            xi_1 = Omega[i-1][j]
+            xi = Omega[i][k]
+
+            print('x(i-1): ', xi_1)
+            print('x(i): ', xi)
+            print('hey yo: ', h_i(xi_1, xi, i))
+
+            # Beta_i(xi_1, xi)
+            print('\n')
+
+    print('\n')
+
 
 def Beta1(inputX, X_tilde):
 
@@ -312,8 +369,8 @@ def Beta1(inputX, X_tilde):
 
 # L = 3
 # R = 4
-# x_tilde = [10, 13, 18]
-spikeX = [9, 12, 19]
+# x_tilde = [10, 13, 18, 23]
+spikeX = [9, 12, 19, 23]
 
 def Beta1P(X, L):
     m = 0
@@ -326,13 +383,9 @@ def Beta1P(X, L):
 
     for i in range(m):
 
-        x1_p = Omega[0][i]
-
-        # print('m: ', i)
-        # print('x1_prime:', x1_p)
-
         count = 1
         output = []
+        x1_p = Omega[0][i]
 
         for j in range(1,n):
             count += 1
@@ -367,13 +420,15 @@ def p1(Omega, X, X_tilde):
     omega = Omega
     x_tilde = X_tilde
 
+    print('Beta1_Prime: ', Beta1P(spikeX, L))
+    print('\n')
+
     for x in omega[0]:
-        print(x)
-        print('Yo, Beta1: ', Beta1(x, x_tilde))
+        print('x1: ', x)
+        print('Beta1: ', Beta1(x, x_tilde))
+        print('\n')
         initDist.append(Beta1(x, x_tilde) / Beta1P(spikeX, L))
 
-    print('Yo, Beta1_Prime: ', Beta1P(spikeX, L))
-    
     return initDist
 
-print('P1: ', p1(Omega, spikeX, x_tilde))
+# print('P1: ', p1(Omega, spikeX, x_tilde))
