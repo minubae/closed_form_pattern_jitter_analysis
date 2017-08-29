@@ -293,9 +293,60 @@ m = L
 n = len(Omega)
 index = 0
 
-def Beta_i(Xi_1, Xi):
+def Beta_i(Xi_1, Xi, index, N):
 
-    return False
+    i = 0
+    xi_1 = 0
+    xi = 0
+    hi = 0
+    n = 0
+    x_temp = 0
+    count = 1
+    sumBeta = 0
+    beta = []
+
+    n = N
+    xi_1 = Xi_1
+    xi = Xi
+    i = index
+    hi = h_i(xi_1, xi, i)
+
+    R = 4
+
+    if hi != 0:
+
+        print('hey yo: ', hi)
+        print('index: ', i)
+        print('N: ', n)
+
+        for j in range(i, n-1):
+
+            # print('xi dim: ', xi.ndim)
+            if xi.ndim >= 1:
+                print('array')
+
+                for x in xi:
+                    x_temp = x+Gamma[j+1]
+
+                    print('temp:', x_temp)
+
+                xi = xi+(R+1)
+
+                print('new: ', xi)
+
+            else:
+
+                print('no array')
+                x_temp = xi+Gamma[j+1]
+
+                xi = x_temp
+                # print(xi)
+
+        return 1
+
+    else:
+
+        return 0
 
 
 def Beta_i_prime(Xi_1, Xi):
@@ -306,6 +357,7 @@ def Beta_i_prime(Xi_1, Xi):
 for i in range(1,n):
 
     print(Omega[i-1])
+    print(Omega[i])
 
     for j in range(m):
         for k in range(m):
@@ -315,9 +367,8 @@ for i in range(1,n):
 
             print('x(i-1): ', xi_1)
             print('x(i): ', xi)
-            print('hey yo: ', h_i(xi_1, xi, i))
+            print(Beta_i(xi_1, xi, i, n))
 
-            # Beta_i(xi_1, xi)
             print('\n')
 
     print('\n')
@@ -327,11 +378,10 @@ def Beta1(inputX, X_tilde):
 
     x1 = 0
     h1 = 0
-    count = 0
-    x_tilde = []
-
-    beta = []
     count = 1
+    x_tilde = []
+    beta = []
+
     x1 = inputX
     h1 = h_1(x1)
     x_tilde = X_tilde
@@ -345,10 +395,10 @@ def Beta1(inputX, X_tilde):
             count += 1
             x_temp = x1+Gamma[i]
 
-            # print('n: ', i)
-            # print('Gamma: ', Gamma[i])
-            # print('x[',i+1,'] temp: ', x_temp)
-            # print('Omega[',i+1,']: ', Omega[i])
+            print('n: ', i)
+            print('Gamma: ', Gamma[i])
+            print('x[',i+1,'] temp: ', x_temp)
+            print('Omega[',i+1,']: ', Omega[i])
 
             if count == n:
                 output = np.intersect1d(x_temp, Omega[i])
@@ -363,7 +413,7 @@ def Beta1(inputX, X_tilde):
 
         return 0
 
-# print('Beta1: ', Beta1(9))
+# print('Beta1: ', Beta1(9, x_tilde))
 # print('\n')
 
 
