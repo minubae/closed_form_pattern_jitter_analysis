@@ -83,7 +83,7 @@ def getSpikeTrain(spikeData):
 
     return x_tilde
 
-x_tilde = [10,13,18,23]
+x_tilde = [10,15,20,26]
 # x_tilde = getSpikeTrain(spikeData)
 # print('Observed Spike Train: ', x_tilde)
 
@@ -292,6 +292,7 @@ print(Gamma, '\n')
 
 def Betai(Xi_1, Xi, index, ObsX):
 
+    gap = 0
     betai = 0
 
     xi = Xi
@@ -301,7 +302,7 @@ def Betai(Xi_1, Xi, index, ObsX):
     n = len(x_tilde)
 
     hi = hi = h_i(xi_1, xi, i)
-    gap = x_tilde[i] - x_tilde[i-1]
+
 
     counter = i+1
 
@@ -309,7 +310,10 @@ def Betai(Xi_1, Xi, index, ObsX):
     print('x_tilde: ', x_tilde)
     print('x_tilde[i-1]: ', x_tilde[i-1])
     print('x_tilde[i]: ', x_tilde[i])
-    print('x_tilde[i] - x_tilde[i-1]: ', gap)
+    # print('x_tilde[i] - x_tilde[i-1]: ', gap)
+    print('\n')
+
+    m = L
 
     if hi != 0:
 
@@ -318,12 +322,32 @@ def Betai(Xi_1, Xi, index, ObsX):
 
             counter += 1
 
-            print('yo: ', j)
+            print('index: ', j)
             print('xi: ', xi)
+            print('Gamma i: ', Gamma[j])
 
-            if np.array(Gamma[j]).ndim >= 1:
+            gap = x_tilde[j] - x_tilde[j-1]
 
-                x_temp = xi+Gamma[j]
+            if np.array(Gamma[j-1]).ndim >= 1:
+
+                print('case01')
+                print('xi: ', xi)
+
+                for k in range(m):
+
+                    print('k: ', k)
+                    print('xi[k]:', xi[k])
+
+                    for s in range(j,n):
+                        print('s: ', s)
+
+                        xUp = xi[k]+Gamma[j]
+                        print('xUp: ', xUp)
+
+                # for x in xi:
+                x_temp = xi+gap
+                xi = x_temp
+                print('x_temp: ', x_temp)
 
                 if counter == n:
 
@@ -331,14 +355,17 @@ def Betai(Xi_1, Xi, index, ObsX):
 
             else:
 
+                print('case02')
+
                 x_temp = xi+Gamma[j]
+                xi = x_temp
+                print('x_temp: ', x_temp)
 
                 if counter == n:
 
                     print('done2')
 
-            print('x_temp: ', x_temp)
-
+            print('\n')
 
         return betai
 
@@ -347,10 +374,7 @@ def Betai(Xi_1, Xi, index, ObsX):
         betai = 0
         return betai
 
-
-print(Betai(9, 12, 1, x_tilde))
-
-
+# print(Betai(9, 12, 1, x_tilde))
 
 
 def Beta1(inputX, X_tilde):
@@ -378,6 +402,7 @@ def Beta1(inputX, X_tilde):
             print('Gamma: ', Gamma[i])
             print('x[',i+1,'] temp: ', x_temp)
             print('Omega[',i+1,']: ', Omega[i])
+            print('\n')
 
             if count == n:
                 output = np.intersect1d(x_temp, Omega[i])
@@ -392,7 +417,7 @@ def Beta1(inputX, X_tilde):
 
         return 0
 
-# print('Beta1: ', Beta1(9, x_tilde))
+print('Beta1: ', Beta1(9, x_tilde))
 # print('\n')
 
 
