@@ -174,17 +174,26 @@ def getOmega(L, x_tilde):
 # enforce more regularity in the firing patterns across the resampled spike trains.
 ""
 
-def getGamma(R, L, x_tilde):
+def getGamma(R, L, Xtilde):
 
+    n = 0
+    gap = 0
     Gamma = []
+    x_tilde = []
+
     Gamma.append(0)
+    x_tilde = Xtilde
     n = len(x_tilde)
 
+
     for i in range(1, n):
-        if x_tilde[i] - x_tilde[i-1] <= R:
-            Gamma.append(x_tilde[i] - x_tilde[i-1])
+
+        gap = x_tilde[i] - x_tilde[i-1]
+
+        if gap <= R:
+            Gamma.append(gap)
         else:
-            x = np.arange(R+1,R+1+L,1)
+            x = np.arange(gap,gap+L,1)
             Gamma.append(np.array(x))
 
     return Gamma
@@ -381,7 +390,7 @@ def Beta1(inputX, X_tilde):
 
     x1 = 0
     h1 = 0
-    count = 1
+    count = 2
     x_tilde = []
     beta = []
 
@@ -389,29 +398,82 @@ def Beta1(inputX, X_tilde):
     h1 = h_1(x1)
     x_tilde = X_tilde
     # print('h1: ', h1)
-
+    m = L
     n = len(x_tilde)
 
+    print('x1: ', x1)
+
+    gap = x_tilde[1] - x_tilde[0]
+
+
+
     if h1 != 0:
-        for i in range(1, n):
 
-            count += 1
-            x_temp = x1+Gamma[i]
+        # Xtmp = x1+gap
+        Xtmp = x1+Gamma[1]
 
-            print('n: ', i)
-            print('Gamma: ', Gamma[i])
-            print('x[',i+1,'] temp: ', x_temp)
-            print('Omega[',i+1,']: ', Omega[i])
-            print('\n')
+        if np.array(Xtmp).ndim >=1:
 
-            if count == n:
-                output = np.intersect1d(x_temp, Omega[i])
-                beta.append(len(output))
+            print('Xtmp: ', Xtmp)
+            
+            for i , x in enumerate(Xtmp):
 
-            x1 = x_temp
+                print('Xtmp[i]: ', x)
+                gammaTmp = []
+                x_temp = 0
+                gatmp = []
 
-        sumBeta = np.sum(beta)
-        return sumBeta
+                for j in range(2,n):
+
+                    count += 1
+
+                    gatmp = Gamma[j]
+                    sumGam = gatmp + Gamma[j]
+                    gatmp = sumGam
+
+                    gammaTmp.append(np.array(Gamma[j]))
+
+                    print('n: ', j)
+                    print('Gamma[',j,']', Gamma[j])
+                    print('Gamma temp: ', gatmp)
+                    print('Omega[',j,']: ', Omega[j])
+
+                    print('\n')
+
+                    if count == n:
+
+                        print('vector adding: ', np.sum(gammaTmp))
+
+                        x_temp = x+np.sum(gammaTmp)
+                        print('yo, x_temp: ', x_temp)
+
+
+                        output = np.intersect1d(x_temp, Omega[j])
+                        print('output: ', output)
+                        beta.append(len(output))
+                        print('\n')
+
+        else:
+
+            for j in range(1, n):
+
+                count += 1
+                x_temp = x1+Gamma[j]
+
+                print('n: ', j)
+                print('Gamma: ', Gamma[j])
+                print('x[',j+1,'] temp: ', x_temp)
+                print('Omega[',j+1,']: ', Omega[j])
+                print('\n')
+
+                if count == n:
+                    output = np.intersect1d(x_temp, Omega[j])
+                    beta.append(len(output))
+
+                x1 = x_temp
+
+                sumBeta = np.sum(beta)
+                return sumBeta
 
     else:
 
