@@ -83,7 +83,7 @@ def getSpikeTrain(spikeData):
 
     return x_tilde
 
-x_tilde = [10,15,20,26]
+x_tilde = [10,13,18,22]
 # x_tilde = getSpikeTrain(spikeData)
 # print('Observed Spike Train: ', x_tilde)
 
@@ -193,7 +193,8 @@ def getGamma(R, L, Xtilde):
         if gap <= R:
             Gamma.append(gap)
         else:
-            x = np.arange(gap,gap+L,1)
+            r = R+1
+            x = np.arange(r,r+gap,1)
             Gamma.append(np.array(x))
 
     return Gamma
@@ -211,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 4
+R = 2
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -270,12 +271,15 @@ def h_i(Xi_1, Xi, index):
 
     i = 0
     xi = 0
-    xi_1 = []
+    xi_1 = 0
 
     xi = Xi
     xi_1 = Xi_1
 
     i = index
+
+    # print('1: ', xi, indicator_02(xi, i))
+    # print('2: ', xi_1, indicator_03(xi_1, xi, i))
 
     return indicator_02(xi, i)*indicator_03(xi_1, xi, i)
 
@@ -299,10 +303,71 @@ print(Gamma, '\n')
 # print('Omega Length: ', len(Omega))
 
 
+def Beta1(X1):
+
+    hi = 0
+    beta1 = 0
+    temp = []
+
+    x1 = X1
+    h1 = h_1(x1)
+    m = L
+    n = len(x_tilde)
+
+    if h1 == 1:
+
+        for i in range(m):
+
+            xi = Omega[1][i]
+            hi = h_i(x1,xi,1)
+            temp.append(hi)
+
+        for i in range(2,n):
+
+            print('temp: ', temp)
+
+            for j, hi_1 in enumerate(temp):
+
+                temp = []
+                xi_1 = Omega[i-1][j]
+
+                for k in range(m):
+
+                    if hi_1 == 1:
+
+                        xi = Omega[i][k]
+                        hi = h_i(xi_1, xi, i)
+                        temp.append(hi)
+
+                        print('index: ', i)
+                        print('xi_1: ', xi_1)
+                        print('xi: ', xi)
+                        print('hi: ', hi)
+                        print('\n')
+
+                    else:
+
+                        temp.append(0)
+
+                print('\n')
+
+        beta1 = np.sum(temp)
+
+    else:
+
+        beta1 = 0
+
+    print('temp: ', temp)
+    return beta1
+
+
+print('Beta1: ', Beta1(9))
+
+
 # L = 3
-# R = 4
-# x_tilde = [10, 13, 18, 23]
-spikeX = [9, 12, 19, 23]
+# R = 2
+# x_tilde = [10,13,18,22]
+spikeX = [9, 14, 19, 23]
 
 def Beta1P(X, L):
     m = 0
