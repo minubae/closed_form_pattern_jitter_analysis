@@ -375,7 +375,7 @@ def Beta1(X1, XTilde, Omega, L):
     return beta1
 
 
-print('Beta1: ', Beta1(11, x_tilde, Omega, L))
+print('Beta1: ', Beta1(10, x_tilde, Omega, L))
 
 
 # L = 3
