@@ -286,58 +286,73 @@ def h_i(Xi_1, Xi, index):
 '''
 Sampling from the Resampling Distribution
 '''
-# print('Omega_01:')
-# print(Omega[0])
-# print('Omega_02:')
-# print(Omega[1])
-# print(Omega[0][0])
-# print('h_1 ? : ', h_1(x, 0),'\n')
-# print('h_2 ? : ', h_i(x, 1))
-
 print('x_tilde: ', x_tilde)
 print('Omega:')
 print(Omega)
-
 print('Gamma:')
 print(Gamma, '\n')
-# print('Omega Length: ', len(Omega))
 
 
-def Beta1(X1):
+def Beta1(X1, XTilde, Omega, L):
 
+    m = 0
+    n = 0
+    h1 = 0
     hi = 0
     beta1 = 0
-    temp = []
 
+    temp = []
+    betaTmp = []
+    hiSum = []
+    omega = []
+
+    m = L
     x1 = X1
     h1 = h_1(x1)
-    m = L
-    n = len(x_tilde)
+    omega = Omega
+    xTilde = XTilde
+    n = len(xTilde)
 
     if h1 == 1:
 
         for i in range(m):
 
-            xi = Omega[1][i]
+            xi = omega[1][i]
             hi = h_i(x1,xi,1)
             temp.append(hi)
 
+        h2_Sum = np.sum(temp)
+        betaTmp.append(h2_Sum)
+
+        print('h2_Sum: ', h2_Sum)
+        print('\n')
+
         for i in range(2,n):
 
-            print('temp: ', temp)
+            hiSum = []
 
             for j, hi_1 in enumerate(temp):
 
+                count = 0
                 temp = []
-                xi_1 = Omega[i-1][j]
+                xi_1 = omega[i-1][j]
 
                 for k in range(m):
 
+                    count += 1
+
                     if hi_1 == 1:
 
-                        xi = Omega[i][k]
+                        xi = omega[i][k]
                         hi = h_i(xi_1, xi, i)
                         temp.append(hi)
+
+                        if count == m:
+
+                            hiSum.append(np.sum(temp))
+
+                            print('Yo, I am here.')
+                            print('hi sum: ', hiSum)
 
                         print('index: ', i)
                         print('xi_1: ', xi_1)
@@ -351,17 +366,16 @@ def Beta1(X1):
 
                 print('\n')
 
-        beta1 = np.sum(temp)
-
+            betaTmp.append(np.sum(hiSum))
+            beta1 = np.prod(betaTmp)
     else:
 
         beta1 = 0
 
-    print('temp: ', temp)
     return beta1
 
 
-print('Beta1: ', Beta1(9))
+print('Beta1: ', Beta1(11, x_tilde, Omega, L))
 
 
 # L = 3
