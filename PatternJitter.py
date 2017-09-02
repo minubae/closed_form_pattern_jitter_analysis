@@ -306,14 +306,11 @@ def Beta1(X1, XTilde, Omega):
     hiSum = []
     omega = []
 
-
     x1 = X1
     h1 = h_1(x1)
     omega = Omega
     xTilde = XTilde
     n = len(xTilde)
-
-    print('n: ', n-1)
 
     if h1 == 1:
 
@@ -325,15 +322,15 @@ def Beta1(X1, XTilde, Omega):
         h2_Sum = np.sum(temp)
         betaTmp.append(h2_Sum)
 
-        print('temp: ', 1, temp)
-        print('h2_Sum: ', h2_Sum)
-        print('\n')
+        # print('temp: ', 1, temp)
+        # print('h2_Sum: ', h2_Sum)
+        # print('\n')
 
 
         for i in range(2,n):
 
             hiSum = []
-            print('temp: ', i, temp)
+            # print('temp: ', i, temp)
 
             for j, hi_1 in enumerate(temp):
 
@@ -351,12 +348,12 @@ def Beta1(X1, XTilde, Omega):
                         temp.append(hi)
                         count += 1
 
-                        print('index: ', i)
-                        print('xi_1: ', xi_1)
-                        print('xi: ', xi)
-                        print('hi: ', hi)
-                        print('temp: ', temp)
-                        print('\n')
+                        # print('index: ', i)
+                        # print('xi_1: ', xi_1)
+                        # print('xi: ', xi)
+                        # print('hi: ', hi)
+                        # print('temp: ', temp)
+                        # print('\n')
 
                         if count == m:
                             hiSum.append(np.sum(temp))
@@ -364,8 +361,8 @@ def Beta1(X1, XTilde, Omega):
 
             betaTmp.append(np.sum(hiSum))
             beta1 = np.prod(betaTmp)
-            print('beta tmp: ', i , betaTmp)
-            print('\n')
+            # print('beta tmp: ', i , betaTmp)
+            # print('\n')
 
 
     else:
@@ -376,11 +373,8 @@ def Beta1(X1, XTilde, Omega):
     return beta1
 
 
-print('Beta1: ', Beta1(9, x_tilde, Omega))
+# print('Beta1: ', Beta1(9, x_tilde, Omega))
 
-
-# L = 3
-# R = 2
 # x_tilde = [10,13,18,22]
 spikeX = [9, 14, 19, 23]
 
@@ -392,14 +386,10 @@ def Beta1P(Xtilde, Omega):
     xTilde = Xtilde
 
     for i, x1_p in enumerate(omega[0]):
-
         beta1Ptmp.append(Beta1(x1_p, xTilde, omega))
 
-    # print(beta1Ptmp)
     beta1P = np.sum(beta1Ptmp)
     return beta1P
-
-# print('Beta1_Prime: ', Beta1P(x_tilde, Omega))
 
 
 def p1(Omega, Xtilde):
@@ -425,6 +415,6 @@ def p1(Omega, Xtilde):
     return initDist
 
 
-# P1 = p1(Omega, x_tilde)
-# print('P1: ', P1)
-# print('Sum P1: ', np.sum(P1))
+P1 = p1(Omega, x_tilde)
+print('P1: ', P1)
+print('Sum P1: ', np.sum(P1))
