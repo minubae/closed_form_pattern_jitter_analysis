@@ -212,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 4
+R = 2
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -366,7 +366,6 @@ def Beta1(X1, XTilde, Omega):
 
 
     else:
-
 
         beta1 = 0
 
