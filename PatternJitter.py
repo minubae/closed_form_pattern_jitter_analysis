@@ -212,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 2
+R = 4
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -313,6 +313,8 @@ def Beta1(X1, XTilde, Omega):
     xTilde = XTilde
     n = len(xTilde)
 
+    print('n: ', n-1)
+
     if h1 == 1:
 
         for i, Xi in enumerate(omega[1]):
@@ -323,59 +325,58 @@ def Beta1(X1, XTilde, Omega):
         h2_Sum = np.sum(temp)
         betaTmp.append(h2_Sum)
 
-        # print('h2_Sum: ', h2_Sum)
-        # print('\n')
+        print('temp: ', 1, temp)
+        print('h2_Sum: ', h2_Sum)
+        print('\n')
+
 
         for i in range(2,n):
 
             hiSum = []
+            print('temp: ', i, temp)
 
             for j, hi_1 in enumerate(temp):
 
-                count = 0
-                temp = []
-                xi_1 = omega[i-1][j]
-                m = len(omega[i])
+                if hi_1 == 1:
 
-                for k, Xi in enumerate(omega[i]):
+                    count = 0
+                    temp = []
+                    m = len(omega[i])
+                    xi_1 = omega[i-1][j]
 
-                    count += 1
-
-                    if hi_1 == 1:
+                    for k, Xi in enumerate(omega[i]):
 
                         xi = Xi
                         hi = h_i(xi_1, xi, i)
                         temp.append(hi)
+                        count += 1
+
+                        print('index: ', i)
+                        print('xi_1: ', xi_1)
+                        print('xi: ', xi)
+                        print('hi: ', hi)
+                        print('temp: ', temp)
+                        print('\n')
 
                         if count == m:
-
                             hiSum.append(np.sum(temp))
 
-                            # print('Yo, I am here.')
-                            # print('hi sum: ', hiSum)
-
-                        # print('index: ', i)
-                        # print('xi_1: ', xi_1)
-                        # print('xi: ', xi)
-                        # print('hi: ', hi)
-                        # print('\n')
-
-                    else:
-
-                        temp.append(0)
-
-                # print('\n')
 
             betaTmp.append(np.sum(hiSum))
             beta1 = np.prod(betaTmp)
+            print('beta tmp: ', i , betaTmp)
+            print('\n')
+
+
     else:
+
 
         beta1 = 0
 
     return beta1
 
 
-# print('Beta1: ', Beta1(10, x_tilde, Omega))
+print('Beta1: ', Beta1(9, x_tilde, Omega))
 
 
 # L = 3
@@ -424,6 +425,6 @@ def p1(Omega, Xtilde):
     return initDist
 
 
-P1 = p1(Omega, x_tilde)
-print('P1: ', P1)
-print('Sum P1: ', np.sum(P1))
+# P1 = p1(Omega, x_tilde)
+# print('P1: ', P1)
+# print('Sum P1: ', np.sum(P1))
