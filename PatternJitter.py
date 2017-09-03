@@ -364,7 +364,6 @@ def Beta1(X1, XTilde, Omega):
             # print('beta tmp: ', i , betaTmp)
             # print('\n')
 
-
     else:
 
         beta1 = 0
