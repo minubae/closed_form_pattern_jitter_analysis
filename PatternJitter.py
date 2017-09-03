@@ -417,6 +417,26 @@ def p1(Omega, Xtilde):
 # print('P1: ', P1)
 # print('Sum P1: ', np.sum(P1))
 
+def hiVector(Xi_1, Xi, Index, Omega):
+
+    output = []
+    xi_1 = Xi_1
+    omega = Omega
+    index  = Index
+
+
+    for i, Xi in enumerate(omega[index]):
+
+        xi = Xi
+        hi = h_i(xi_1,xi,index)
+        output.append(hi)
+        # print('x(i-1): ', xi_1)
+        # print('x(i): ', xi)
+
+    return output
+
+
+
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
     m = 0
@@ -426,6 +446,7 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
     index = 0
 
     temp = []
+    gear = []
     betaTmp = []
     hiSum = []
     omega = []
@@ -437,6 +458,7 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
     xTilde = XTilde
     hi = h_i(xi_1, xi, index)
     n = len(xTilde)
+    m = len(omega[0])
 
     # print('x(i-1): ', xi_1)
     # print('x(i): ', xi)
@@ -444,50 +466,78 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
     if hi == 1:
 
-        # print('betai is not zero.')
-
         xi_1 = xi
         index += 1
-        for i, Xi in enumerate(omega[index]):
-            xi = Xi
-            hi = h_i(xi_1,xi,index)
-            temp.append(hi)
 
+        temp = hiVector(xi_1, xi, index, omega)
         h2_Sum = np.sum(temp)
         betaTmp.append(h2_Sum)
 
         print('temp: ', temp)
-
         index += 1
-        for i in range(index,n):
+        for i, hi_1 in enumerate(temp):
 
-            hiSum = []
-            print('temp: ', i, temp)
+            print('hi_1,',i,': ', hi_1)
 
-            for j, hi_1 in enumerate(temp):
+            if hi_1 == 1:
 
-                if hi_1 == 1:
+                xi_1 = omega[index-1][i]
 
-                    count = 0
-                    temp = []
-                    m = len(omega[i])
-                    xi_1 = omega[i-1][j]
-                    print('xi_1: ',xi_1)
+                print('xi_1: ', xi_1)
 
-                    for k, Xi in enumerate(omega[i]):
-                        xi = Xi
-                        print('xi: ', xi)
-                        
-                        hi = h_i(xi_1, xi, i)
-                        temp.append(hi)
-                        count += 1
+                for j in range(index, n):
 
-                        if count == m:
-                            hiSum.append(np.sum(temp))
+                    print('index: ', j)
+
+                    for k in range(m):
+
+                        print('k: ', k)
+
+                        for l in range(m):
+
+                            print('l: ', l)
 
 
-            betaTmp.append(np.sum(hiSum))
-            betai = np.prod(betaTmp)
+        #     print('hi_1: ', hi_1)
+        #
+        #     if hi_1 == 1:
+        #
+        #         for i in range(index,n):
+        #
+        #             hiSum = []
+        #             print('temp: ', i, temp)
+        #             m = len(omega[i])
+        #
+        #             for z in range(m):
+        #                 xi = Xi
+        #                 hi = h_i(xi_1,xi,index)
+        #                 temp.append(hi)
+        #
+        #
+        #             for j, hi in enumerate(temp):
+        #
+        #                 if hi == 1:
+        #
+        #                     count = 0
+        #                     temp = []
+        #                     m = len(omega[i])
+        #                     xi_1 = omega[i-1][j]
+        #                     print('xi_1: ',xi_1)
+        #
+        #                     for k, Xi in enumerate(omega[i]):
+        #                         xi = Xi
+        #                         print('xi: ', xi)
+        #
+        #                         hi = h_i(xi_1, xi, i)
+        #                         temp.append(hi)
+        #                         count += 1
+        #
+        #                         if count == m:
+        #                             hiSum.append(np.sum(temp))
+        #
+        #
+        #             betaTmp.append(np.sum(hiSum))
+        #             betai = np.prod(betaTmp)
 
     else:
 
@@ -496,4 +546,4 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
     return betai
 
 
-print('Betai: ', Betai(10, 13, 1, x_tilde, Omega))
+print('Betai: ', Betai(9, 12, 1, x_tilde, Omega))
