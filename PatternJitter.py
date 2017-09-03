@@ -83,7 +83,7 @@ def getSpikeTrain(spikeData):
 
     return x_tilde
 
-x_tilde = [10,13,18,22]
+x_tilde = [10,13,18,22,26] #,26
 # x_tilde = getSpikeTrain(spikeData)
 # print('Observed Spike Train: ', x_tilde)
 
@@ -413,6 +413,87 @@ def p1(Omega, Xtilde):
     return initDist
 
 
-P1 = p1(Omega, x_tilde)
-print('P1: ', P1)
-print('Sum P1: ', np.sum(P1))
+# P1 = p1(Omega, x_tilde)
+# print('P1: ', P1)
+# print('Sum P1: ', np.sum(P1))
+
+def Betai(Xi_1, Xi, Index, XTilde, Omega):
+
+    m = 0
+    n = 0
+    hi = 0
+    betai = 0
+    index = 0
+
+    temp = []
+    betaTmp = []
+    hiSum = []
+    omega = []
+    index = Index
+
+    xi = Xi
+    xi_1 = Xi_1
+    omega = Omega
+    xTilde = XTilde
+    hi = h_i(xi_1, xi, index)
+    n = len(xTilde)
+
+    # print('x(i-1): ', xi_1)
+    # print('x(i): ', xi)
+    # print('hi: ', hi)
+
+    if hi == 1:
+
+        # print('betai is not zero.')
+
+        xi_1 = xi
+        index += 1
+        for i, Xi in enumerate(omega[index]):
+            xi = Xi
+            hi = h_i(xi_1,xi,index)
+            temp.append(hi)
+
+        h2_Sum = np.sum(temp)
+        betaTmp.append(h2_Sum)
+
+        print('temp: ', temp)
+
+        index += 1
+        for i in range(index,n):
+
+            hiSum = []
+            print('temp: ', i, temp)
+
+            for j, hi_1 in enumerate(temp):
+
+                if hi_1 == 1:
+
+                    count = 0
+                    temp = []
+                    m = len(omega[i])
+                    xi_1 = omega[i-1][j]
+                    print('xi_1: ',xi_1)
+
+                    for k, Xi in enumerate(omega[i]):
+                        xi = Xi
+                        print('xi: ', xi)
+                        
+                        hi = h_i(xi_1, xi, i)
+                        temp.append(hi)
+                        count += 1
+
+                        if count == m:
+                            hiSum.append(np.sum(temp))
+
+
+            betaTmp.append(np.sum(hiSum))
+            betai = np.prod(betaTmp)
+
+    else:
+
+        betai = 0
+
+    return betai
+
+
+print('Betai: ', Betai(10, 13, 1, x_tilde, Omega))
