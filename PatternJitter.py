@@ -439,30 +439,19 @@ def hiVector(Xi_1, Xi, Index, Omega):
 
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
-    m = 0
-    n = 0
-    hi = 0
-    betai = 0
-    index = 0
+    m = 0; n = 0; hi = 0; betai = 0; index = 0
 
-    temp = []
-    gear = []
-    betaTmp = []
-    hiSum = []
-    omega = []
-    index = Index
+    temp = []; gear = []; betaTmp = []; hiSum = []
+    omega = [];index = Index
 
     xi = Xi
     xi_1 = Xi_1
     omega = Omega
     xTilde = XTilde
-    hi = h_i(xi_1, xi, index)
     n = len(xTilde)
     m = len(omega[0])
 
-    # print('x(i-1): ', xi_1)
-    # print('x(i): ', xi)
-    # print('hi: ', hi)
+    hi = h_i(xi_1, xi, index)
 
     if hi == 1:
 
