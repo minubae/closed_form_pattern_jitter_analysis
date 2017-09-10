@@ -379,21 +379,21 @@ def Beta1(X1, XTilde, Omega):
             xi_1Tmp = vecTmp * np.array(Xi)
             xi_1Tmp = np.array(xi_1Tmp[0])
 
-            print('NewVecTmp: ', vecTmp)
-            print('New Xi_1 Temp: ', xi_1Tmp)
-            print('\n')
+            # print('NewVecTmp: ', vecTmp)
+            # print('New Xi_1 Temp: ', xi_1Tmp)
+            # print('\n')
 
     else:
 
         beta1 = 0
 
-    print('betaTemp: ', betaTmp)
+    # print('betaTemp: ', betaTmp)
     beta1 = np.prod(betaTmp)
 
     return beta1
 
 
-print('Beta1: ', Beta1(9, x_tilde, Omega))
+# print('Beta1: ', Beta1(9, x_tilde, Omega))
 print('R: ', R)
 
 # x_tilde = [10,13,18,22]
@@ -426,12 +426,12 @@ def p1(Omega, Xtilde):
 
         initDist.append(Beta1(x1, xTilde, omega) / Beta1P(xTilde, omega))
 
-        print('x1: ', x1)
-        print('Beta1: ', Beta1(x1, xTilde, omega))
-        print('\n')
+        # print('x1: ', x1)
+        # print('Beta1: ', Beta1(x1, xTilde, omega))
+        # print('\n')
 
-    print('Beta1_Prime: ', Beta1P(xTilde, omega))
-    print('\n')
+    # print('Beta1_Prime: ', Beta1P(xTilde, omega))
+    # print('\n')
 
     return initDist
 
@@ -442,14 +442,15 @@ def p1(Omega, Xtilde):
 
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
-    m = 0; n = 0; hi = 0; betai = 0; index = 0
+    m = 0; n = 0; hi = 0; betai = 0; index = 0; sumTemp = 0
 
     temp = []; gear = []; betaTmp = []; hiSum = []
-    omega = [];index = Index
+    omega = []; xi_1Tmp = []; vecTmp = []
 
     xi = Xi
     xi_1 = Xi_1
     omega = Omega
+    index = Index
     xTilde = XTilde
     n = len(xTilde)
     m = len(omega[0])
@@ -465,7 +466,14 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
         Xi = omega[index]
 
         for i, xi in enumerate(Xi):
-            temp.append(h_i(xi_1,xi,index))
+
+            hi = h_i(xi_1,xi,index)
+            temp.append(hi)
+
+            if hi == 1:
+                xi_1Tmp.append(xi)
+            else:
+                xi_1Tmp.append(0)
 
         sumTemp = np.sum(temp)
         betaTmp.append(sumTemp)
@@ -473,7 +481,9 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
         # print('temp: ', temp)
         # print('beta Temp: ', betaTmp)
 
-        for i in range(n-3):
+        num = index+1
+
+        for i in range(n-num):
 
             temp = []
             index += 1
@@ -486,14 +496,24 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
             # print('xi_1: ', Xi_1)
             # print('xi: ', Xi)
 
-            for j, xi_1 in enumerate(Xi_1):
+            for j, xi_1 in enumerate(xi_1Tmp):
                 for k, xi in enumerate(Xi):
 
-                    # print('h_i: ', h_i(xi_1, xi, index))
-                    temp.append(h_i(xi_1, xi, index))
+                    hi = h_i(xi_1, xi, index)
+                    temp.append(hi)
 
+
+                if xi_1 != 0:
+
+                    vec = hiVector(xi_1, Xi, index)
+                    vecTmp.append(vec)
+
+            xi_1Tmp = []
             sumTemp = np.sum(temp)
             betaTmp.append(sumTemp)
+
+            xi_1Tmp = vecTmp * np.array(Xi)
+            xi_1Tmp = np.array(xi_1Tmp[0])
 
     else:
 
@@ -504,5 +524,53 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
     return betai
 
-
 # print('Betai: ', Betai(9, 12, 1, x_tilde, Omega))
+# print('Betai: ', Betai(12, 17, 2, x_tilde, Omega))
+
+
+def Beta_iPrm(Xi_1, Index, Xtilde, Omega):
+
+    temp = []; xi_1 = 0; index = 0; beta_iPrm = 0
+    omega = []; Xi = []; x_tilde = []
+
+    xi_1 = Xi_1; index = Index; omega = Omega
+    Xi = omega[index]; x_tilde = Xtilde
+
+    for i, xi in enumerate(Xi):
+
+        betai = Betai(xi_1, xi, index, x_tilde, omega)
+        temp.append(betai)
+
+    beta_iPrm = np.sum(temp)
+
+    return beta_iPrm
+
+
+# print('Beta_iPrm: ', Beta_iPrm(12, 2, x_tilde, Omega))
+
+
+def Pi(Xi_1, Xi, Index, X_tilde, Omega):
+
+    pi = 0
+
+    xi_1 = Xi_1
+    xi = Xi
+    index = Index
+    x_tilde = X_tilde
+    omega = Omega
+    Xi_P = omega[index]
+
+    betai = Betai(xi_1, xi, index, x_tilde, omega)
+    beta_iPrm = Beta_iPrm(xi_1, index, x_tilde, Omega)
+
+    pi = betai/beta_iPrm
+
+    return pi
+
+
+print('Pi: ', Pi(9, 12, 1, x_tilde, Omega))
+
+Xi = Omega[1]
+
+for xi in Xi:
+    print(Pi(9, xi, 1, x_tilde, Omega))
