@@ -212,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 3
+R = 5
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -283,6 +283,22 @@ def h_i(Xi_1, Xi, index):
 
     return indicator_02(xi, i)*indicator_03(xi_1, xi, i)
 
+
+def hiVector(Xi_1, Xi, Index):
+
+    X_i = Xi
+    xi_1 = Xi_1
+    output = []
+    index = Index
+
+    for i, xi in enumerate(X_i):
+
+        hi = h_i(xi_1, xi ,index)
+        output.append(hi)
+
+    return output
+
+
 '''
 Sampling from the Resampling Distribution
 '''
@@ -295,16 +311,11 @@ print(Gamma, '\n')
 
 def Beta1(X1, XTilde, Omega):
 
-    m = 0
-    n = 0
-    h1 = 0
-    hi = 0
-    beta1 = 0
+    m = 0; n = 0; h1 = 0; hi = 0
+    index = 0; sumTemp = 0; beta1 = 0
 
-    temp = []
-    betaTmp = []
-    hiSum = []
-    omega = []
+    temp = []; betaTmp = []; hiSum = []
+    omega = []; xi_1Tmp = []; vecTmp = []
 
     x1 = X1
     h1 = h_1(x1)
@@ -314,67 +325,87 @@ def Beta1(X1, XTilde, Omega):
 
     if h1 == 1:
 
-        for i, Xi in enumerate(omega[1]):
-            xi = Xi
+        index += 1
+        Xi = omega[index]
+
+        for i, xi in enumerate(Xi):
+
             hi = h_i(x1,xi,1)
             temp.append(hi)
 
-        h2_Sum = np.sum(temp)
-        betaTmp.append(h2_Sum)
+            if hi == 1:
+                xi_1Tmp.append(xi)
+            else:
+                xi_1Tmp.append(0)
 
-        # print('temp: ', 1, temp)
-        # print('h2_Sum: ', h2_Sum)
-        # print('\n')
+        sumTemp = np.sum(temp)
+        betaTmp.append(sumTemp)
 
+        print('xiTmp: ', xi_1Tmp)
+        print('\n')
 
         for i in range(2,n):
 
-            hiSum = []
-            # print('temp: ', i, temp)
+            temp = []
+            index += 1
+            sumTemp = 0
 
-            for j, hi_1 in enumerate(temp):
+            Xi_1 = omega[index-1]
+            Xi = omega[index]
 
-                if hi_1 == 1:
-
-                    count = 0
-                    temp = []
-                    m = len(omega[i])
-                    xi_1 = omega[i-1][j]
-
-                    for k, Xi in enumerate(omega[i]):
-
-                        xi = Xi
-                        hi = h_i(xi_1, xi, i)
-                        temp.append(hi)
-                        count += 1
-
-                        # print('index: ', i)
-                        # print('xi_1: ', xi_1)
-                        # print('xi: ', xi)
-                        # print('hi: ', hi)
-                        # print('temp: ', temp)
-                        # print('\n')
-
-                        if count == m:
-                            hiSum.append(np.sum(temp))
+            print('index: ', index)
+            print('NewVecTmp: ', vecTmp)
+            print('Xi_1: ', Xi_1)
+            print('Xi: ', Xi)
 
 
-            betaTmp.append(np.sum(hiSum))
-            beta1 = np.prod(betaTmp)
-            # print('beta tmp: ', i , betaTmp)
-            # print('\n')
+            for j, xi_1 in enumerate(xi_1Tmp):
+
+                print('yo, xi_1: ', xi_1)
+
+                for k, xi in enumerate(Xi):
+
+                    hi = h_i(xi_1, xi, index)
+                    temp.append(hi)
+
+                if xi_1 != 0:
+
+                    vecTmp = []
+                    vec = hiVector(xi_1, Xi, index)
+                    vecTmp.append(vec)
+
+                    print('xi_1: ', xi_1)
+                    print('GetVecTmp: ', vec)
+
+
+            print('\n')
+
+            xi_1Tmp = []
+            sumTemp = np.sum(temp)
+            betaTmp.append(sumTemp)
+
+            # vecTmp = np.array(vecTmp)
+            # vecTmp = vecTmp.sum(axis=0)
+
+            xi_1Tmp = vecTmp * np.array(Xi)
+            xi_1Tmp = np.array(xi_1Tmp[0])
+            print('New Xi_1 Temp: ', xi_1Tmp)
 
     else:
 
         beta1 = 0
 
+    print('betaTemp: ', betaTmp)
+    beta1 = np.prod(betaTmp)
+
     return beta1
 
 
-# print('Beta1: ', Beta1(9, x_tilde, Omega))
+print('Beta1: ', Beta1(9, x_tilde, Omega))
+print('R: ', R)
 
 # x_tilde = [10,13,18,22]
-spikeX = [9, 14, 19, 23]
+# spikeX = [9, 14, 19, 23]
 
 def Beta1P(Xtilde, Omega):
 
@@ -417,27 +448,6 @@ def p1(Omega, Xtilde):
 # print('P1: ', P1)
 # print('Sum P1: ', np.sum(P1))
 
-def hiVector(Xi_1, Xi, Index):
-
-
-    xi = Xi
-    xi_1 = Xi_1
-    output = []
-    index = Index
-
-
-    for i, Xi in enumerate(xi):
-
-        xi = Xi
-        hi = h_i(xi_1,xi,index)
-        output.append(hi)
-        # print('x(i-1): ', xi_1)
-        # print('x(i): ', xi)
-
-    return output
-
-
-
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
     m = 0; n = 0; hi = 0; betai = 0; index = 0
@@ -461,7 +471,9 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
         xi_1 = xi
         Xi = omega[index]
-        temp = hiVector(xi_1, Xi, index)
+
+        for i, xi in enumerate(Xi):
+            temp.append(h_i(xi_1,xi,index))
 
         sumTemp = np.sum(temp)
         betaTmp.append(sumTemp)
@@ -501,4 +513,4 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
     return betai
 
 
-print('Betai: ', Betai(9, 12, 1, x_tilde, Omega))
+# print('Betai: ', Betai(9, 12, 1, x_tilde, Omega))
