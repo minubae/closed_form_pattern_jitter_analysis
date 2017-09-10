@@ -212,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 5
+R = 3
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -341,8 +341,8 @@ def Beta1(X1, XTilde, Omega):
         sumTemp = np.sum(temp)
         betaTmp.append(sumTemp)
 
-        print('xiTmp: ', xi_1Tmp)
-        print('\n')
+        # print('xiTmp: ', xi_1Tmp)
+        # print('\n')
 
         for i in range(2,n):
 
@@ -353,16 +353,11 @@ def Beta1(X1, XTilde, Omega):
             Xi_1 = omega[index-1]
             Xi = omega[index]
 
-            print('index: ', index)
-            print('NewVecTmp: ', vecTmp)
-            print('Xi_1: ', Xi_1)
-            print('Xi: ', Xi)
-
+            # print('index: ', index)
+            # print('Xi_1: ', Xi_1)
+            # print('Xi: ', Xi)
 
             for j, xi_1 in enumerate(xi_1Tmp):
-
-                print('yo, xi_1: ', xi_1)
-
                 for k, xi in enumerate(Xi):
 
                     hi = h_i(xi_1, xi, index)
@@ -370,26 +365,23 @@ def Beta1(X1, XTilde, Omega):
 
                 if xi_1 != 0:
 
-                    vecTmp = []
                     vec = hiVector(xi_1, Xi, index)
                     vecTmp.append(vec)
+                    # print('xi_1: ', xi_1)
+                    # print('GetVecTmp: ', vecTmp)
 
-                    print('xi_1: ', xi_1)
-                    print('GetVecTmp: ', vec)
-
-
-            print('\n')
-
+            #vecTmp = []
             xi_1Tmp = []
             sumTemp = np.sum(temp)
             betaTmp.append(sumTemp)
-
             # vecTmp = np.array(vecTmp)
             # vecTmp = vecTmp.sum(axis=0)
-
             xi_1Tmp = vecTmp * np.array(Xi)
             xi_1Tmp = np.array(xi_1Tmp[0])
+
+            print('NewVecTmp: ', vecTmp)
             print('New Xi_1 Temp: ', xi_1Tmp)
+            print('\n')
 
     else:
 
