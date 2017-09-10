@@ -212,7 +212,7 @@ def getGamma(R, L, Xtilde):
 # the Omega_i's and the Gamma_i's, and hence on the parameters L and R and the original spike train, x_tilde.
 ""
 L = 3
-R = 2
+R = 3
 Omega = getOmega(L, x_tilde)
 Gamma = getGamma(R, L, x_tilde)
 
@@ -417,15 +417,16 @@ def p1(Omega, Xtilde):
 # print('P1: ', P1)
 # print('Sum P1: ', np.sum(P1))
 
-def hiVector(Xi_1, Xi, Index, Omega):
+def hiVector(Xi_1, Xi, Index):
 
-    output = []
+
+    xi = Xi
     xi_1 = Xi_1
-    omega = Omega
-    index  = Index
+    output = []
+    index = Index
 
 
-    for i, Xi in enumerate(omega[index]):
+    for i, Xi in enumerate(xi):
 
         xi = Xi
         hi = h_i(xi_1,xi,index)
@@ -455,82 +456,47 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
     if hi == 1:
 
+        index += 1
+        # print('index: ', index)
+
         xi_1 = xi
-        index += 1
+        Xi = omega[index]
+        temp = hiVector(xi_1, Xi, index)
 
-        temp = hiVector(xi_1, xi, index, omega)
-        h2_Sum = np.sum(temp)
-        betaTmp.append(h2_Sum)
+        sumTemp = np.sum(temp)
+        betaTmp.append(sumTemp)
 
-        print('temp: ', temp)
-        index += 1
-        for i, hi_1 in enumerate(temp):
+        # print('temp: ', temp)
+        # print('beta Temp: ', betaTmp)
 
-            print('hi_1,',i,': ', hi_1)
+        for i in range(n-3):
 
-            if hi_1 == 1:
+            temp = []
+            index += 1
+            sumTemp = 0
 
-                xi_1 = omega[index-1][i]
+            Xi_1 = omega[index-1]
+            Xi = omega[index]
 
-                print('xi_1: ', xi_1)
+            # print('index: ', index)
+            # print('xi_1: ', Xi_1)
+            # print('xi: ', Xi)
 
-                for j in range(index, n):
+            for j, xi_1 in enumerate(Xi_1):
+                for k, xi in enumerate(Xi):
 
-                    print('index: ', j)
+                    # print('h_i: ', h_i(xi_1, xi, index))
+                    temp.append(h_i(xi_1, xi, index))
 
-                    for k in range(m):
-
-                        print('k: ', k)
-
-                        for l in range(m):
-
-                            print('l: ', l)
-
-
-        #     print('hi_1: ', hi_1)
-        #
-        #     if hi_1 == 1:
-        #
-        #         for i in range(index,n):
-        #
-        #             hiSum = []
-        #             print('temp: ', i, temp)
-        #             m = len(omega[i])
-        #
-        #             for z in range(m):
-        #                 xi = Xi
-        #                 hi = h_i(xi_1,xi,index)
-        #                 temp.append(hi)
-        #
-        #
-        #             for j, hi in enumerate(temp):
-        #
-        #                 if hi == 1:
-        #
-        #                     count = 0
-        #                     temp = []
-        #                     m = len(omega[i])
-        #                     xi_1 = omega[i-1][j]
-        #                     print('xi_1: ',xi_1)
-        #
-        #                     for k, Xi in enumerate(omega[i]):
-        #                         xi = Xi
-        #                         print('xi: ', xi)
-        #
-        #                         hi = h_i(xi_1, xi, i)
-        #                         temp.append(hi)
-        #                         count += 1
-        #
-        #                         if count == m:
-        #                             hiSum.append(np.sum(temp))
-        #
-        #
-        #             betaTmp.append(np.sum(hiSum))
-        #             betai = np.prod(betaTmp)
+            sumTemp = np.sum(temp)
+            betaTmp.append(sumTemp)
 
     else:
 
         betai = 0
+
+    # print('betaTmp: ', betaTmp)
+    betai = np.prod(betaTmp)
 
     return betai
 
