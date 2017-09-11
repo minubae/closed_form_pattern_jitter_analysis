@@ -413,14 +413,14 @@ def Beta1P(Xtilde, Omega):
     return beta1P
 
 
-def P1(Omega, Xtilde):
+def P1(X_tilde, Omega):
 
     omega = []
     xTilde = []
     initDist = []
 
     omega = Omega
-    xTilde = Xtilde
+    xTilde = X_tilde
 
     for i, x1 in enumerate(omega[0]):
 
@@ -440,7 +440,7 @@ def P1(Omega, Xtilde):
 
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
-    m = 0; n = 0; hi = 0; betai = 0; index = 0; sumTemp = 0
+    n = 0; hi = 0; betai = 0; index = 0; sumTemp = 0
 
     temp = []; gear = []; betaTmp = []; hiSum = []
     omega = []; xi_1Tmp = []; vecTmp = []
@@ -451,67 +451,89 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
     index = Index
     xTilde = XTilde
     n = len(xTilde)
-    m = len(omega[0])
+
+    # print('n: ', n)
+    # print('index: ', index)
 
     hi = h_i(xi_1, xi, index)
 
     if hi == 1:
 
-        index += 1
-        # print('index: ', index)
+        if n-1 == index:
 
-        xi_1 = xi
-        Xi = omega[index]
-
-        for i, xi in enumerate(Xi):
-
-            hi = h_i(xi_1,xi,index)
-            temp.append(hi)
-
-            if hi == 1:
-                xi_1Tmp.append(xi)
-            else:
-                xi_1Tmp.append(0)
-
-        sumTemp = np.sum(temp)
-        betaTmp.append(sumTemp)
-
-        # print('temp: ', temp)
-        # print('beta Temp: ', betaTmp)
-
-        num = index+1
-
-        for i in range(n-num):
-
-            temp = []
-            index += 1
-            sumTemp = 0
-
-            Xi_1 = omega[index-1]
+            # print('hello')
             Xi = omega[index]
+            # print(xi_1)
+            for i, xi in enumerate(Xi):
+                # print(xi)
+                hi = h_i(xi_1,xi,index)
+                temp.append(hi)
 
-            # print('index: ', index)
-            # print('xi_1: ', Xi_1)
-            # print('xi: ', Xi)
+                if hi == 1:
+                    xi_1Tmp.append(xi)
+                else:
+                    xi_1Tmp.append(0)
 
-            for j, xi_1 in enumerate(xi_1Tmp):
-                for k, xi in enumerate(Xi):
-
-                    hi = h_i(xi_1, xi, index)
-                    temp.append(hi)
-
-
-                if xi_1 != 0:
-
-                    vec = hiVector(xi_1, Xi, index)
-                    vecTmp.append(vec)
-
-            xi_1Tmp = []
             sumTemp = np.sum(temp)
             betaTmp.append(sumTemp)
 
-            xi_1Tmp = vecTmp * np.array(Xi)
-            xi_1Tmp = np.array(xi_1Tmp[0])
+        else:
+
+            index += 1
+            # print('index: ', index)
+
+            xi_1 = xi
+            Xi = omega[index]
+
+            for i, xi in enumerate(Xi):
+
+                hi = h_i(xi_1,xi,index)
+                temp.append(hi)
+
+                if hi == 1:
+                    xi_1Tmp.append(xi)
+                else:
+                    xi_1Tmp.append(0)
+
+            sumTemp = np.sum(temp)
+            betaTmp.append(sumTemp)
+
+            # print('temp: ', temp)
+            # print('beta Temp: ', betaTmp)
+
+            num = index+1
+
+            for i in range(n-num):
+
+                temp = []
+                index += 1
+                sumTemp = 0
+
+                Xi_1 = omega[index-1]
+                Xi = omega[index]
+
+                # print('index: ', index)
+                # print('xi_1: ', Xi_1)
+                # print('xi: ', Xi)
+
+                for j, xi_1 in enumerate(xi_1Tmp):
+                    for k, xi in enumerate(Xi):
+
+                        hi = h_i(xi_1, xi, index)
+                        temp.append(hi)
+
+
+                    if xi_1 != 0:
+
+                        vec = hiVector(xi_1, Xi, index)
+                        vecTmp.append(vec)
+
+                xi_1Tmp = []
+                sumTemp = np.sum(temp)
+                betaTmp.append(sumTemp)
+
+                xi_1Tmp = vecTmp * np.array(Xi)
+                xi_1Tmp = np.array(xi_1Tmp[0])
 
     else:
 
@@ -524,7 +546,8 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
 # print('Betai: ', Betai(9, 12, 1, x_tilde, Omega))
 # print('Betai: ', Betai(12, 17, 2, x_tilde, Omega))
-
+# print('Betai: ', Betai(17, 21, 3, x_tilde, Omega))
+# print('Betai: ', Betai(21, 25, 4, x_tilde, Omega))
 
 def Beta_iPrm(Xi_1, Index, Xtilde, Omega):
 
@@ -597,4 +620,32 @@ def getTranMatrix(Index, X_tilde, Omega):
     return tranProb
 
 
-print(getTranMatrix(1, x_tilde, Omega))
+# print(getTranMatrix(1, x_tilde, Omega))
+
+
+def getTranMatrices(X_tilde, Omega):
+
+    tranMatrices = []
+
+    omega = Omega
+    x_tilde = X_tilde
+    n = len(x_tilde)
+
+    # print('n: ', n)
+
+    for i in range(1, n):
+        # print('i: ', i)
+        tranMatrix = getTranMatrix(i, x_tilde, Omega)
+        tranMatrices.append(tranMatrix)
+
+    tranMatrices = np.array(tranMatrices)
+    return tranMatrices
+
+initDist = P1(x_tilde, Omega)
+tranMatrices = getTranMatrices(x_tilde, Omega)
+print('\n')
+print('Initial Distribution:')
+print(initDist)
+print('\n')
+print('Transition Matrices:')
+print(tranMatrices)
