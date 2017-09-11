@@ -413,7 +413,7 @@ def Beta1P(Xtilde, Omega):
     return beta1P
 
 
-def p1(Omega, Xtilde):
+def P1(Omega, Xtilde):
 
     omega = []
     xTilde = []
@@ -435,9 +435,7 @@ def p1(Omega, Xtilde):
 
     return initDist
 
-
-# P1 = p1(Omega, x_tilde)
-# print('P1: ', P1)
+# print('P1: ', P1(Omega, x_tilde))
 # print('Sum P1: ', np.sum(P1))
 
 def Betai(Xi_1, Xi, Index, XTilde, Omega):
@@ -561,16 +559,42 @@ def Pi(Xi_1, Xi, Index, X_tilde, Omega):
     Xi_P = omega[index]
 
     betai = Betai(xi_1, xi, index, x_tilde, omega)
-    beta_iPrm = Beta_iPrm(xi_1, index, x_tilde, Omega)
+    beta_iPrm = Beta_iPrm(xi_1, index, x_tilde, omega)
 
     pi = betai/beta_iPrm
 
     return pi
 
 
-print('Pi: ', Pi(9, 12, 1, x_tilde, Omega))
+# print('Pi: ', Pi(9, 12, 1, x_tilde, Omega))
 
-Xi = Omega[1]
 
-for xi in Xi:
-    print(Pi(9, xi, 1, x_tilde, Omega))
+def getTranMatrix(Index, X_tilde, Omega):
+
+    temp = []; tranProb = []
+
+    index = Index
+    omega = Omega
+    x_tilde = X_tilde
+
+    Xi_1 = omega[index-1]
+    Xi = omega[index]
+
+    for i, xi_1 in enumerate(Xi_1):
+        for j, xi in enumerate(Xi):
+
+            betai = Betai(xi_1, xi, index, x_tilde, omega)
+            beta_iPrm = Beta_iPrm(xi_1, index, x_tilde, omega)
+            pi = betai/beta_iPrm
+            temp.append(pi)
+            # print('Pi:', pi)
+
+        # print('Sum: ', np.sum(temp))
+        tranProb.append(temp)
+        temp = []
+
+    tranProb = np.array(tranProb)
+    return tranProb
+
+
+print(getTranMatrix(1, x_tilde, Omega))
