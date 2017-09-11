@@ -555,12 +555,18 @@ def Betai(Xi_1, Xi, Index, XTilde, Omega):
 
 def Beta_iPrm(Xi_1, Index, Xtilde, Omega):
 
-    temp = []; xi_1 = 0; index = 0; beta_iPrm = 0
-    omega = []; Xi = []; x_tilde = []
+    # Initialize Variables
+    xi_1 = 0; index = 0;
+    betai = 0; beta_iPrm = 0
 
+    temp = []; omega = []
+    Xi = []; x_tilde = []
+
+    # Set Variables
     xi_1 = Xi_1; index = Index; omega = Omega
     Xi = omega[index]; x_tilde = Xtilde
 
+    # Iterate Xi to get the betai
     for i, xi in enumerate(Xi):
 
         betai = Betai(xi_1, xi, index, x_tilde, omega)
@@ -570,20 +576,18 @@ def Beta_iPrm(Xi_1, Index, Xtilde, Omega):
 
     return beta_iPrm
 
-
 # print('Beta_iPrm: ', Beta_iPrm(12, 2, x_tilde, Omega))
 
 
 def Pi(Xi_1, Xi, Index, X_tilde, Omega):
 
-    pi = 0
+    xi_1 = 0; xi = 0
+    index = 0; pi = 0
+    x_tilde = []; omega = []
 
-    xi_1 = Xi_1
-    xi = Xi
-    index = Index
-    x_tilde = X_tilde
+    xi_1 = Xi_1; xi = Xi
+    index = Index; x_tilde = X_tilde
     omega = Omega
-    Xi_P = omega[index]
 
     betai = Betai(xi_1, xi, index, x_tilde, omega)
     beta_iPrm = Beta_iPrm(xi_1, index, x_tilde, omega)
@@ -592,16 +596,19 @@ def Pi(Xi_1, Xi, Index, X_tilde, Omega):
 
     return pi
 
-
 # print('Pi: ', Pi(9, 12, 1, x_tilde, Omega))
 
 
-def getTranMatrix(Index, X_tilde, Omega):
+def getTranMatrix(X_tilde, Index, Omega):
 
+    index = 0; betai = 0
+    beta_iPrm = 0; pi = 0
+
+    omega = []; x_tilde = []
+    Xi_1 = []; Xi = []
     temp = []; tranProb = []
 
-    index = Index
-    omega = Omega
+    index = Index; omega = Omega
     x_tilde = X_tilde
 
     Xi_1 = omega[index-1]
@@ -623,8 +630,8 @@ def getTranMatrix(Index, X_tilde, Omega):
     tranProb = np.array(tranProb)
     return tranProb
 
-
 # print(getTranMatrix(1, x_tilde, Omega))
+
 
 def getTranMatrices(X_tilde, binSize, historyLen):
 
@@ -638,7 +645,7 @@ def getTranMatrices(X_tilde, binSize, historyLen):
 
     for i in range(1, n):
         # print('i: ', i)
-        tranMatrix = getTranMatrix(i, x_tilde, Omega)
+        tranMatrix = getTranMatrix(x_tilde, i, Omega)
         tranMatrices.append(tranMatrix)
 
     tranMatrices = np.array(tranMatrices)
