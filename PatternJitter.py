@@ -303,6 +303,8 @@ def hiVector(Xi_1, Xi, Index):
 Sampling from the Resampling Distribution
 '''
 print('x_tilde: ', x_tilde)
+print('L: ', L, 'R: ', R)
+# print('\n')
 print('Omega:')
 print(Omega)
 print('Gamma:')
@@ -394,8 +396,6 @@ def Beta1(X1, XTilde, Omega):
 
 
 # print('Beta1: ', Beta1(9, x_tilde, Omega))
-print('R: ', R)
-
 # x_tilde = [10,13,18,22]
 # spikeX = [9, 14, 19, 23]
 
@@ -413,18 +413,21 @@ def Beta1P(Xtilde, Omega):
     return beta1P
 
 
-def P1(X_tilde, Omega):
+def P1(X_tilde, binSize, historyLen):
 
-    omega = []
-    xTilde = []
-    initDist = []
+    L = 0; R = 0; p1 = 0; beta1 = 0; beta1Prm = 0
+    Omega = []; x_tilde = []; initDist = []
 
-    omega = Omega
-    xTilde = X_tilde
+    L = binSize; R = historyLen
+    x_tilde = X_tilde; Omega = getOmega(L, x_tilde)
 
-    for i, x1 in enumerate(omega[0]):
+    for i, x1 in enumerate(Omega[0]):
 
-        initDist.append(Beta1(x1, xTilde, omega) / Beta1P(xTilde, omega))
+        beta1 = Beta1(x1, x_tilde, Omega)
+        beta1Prm = Beta1P(x_tilde, Omega)
+        p1 = beta1/beta1Prm
+
+        initDist.append(p1)
 
         # print('x1: ', x1)
         # print('Beta1: ', Beta1(x1, xTilde, omega))
@@ -433,6 +436,7 @@ def P1(X_tilde, Omega):
     # print('Beta1_Prime: ', Beta1P(xTilde, omega))
     # print('\n')
 
+    initDist = np.array(initDist)
     return initDist
 
 # print('P1: ', P1(Omega, x_tilde))
@@ -622,16 +626,15 @@ def getTranMatrix(Index, X_tilde, Omega):
 
 # print(getTranMatrix(1, x_tilde, Omega))
 
+def getTranMatrices(X_tilde, binSize, historyLen):
 
-def getTranMatrices(X_tilde, Omega):
+    L = 0; R = 0; n = 0
+    tranMatrix = []; tranMatrices = []
+    Omega = []; x_tilde = []
 
-    tranMatrices = []
-
-    omega = Omega
-    x_tilde = X_tilde
-    n = len(x_tilde)
-
-    # print('n: ', n)
+    L = binSize; R = historyLen
+    x_tilde = X_tilde; n = len(x_tilde)
+    Omega = getOmega(L, x_tilde)
 
     for i in range(1, n):
         # print('i: ', i)
@@ -641,11 +644,14 @@ def getTranMatrices(X_tilde, Omega):
     tranMatrices = np.array(tranMatrices)
     return tranMatrices
 
-initDist = P1(x_tilde, Omega)
-tranMatrices = getTranMatrices(x_tilde, Omega)
+initDist = P1(x_tilde, L, R)
+tranMatrices = getTranMatrices(x_tilde, L, R)
 print('\n')
+print('######################################################')
 print('Initial Distribution:')
 print(initDist)
 print('\n')
+
+print('######################################################')
 print('Transition Matrices:')
 print(tranMatrices)
