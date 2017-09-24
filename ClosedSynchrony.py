@@ -7,54 +7,61 @@ from PatternJitter import *
 from TransitMatrix import *
 from Data import *
 
-Ref = [10, 15, 22, 29, 34, 40, 45, 51]
-Ref_02 = [10, 14, 17]
-Ref_03 = [10, 14, 17, 20]
+# Ref = [10, 15, 22, 29, 34, 40, 45, 51]
+# Ref_02 = [10, 14, 17]
+# Ref_03 = [10, 14, 17, 20]
 
 # Finding: P(S_j | T_j)
-def getSyncState(L, Reference, Target):
+def getSyncState(BinSize, Reference, Target):
 
-    index = 0; length = 0
+    L = 0; index = 0
 
     ref = []; tar = []; givenT = []; upState = []
     upStateIndex = []; syncStateMat = []
 
-    length = L; tar = Target; ref = Reference
-    givenT = getOmega(length, tar)
+    L = BinSize
+    tar = Target
+    ref = Reference
+    Omega = getOmega(L, tar)
 
-    for j, Tj in enumerate(givenT):
-        # print('All possible T[',j,']: ', Tj)
-        # print('Reference[',j,']: ', ref[j])
-        index = np.where(Tj == ref[j])[0]
+    print('Target: ', tar)
+    print('Reference: ', ref)
+    print('Omega: ')
+    print(Omega)
+
+    for i, row_i in enumerate(Omega):
+        # print('All possible row[',i,']: ', row_i)
+        # print('Reference[',i,']: ', ref[i])
+        index = np.where(row_i == ref[i])[0]
         # print('Index: ', index)
         # print('Index Size: ', index.size, '\n')
         if index.size != 0:
             # np.asscalar(a): Convert an array of size 1 to its scalar equivalent
             index = np.asscalar(index)
             # upStateIndex.append(index)
-            upState.append(Tj[index])
+            upState.append(row_i[index])
         else:
             # upStateIndex.append('No_Sync')
             upState.append(0)
 
-        n = len(Tj)
+        n = len(row_i)
 
         stateMat = []
         syncState = []
         nonSyncState = []
-        checkSync = upState[j]
+        checkSync = upState[i]
 
         # print('checkSync:', checkSync)
         # print('\n')
-        for i in range(n):
-            if Tj[i] == checkSync:
-                # print('Check[', j,']: ', checkSync)
-                # print('Tj[',i,']: ', Tj[i], 'is SYNCRONY.')
+        for j in range(n):
+            if row_i[j] == checkSync:
+                # print('Check[',i,']: ', checkSync)
+                # print('row_i[',j,']: ', row_i[j], 'is SYNCRONY.')
                 syncState.append(1)
                 nonSyncState.append(0)
             else:
-                # print('Check[', j,']: ', checkSync)
-                # print('Tj:', Tj[i], 'is not Synch.')
+                # print('Check[',i,']: ', checkSync)
+                # print('row_i:', row_i[j], 'is not Synch.')
                 syncState.append(0)
                 nonSyncState.append(1)
 
@@ -65,6 +72,7 @@ def getSyncState(L, Reference, Target):
         stateMat.append(syncState)
         # print('Wow: ', stateMat)
         syncStateMat.append(np.array(stateMat))
+
     # print(upState)
     syncStateMat = np.array(syncStateMat)
     return syncStateMat
@@ -82,9 +90,9 @@ def getInitSyncDist(InitDist, SyncState):
     syncStateMat = SyncState
     nonSyncState = 0
 
-    for j, prob in enumerate(initD):
+    for i, prob in enumerate(initD):
 
-        syncState = syncStateMat[0][1][j]
+        syncState = syncStateMat[0][1][i]
 
         if syncState == 0:
 
@@ -108,7 +116,9 @@ def getP_S1(SyncState, SyncDist):
     result = 0
     a = []; b = []; P_S1 = []
     syncS = []; syncD = []
-    syncD = SyncDist; syncS = SyncState
+
+    syncD = SyncDist
+    syncS = SyncState
 
     for i, row in enumerate(syncD):
         a = syncS[0][i]
@@ -235,28 +245,30 @@ fRate = 10
 # Size = 40
 Size = 4
 spikeData = getSpikeData(Size, fRate)
-spikeTrain = getSpikeTrain(spikeData)
+# spikeTrain = getSpikeTrain(spikeData)
+spikeTrain = x_tilde_03
 
 N = len(spikeTrain)
-ref = getReference(Size, L, N)
+# ref = getReference(Size, L, N)
+ref = [11, 12, 16, 21]
 
-print('Spike Train: ')
-print(spikeTrain)
-
-print('Reference Train: ')
-print(ref)
+# print('Spike Train: ')
+# print(spikeTrain)
+#
+# print('Reference Train: ')
+# print(ref)
 
 # initDist = getInitDist(L)
 initDist = initDist_03
 # tDistMatrices = getTransitionMatrices(L, N)
 tDistMatrices = tDistMatrices_03
 
-print('#########################################################')
-print('Initial Distribution: ')
-print(initDist)
-print('#########################################################')
-print('Transition Matrices: ')
-print(tDistMatrices)
+# print('#########################################################')
+# print('Initial Distribution: ')
+# print(initDist)
+# print('#########################################################')
+# print('Transition Matrices: ')
+# print(tDistMatrices)
 
 
 ################################################
