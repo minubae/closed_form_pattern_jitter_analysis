@@ -14,19 +14,12 @@ Ref_03 = [10, 14, 17, 20]
 # Finding: P(S_j | T_j)
 def getSyncState(L, Reference, Target):
 
-    index = 0
-    length = 0
+    index = 0; length = 0
 
-    ref = []
-    tar = []
-    givenT = []
-    upState = []
-    upStateIndex = []
-    syncStateMat = []
+    ref = []; tar = []; givenT = []; upState = []
+    upStateIndex = []; syncStateMat = []
 
-    length = L
-    tar = Target
-    ref = Reference
+    length = L; tar = Target; ref = Reference
     givenT = getOmega(length, tar)
 
     for j, Tj in enumerate(givenT):
@@ -126,13 +119,15 @@ def getP_S1(SyncState, SyncDist):
     for i, row in enumerate(syncD):
         a = syncS[0][i]
         b = np.array(row).T
+        # print('a: ',a)
+        # print('b: ', b)
         result = np.dot(a, b)
         P_S1.append(result)
 
     p_S1 = np.array(P_S1)
     return P_S1
 
-
+'''
 def getZdist(tDistMatrix, syncStateMat, which):
 
     a = []
@@ -152,8 +147,9 @@ def getZdist(tDistMatrix, syncStateMat, which):
 
     result = np.array(result)
     return result
+'''
 
-
+'''
 def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
 
     size = 0
@@ -186,20 +182,20 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
         for j, preZdist in enumerate(P_Sm):
 
             # print('Yo1 preZdist: ', j, preZdist)
-            '''
-            a1 = preZdist
-            a2 = preZdist
 
-            convolution = np.convolve(a1, a2)
-            fft = np.fft.rfft(convolution)
+            # a1 = preZdist
+            # a2 = preZdist
+            #
+            # convolution = np.convolve(a1, a2)
+            # fft = np.fft.rfft(convolution)
+            #
+            # fft = np.append(fft, 0)
+            # mul = np.multiply(fft, fft)
+            # inverseFFT = np.fft.irfft(mul)
+            # print('FFT Convolution: ', inverseFFT)
+            # print('length: ', len(inverseFFT))
 
-            fft = np.append(fft, 0)
-            mul = np.multiply(fft, fft)
-            inverseFFT = np.fft.irfft(mul)
-            print('FFT Convolution: ', inverseFFT)
-            print('length: ', len(inverseFFT))
-            '''
-            
+
             for k, zDist in enumerate(zDistMat):
                 # print('Yo2 zDist: ', k, zDist)
 
@@ -238,25 +234,38 @@ def getSyncDist(Size, P_Smat, syncStateMat, tDistMatrices):
         P_Stemp = []
 
     return P_S
+'''
 
 
-# '''
-L = 5
-fRate = 20
-Size = 40
+L = 3
+# fRate = 20
+fRate = 10
+# Size = 40
+Size = 4
 spikeData = getSpikeData(Size, fRate)
 spikeTrain = getSpikeTrain(spikeData)
 
 N = len(spikeTrain)
 ref = getReference(Size, L, N)
 
-initDist = getInitDist(L)
-tDistMatrices = getTransitionMatrices(L, N)
+print('Spike Train: ')
+print(spikeTrain)
 
+print('Reference Train: ')
+print(ref)
+
+# initDist = getInitDist(L)
+initDist = initDist_03
+# tDistMatrices = getTransitionMatrices(L, N)
+tDistMatrices = tDistMatrices_03
+
+print('#########################################################')
 print('Initial Distribution: ')
 print(initDist)
+print('#########################################################')
 print('Transition Matrices: ')
 print(tDistMatrices)
+
 
 ################################################
 # Compute the Closed Synchrony Distribution
@@ -271,19 +280,21 @@ P_S1 = getP_S1(syncStateMat, P_Smat)
 print('Init P_S: ')
 print(P_Smat, '\n')
 
-
-fftP_S = np.fft.rfft(getSyncDist(N, P_Smat, syncStateMat, tDistMatrices))
+'''
+# fftP_S = np.fft.rfft(getSyncDist(N, P_Smat, syncStateMat, tDistMatrices))
 P_S = getSyncDist(N, P_Smat, syncStateMat, tDistMatrices)
 print('P(S1):', P_S1)
 print('P(S',N,'): ', P_S)
 print('Area of Sync Dist (S',N,'): ', np.sum(P_S))
-
-'''
-print('fftP(S',N,'): ')
-print(fftP_S)
-print('Area of Sync Dist (S',N,'): ', np.sum(fftP_S))
 '''
 
+#
+# print('fftP(S',N,'): ')
+# print(fftP_S)
+# print('Area of Sync Dist (S',N,'): ', np.sum(fftP_S))
+#
+
+'''
 print('Reference: ')
 print(ref)
 
@@ -298,13 +309,14 @@ for i, prob in enumerate(P_S):
 # plt.ylim(0, 1)
 plt.axis([0, N, 0, 0.4])
 plt.show()
-
 '''
-for i, prob in enumerate(fftP_S):
-    plt.scatter(i, prob)
 
-# plt.xlim(0, N)
-# plt.ylim(0, 1)
-plt.axis([0, N, 0, 1])
-plt.show()
-'''
+#
+# for i, prob in enumerate(fftP_S):
+#     plt.scatter(i, prob)
+#
+# # plt.xlim(0, N)
+# # plt.ylim(0, 1)
+# plt.axis([0, N, 0, 1])
+# plt.show()
+#
