@@ -105,22 +105,14 @@ def getInitSyncDist(InitDist, SyncState):
 
 def getP_S1(SyncState, SyncDist):
 
-    a = 0
     result = 0
-
-    b = []
-    P_S1 = []
-    syncS = []
-    syncD = []
-
-    syncD = SyncDist
-    syncS = SyncState
+    a = []; b = []; P_S1 = []
+    syncS = []; syncD = []
+    syncD = SyncDist; syncS = SyncState
 
     for i, row in enumerate(syncD):
         a = syncS[0][i]
         b = np.array(row).T
-        # print('a: ',a)
-        # print('b: ', b)
         result = np.dot(a, b)
         P_S1.append(result)
 
@@ -278,7 +270,7 @@ print(syncStateMat, '\n')
 P_Smat = getInitSyncDist(initDist, syncStateMat)
 P_S1 = getP_S1(syncStateMat, P_Smat)
 print('Init P_S: ')
-print(P_Smat, '\n')
+print(P_S1, '\n')
 
 '''
 # fftP_S = np.fft.rfft(getSyncDist(N, P_Smat, syncStateMat, tDistMatrices))
