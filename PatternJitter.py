@@ -1,6 +1,6 @@
 ###########################################################################################################################
-# Title: Pattern Jitter Algorithm - Generating artificial spike trains
-# Date: June/14/2017, Wednesday - August/25/2017, Friday
+# Title: Pattern Jitter Algorithm - Generating Artificial Spike Trains
+# Date: June/14/2017, Wednesday - September/24/2017, Sunday
 # Author: Minwoo Bae (minubae.math@gmail.com)
 # Institute: Applied Mathematics, City College of New York, CUNY
 
@@ -302,6 +302,7 @@ def hiVector(Xi_1, Xi, Index):
 '''
 Sampling from the Resampling Distribution
 '''
+'''
 print('x_tilde: ', x_tilde)
 print('L: ', L, 'R: ', R)
 # print('\n')
@@ -309,7 +310,7 @@ print('Omega:')
 print(Omega)
 print('Gamma:')
 print(Gamma, '\n')
-
+'''
 
 def Beta1(X1, XTilde, Omega):
 
@@ -651,6 +652,7 @@ def getTranMatrices(X_tilde, binSize, historyLen):
     tranMatrices = np.array(tranMatrices)
     return tranMatrices
 
+'''
 initDist = P1(x_tilde, L, R)
 tranMatrices = getTranMatrices(x_tilde, L, R)
 print('\n')
@@ -662,3 +664,4 @@ print('\n')
 print('######################################################')
 print('Transition Matrices:')
 print(tranMatrices)
+'''
